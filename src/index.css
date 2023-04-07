@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800');
+@import "bootstrap/dist/css/bootstrap.css";
 
 * {
 	box-sizing: border-box;
@@ -16,6 +17,14 @@
     --text: #3A3530;
 	--btn: #dec5e3;
 	--red: #F9564F;
+	--platinum: #eae7e2ff;
+    --alice-blue: #d7e2e8ff;
+    --beau-blue: #b9cbd9ff;
+    --baby-pink: #fcc9c5ff;
+    --misty-rose: #feddd8ff;
+    --light-cyan: #cfe3e2ff;
+    --light-text: #B6B6B6;
+    --poppins: 'Poppins', sans-serif;
 }
 
 a {
@@ -24,7 +33,6 @@ a {
 }
 
 form {
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -83,15 +91,15 @@ input {
 	justify-content: center;
 	text-align: center;
 	color: white;
-	font-size: min(max(1rem, 4vw), 36px);
-	margin-bottom: 3vh;
+	font-size: min(max(1rem, 4vw), 42px);
+	margin-bottom: 2.5vh;
 }
 
 .description {
 	display: flex;
 	justify-content: center;
 	text-align: center;
-	font-size: min(max(1rem, 4vw), 13px);
+	font-size: min(max(1rem, 4vw), 16px);
 	padding: 0 10vw;
 }
 
@@ -101,7 +109,7 @@ input {
     border-color: white;
 	background-color: var(--darkblue);
 	color: #FFFFFF;
-	font-size: min(max(1rem, 4vw), 11px);
+	font-size: min(max(1rem, 4vw), 13px);
 	font-weight: bold;
 	padding: .75rem 3rem;
 	letter-spacing: 1px;
@@ -119,13 +127,25 @@ input {
     color: white;
 }
 
-.container {
+.auth-container {
 	border-radius: 10px;
 	position: relative;
 	overflow: hidden;
-	width: 22%;
+	width: 60%;
     min-height: 900px;
+	margin-top: 6vh;
 	/*padding-bottom: 120px;*/
+}
+@media screen and (max-width: 767px) {
+	.auth-container {
+		width: 100%;
+	}
+}
+
+@media screen and (min-width: 1224px) {
+	.auth-container {
+		width: 22%;
+	}
 }
 
 .form-container {
@@ -171,4 +191,178 @@ input {
 .error-msg {
 	font-size: min(max(1rem, 4vw), 9px);
 	color: var(--red)
+}
+
+.nav-col {
+	display: flex;
+	border-right: 1px solid rgba(77, 77, 77, 0.35);
+	height: 100vh;
+}
+
+.home-col {
+	display: flex;
+	justify-content: center;
+	border-right: 1px solid rgba(77, 77, 77, 0.35);
+}
+
+.logo {
+	max-height: 64px;
+	width: auto;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-height: 64px;
+}
+
+.logo-title {
+    font-weight: bold;
+    font-size: min(max(1rem, 3vw), 48px);
+    font-family: var(--poppins);
+    color: var(--beau-blue);
+	padding: 0;
+	margin: 0;
+}
+
+.tagline {
+    color: var(--text);
+    font-weight: normal;
+    font-size: 1rem;
+	text-align: center;
+}
+
+.nav {
+	display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    padding: 20px 15px;
+	height: 30vh;
+	align-self: flex-start;
+}
+
+.nav-links {
+    padding: 10px;
+	color: #738AA3;
+    font-size: min(max(1rem, 3vw), 18px);
+}
+
+.nav-links:hover {
+	background: linear-gradient(90deg, #CFE3E2 0%, rgba(255, 255, 255, 0) 111.74%);
+    border-radius: 30px;
+	cursor: pointer;
+}
+
+.site-helpline {
+	margin-top: auto;
+	justify-content: center;
+}
+
+@media screen and (max-width: 1224px) {
+	.gradient-box {
+        /* Rectangle 6 */
+    width: 30vh;
+    height: 33vh;
+    background: linear-gradient(180deg, #EEEEEE 0%, rgba(234, 231, 226, 0) 100%);
+    border-radius: 45px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-top: 70%;
+}
+
+	.helpline-pic {
+		position: relative;
+		left: 20px;
+		bottom: 37vh;
+		z-index: 0;
+		max-height: 30vh;
+		width: auto;
+	}
+
+	.helpline-title {
+		font-weight: 700;
+		font-size: min(max(1rem, 4vw), 20px);
+		color: var(--text);
+		position: relative;
+		bottom: 35vh;
+	}
+
+	.helpline-subtitle {
+		font-weight: 400;
+		font-size: min(max(1rem, 4vw), 16px);
+		color: var(--text);
+		position: relative;
+		bottom: 37.5vh;
+	}
+
+	.contact-button {
+		width: 100px;
+		height: 30px;
+		background-color: #4caf50;
+		border: none;
+		color: white;
+		padding: 2px;
+		text-align: center;
+		text-decoration: none;
+		font-size: 16px;
+		border-radius: 5px;
+		position: relative;
+		bottom: 39vh;
+	}
+}
+
+@media screen and (min-width: 1224px) {
+	.gradient-box {
+        /* Rectangle 6 */
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(180deg, #EEEEEE 0%, rgba(234, 231, 226, 0) 100%);
+    border-radius: 45px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-top: 70%;
+}
+
+.helpline-pic {
+    position: relative;
+	left: 20px;
+	bottom: 310px;
+    z-index: 0;
+	max-height: 30vh;
+	width: auto;
+}
+
+.helpline-title {
+	font-weight: 700;
+	font-size: min(max(1rem, 4vw), 20px);
+	color: var(--text);
+	position: relative;
+	bottom: 305px;
+}
+
+.helpline-subtitle {
+	font-weight: 400;
+	font-size: min(max(1rem, 4vw), 16px);
+	color: var(--text);
+	position: relative;
+	bottom: 320px;
+}
+
+.contact-button {
+	width: 100px;
+    height: 30px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+	padding: 2px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+	position: relative;
+	bottom: 320px;
+}
 }

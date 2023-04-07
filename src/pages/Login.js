@@ -2,7 +2,6 @@
 import '../index.css';
 import { Container, Form, Row, Button } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
-import Typed from 'react-typed'
 
 export default function Login() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -14,7 +13,7 @@ export default function Login() {
 
     return (
         <div className='pages'>
-        <Container fluid className='container'>
+        <Container fluid className='auth-container'>
             <Form className='form-container'>
                 <Form.Text>
                     <h1 className='sign-in-heading'>Sign in</h1>

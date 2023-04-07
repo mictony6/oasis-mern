@@ -1,9 +1,9 @@
 
 import '../index.css';
 import React, { useContext,useEffect, useRef, useState } from "react";
-
 import { Container, Form } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
+import { useNavigate } from 'react-router-dom';
 export default function Register() {
     // const isDesktopOrLaptop = useMediaQuery({
     //     query: '(min-width: 1224px)'
@@ -23,6 +23,8 @@ export default function Register() {
     const [isValidEmail, setValidEmail] = useState(false)
     const [isValidPassword, setValidPassword] = useState(false)
     const [isVerified, setVerified] = useState(false)
+
+    const location = useNavigate();
 
     useEffect(()=> {
         // Regex for validity
@@ -73,14 +75,19 @@ export default function Register() {
     
         }, [username, email, password, verifyPassword, isValidUsername, isValidEmail, isValidPassword, isVerified])
 
+    function register(e){
+        e.preventDefault()
+        location("/home");
+    }
+
     return (
         <div className='pages'>
-        <Container fluid className='container'>
+        <Container fluid className='auth-container'>
             <Form className='form-container'>
                 <Form.Text>
                     <h1 className='sign-in-heading'>Sign up</h1>
                 </Form.Text>
-                <Form.Control type="text" placeholder="Username" 
+                <Form.Control type="text" placeholder="Username"
                 onChange = {e => {
                     setUsername(e.target.value)
                 }}
@@ -90,6 +97,7 @@ export default function Register() {
 
 
                 <Form.Control type="email" placeholder="Email Address"
+                autoComplete ="true"
                 onChange = {e => {
                     setEmail(e.target.value)
                 }}
@@ -114,7 +122,7 @@ export default function Register() {
                 {(!isVerified && verifyPassword !== '') && <Form.Text className='error-msg'> Passwords must match.</Form.Text>
                 }
                 <Form.Text className='sign-in-text'> <a href='/login'> Already have an account? </a></Form.Text>
-                <button className='sign-up-button' type="submit">
+                <button className='sign-up-button' type="submit" onClick={register}>
                     Sign Up
                 </button>
             </Form>
