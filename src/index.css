@@ -233,90 +233,49 @@ input {
 	text-align: center;
 }
 
+.nav-toggle {
+	max-height: 50px;
+	width: auto;
+	cursor: pointer;
+}
+
+.offcanvas, .offcanvas-xxl, .offcanvas-xl, .offcanvas-lg, .offcanvas-md, .offcanvas-sm {
+	--bs-offcanvas-width: 250px !important;
+}
+
 .nav {
 	display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-    padding: 20px 15px;
-	height: 30vh;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	padding: 20px 15px;
+	height: 25%;
 	align-self: flex-start;
 }
 
 .nav-links {
-    padding: 10px;
+	padding: 10px;
 	color: #738AA3;
-    font-size: min(max(1rem, 3vw), 18px);
+	font-size: min(max(1rem, 3vw), 18px);
 }
 
 .nav-links:hover {
 	background: linear-gradient(90deg, #CFE3E2 0%, rgba(255, 255, 255, 0) 111.74%);
-    border-radius: 30px;
+	border-radius: 30px;
 	cursor: pointer;
 }
 
-.site-helpline {
-	margin-top: auto;
-	justify-content: center;
-}
-
-@media screen and (max-width: 1224px) {
-	.gradient-box {
-        /* Rectangle 6 */
-    width: 30vh;
-    height: 33vh;
-    background: linear-gradient(180deg, #EEEEEE 0%, rgba(234, 231, 226, 0) 100%);
-    border-radius: 45px;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    padding-top: 70%;
-}
-
-	.helpline-pic {
-		position: relative;
-		left: 20px;
-		bottom: 37vh;
-		z-index: 0;
-		max-height: 30vh;
-		width: auto;
-	}
-
-	.helpline-title {
-		font-weight: 700;
-		font-size: min(max(1rem, 4vw), 20px);
-		color: var(--text);
-		position: relative;
-		bottom: 35vh;
-	}
-
-	.helpline-subtitle {
-		font-weight: 400;
-		font-size: min(max(1rem, 4vw), 16px);
-		color: var(--text);
-		position: relative;
-		bottom: 37.5vh;
-	}
-
-	.contact-button {
-		width: 100px;
-		height: 30px;
-		background-color: #4caf50;
-		border: none;
-		color: white;
-		padding: 2px;
-		text-align: center;
-		text-decoration: none;
-		font-size: 16px;
-		border-radius: 5px;
-		position: relative;
-		bottom: 39vh;
-	}
-}
-
 @media screen and (min-width: 1224px) {
+	.nav {
+		height: 30vh;
+	}	
+	.site-helpline {
+		margin-top: auto;
+		justify-content: center;
+	}
+
 	.gradient-box {
         /* Rectangle 6 */
-    width: 250px;
+    width: 14vw;
     height: 250px;
     background: linear-gradient(180deg, #EEEEEE 0%, rgba(234, 231, 226, 0) 100%);
     border-radius: 45px;
