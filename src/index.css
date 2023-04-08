@@ -27,6 +27,28 @@
     --poppins: 'Poppins', sans-serif;
 }
 
+::-webkit-scrollbar{
+    width: 0.5rem;
+}
+
+::-webkit-scrollbar-track{
+    background-color: rgba(255, 255, 255, 0);
+}
+body::-webkit-scrollbar-track{
+    background-color: var(--platinum);
+}
+::-webkit-scrollbar-thumb {
+    visibility: hidden;
+    border-radius: 30px;
+    background-color: rgba(112, 112, 112, 0.73);
+}
+.header-scroll-wrapper:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+body:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
+
 a {
 	text-decoration: none;
 	color: var(--text);
@@ -197,6 +219,7 @@ input {
 	display: flex;
 	border-right: 1px solid rgba(77, 77, 77, 0.35);
 	height: 100vh;
+	position: fixed
 }
 
 .home-col {
@@ -324,4 +347,95 @@ input {
 	position: relative;
 	bottom: 320px;
 }
+}
+
+/*post view*/
+.post-content-container {
+    display: flex;
+    min-height: 270px;
+    overflow-y:hidden;
+    background-color: #F9F9F9;
+    font-size: 1rem;
+    flex-direction: column;
+    justify-content: space-evenly   ;
+    max-width: 100%;
+    padding: 20px;
+	border: 0;
+	border-radius: 25px;
+	margin: 25px 0;
+}
+
+.post-profile-img {
+	height:80px;
+	width: 80px;
+	padding: 0;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.post-content-col {
+	max-height: 100%;
+}
+
+.post-username{
+    font-size: 0.9rem;
+    font-weight: 600;
+	color: #738AA3;
+}
+
+.post-date-time {
+	font-size: .8rem;
+	color: #738AA3;
+}
+
+.post-heart {
+	height: 30px;
+	width: 30px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.post-title {
+	font-weight: 800;
+	font-size: 1.25rem;
+	color: var(--text);
+}
+
+.post-content-text-container {
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.post-content-text {
+    display: -webkit-box;
+    max-width: 100%;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+	white-space: normal;
+}
+
+.comment-box {
+    width: 100%;
+    padding: 5px 10px;
+	border-radius: 15px;
+}
+
+.comment-box input {
+    color:var(--text-color);
+}
+
+.expand-button {
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+}
+
+.comment-button {
+	padding: 8px 12px;
+	font-size: min(max(1rem, 4vw), 15px);
+    background: var(--baby-pink);
+    cursor: pointer;
+    border: solid 1px #e7e6e6;
+    border-radius: 28px;
 }

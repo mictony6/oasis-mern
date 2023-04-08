@@ -5,6 +5,7 @@ import { Row, Col, Container, Card, Offcanvas } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
+import PostCards from '../components/PostCards';
 
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -23,10 +24,15 @@ export default function Home() {
                 <Col lg={2} className='nav-col'>
                     <AppNavbar/>
                 </Col>
-                <Col lg={7} className='home-col'>
-                    Mid col
+                <Col lg={{offset: 2, size: 8}} className='home-col d-flex flex-column'>
+                    <PostCards/>
+                    <PostCards/>
+                    <PostCards/>
+                    <PostCards/>
+                    <PostCards/>
+                    <PostCards/>
                 </Col>
-                <Col  lg={3} className='home-col'>
+                <Col  lg={2} className='home-col'>
                     Third col
                 </Col>
             </Row>
