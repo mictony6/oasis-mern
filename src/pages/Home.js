@@ -6,6 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
 import PostCards from '../components/PostCards';
+import CreatePost from '../components/CreatePost';
 
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -25,6 +26,19 @@ export default function Home() {
                     <AppNavbar/>
                 </Col>
                 <Col lg={{offset: 2, size: 8}} className='home-col d-flex flex-column'>
+                    <CreatePost/>
+                    <Row className='d-flex flex-row'>
+                        <Col xs={1} className='ps-4'>
+                            <label for='sort-type'>Sort by:</label>
+                        </Col>
+                        <Col xs={10} className='p-0 d-flex flex-row'>
+                            <select name="sort-type" id="sort-type"
+                            className='sort-box'>
+                            <option selected="selected"             value="date">Recent</option>
+                            <option value="likes">Top</option>
+                            </select>
+                        </Col>
+                    </Row>
                     <PostCards/>
                     <PostCards/>
                     <PostCards/>

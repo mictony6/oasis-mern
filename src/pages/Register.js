@@ -87,7 +87,7 @@ export default function Register() {
                 <Form.Text>
                     <h1 className='sign-in-heading'>Sign up</h1>
                 </Form.Text>
-                <Form.Control type="text" placeholder="Username"
+                <Form.Control type="text" placeholder="Username" className='form-text'
                 onChange = {e => {
                     setUsername(e.target.value)
                 }}
@@ -98,6 +98,7 @@ export default function Register() {
 
                 <Form.Control type="email" placeholder="Email Address"
                 autoComplete ="true"
+                className='form-text'
                 onChange = {e => {
                     setEmail(e.target.value)
                 }}
@@ -107,6 +108,7 @@ export default function Register() {
                 }
                 
                 <Form.Control type="password" placeholder="Password"
+                className='form-text'
                 onChange = {e => {
                         setPassword(e.target.value)
                 }}
@@ -115,6 +117,7 @@ export default function Register() {
                 }
 
                 <Form.Control type="password" placeholder="Confirm Password"
+                className='form-text'
                 onChange = {e => {
                         setVerifyPassword(e.target.value)
                 }}

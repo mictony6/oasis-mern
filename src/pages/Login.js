@@ -18,8 +18,12 @@ export default function Login() {
                 <Form.Text>
                     <h1 className='sign-in-heading'>Sign in</h1>
                 </Form.Text>
-                <Form.Control type="text" placeholder="Username" />
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control type="text" placeholder="Username"
+                    className='form-text'
+                />
+                <Form.Control type="password" placeholder="Password"
+                    className='form-text'
+                />
                 <Form.Text className='sign-in-text'> <a href='/register'> Don't have an account yet? </a></Form.Text>
                 <button className='sign-up-button' type="submit">
                     Sign In
