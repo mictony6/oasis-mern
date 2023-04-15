@@ -6,6 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import Swal from 'sweetalert2'
 import UserContext from '../UserContext'
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function Login() {
     const {setUser} = useContext(UserContext)
@@ -17,6 +18,8 @@ export default function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("")
+
+    const [isActive, setIsActive] = useState(false)
 
     const location = useNavigate()
 
@@ -41,25 +44,35 @@ export default function Login() {
                 retrieveUserDetails(data.accessToken)
 
                 Swal.fire({
-                    title: "Login Successful",
-                    icon: "success",
-                    text: "This is a safe space."
+                    title: "Welcome.",
+                    text: "this is a safe space.",
+                    color: '#3A3530',
+                    confirmButtonText: "Let me in",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
                 })
 
                 location("/home");
 
             } else {
                 Swal.fire({
-                    title: "Authentication Failed",
+                    title: "We couldn't log you in :(",
                     icon: "error",
-                    text: "Check your credentials"
+                    text: "Please check your username or password.",
+                    color: '#3A3530',
+                    confirmButtonText: "Try again",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
                 }) 
             }
         
         })
-        setUsername('');
-        setPassword('');
-
+        setUsername(username);
+        setPassword(password);
     }
 
     const retrieveUserDetails = (token) =>{
@@ -88,6 +101,15 @@ export default function Login() {
         
     }
 
+    useEffect(()=> {
+        // Regex for validity
+            if(username !== '' && password !== ''){
+                setIsActive(true)
+            } else {
+                setIsActive(false)
+            }
+        }, [password, username, isActive])
+
     return (
         <div className='pages'>
         <Container fluid className='auth-container'>
@@ -104,7 +126,7 @@ export default function Login() {
                 onChange = {e => setPassword(e.target.value)}
                 />
                 <Form.Text className='sign-in-text'> <a href='/register'> Don't have an account yet? </a></Form.Text>
-                <button className='sign-up-button' type="submit" onClick={loginUser}>
+                <button className='sign-up-button' type="submit" onClick={loginUser} disabled={!isActive}>
                     Sign In
                 </button>
             </Form>
