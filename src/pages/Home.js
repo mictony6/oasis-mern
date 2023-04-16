@@ -8,6 +8,8 @@ import toggle from '../static/images/hamburger-menu.svg'
 import PostCards from '../components/PostCards';
 import CreatePost from '../components/CreatePost';
 
+import RightSidebar from '../components/RightSidebar';
+
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 1224px)'
@@ -53,7 +55,7 @@ export default function Home() {
                         <PostCards />
                     </Col>
                     <Col lg={2} className=''>
-                        Third col
+                        <RightSidebar />
                     </Col>
                 </Row>
             </Container>
