@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useState } from 'react';
-import { Row, Col, Container, Card, Offcanvas, Form, Form } from 'react-bootstrap';
+import { Row, Col, Container,  Offcanvas, Form } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
@@ -10,7 +10,6 @@ import CreatePost from '../components/CreatePost';
 
 import RightSidebar from '../components/RightSidebar';
 
-import RightSidebar from '../components/RightSidebar';
 
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -30,8 +29,6 @@ export default function Home() {
                         <AppNavbar />
                     </Col>
                     <Col className='d-flex flex-column'>
-                        {/* TODO: Make CreatePost component responsive*/}
-
                         <CreatePost />
                         <Row className='d-flex flex-row align-items-center px-4'>
                             <Col xs={2} className=''>
@@ -56,7 +53,7 @@ export default function Home() {
                         <PostCards />
                         <PostCards />
                     </Col>
-                    <Col lg={2} className=''>
+                    <Col lg={3} className='p-0 m-0'>
                         <RightSidebar />
                     </Col>
                 </Row>

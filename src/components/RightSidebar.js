@@ -1,10 +1,17 @@
-import { } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, ListGroup, } from 'react-bootstrap';
+import ContactItem from "./ContactItem";
+
 
 export default function RightSidebar() {
     return (
-        <Container fluid>
-            Third Col
-        </Container>
+            <Container fluid className={'sticky-top'}>
+
+                <ListGroup className={'py-3  '}>
+                    <ContactItem/>
+                    <ContactItem/>
+                    <ContactItem/>
+                </ListGroup>
+
+            </Container>
     )
 }
