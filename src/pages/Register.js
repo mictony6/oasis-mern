@@ -2,8 +2,10 @@
 import '../index.css';
 import React, { useContext,useEffect, useRef, useState } from "react";
 import { Container, Form } from 'react-bootstrap';
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 export default function Register() {
     // const isDesktopOrLaptop = useMediaQuery({
     //     query: '(min-width: 1224px)'
@@ -18,11 +20,13 @@ export default function Register() {
     const [password, setPassword] = useState("")
     const [verifyPassword, setVerifyPassword] = useState("")
     
-    const [isActive, setIsActive] = useState(false)
     const [isValidUsername, setValidUsername] = useState(false)
     const [isValidEmail, setValidEmail] = useState(false)
     const [isValidPassword, setValidPassword] = useState(false)
     const [isVerified, setVerified] = useState(false)
+    const [emailExists, setEmailExists] = useState(false)
+    const [usernameExists, setUsernameExists] = useState(false)
+    const [isActive, setIsActive] = useState(false)
 
     const location = useNavigate();
 
@@ -34,26 +38,47 @@ export default function Register() {
 
             username.match(valid_username) ? setValidUsername(true) : setValidUsername(false)
 
+            // check if username already exists
+            fetch('http://localhost:4000/user/checkUsername', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username
+                })
+                }).then(res => res.json())
+                .then(data => {
+                    data ? setUsernameExists(true) : setUsernameExists(false)
+                })
+
+            if(password.match(valid_password)) {
+                setValidPassword(true)
+            } else {
+                setValidPassword(false)
+            }
+
             email.match(valid_email) ? setValidEmail(true) : setValidEmail(false)
 
-            // if(email.match(valid_email)){
-            //     setValidEmail(true)
-                // // check if email already exists
-                // fetch('https://capstone-3-api-5zh3.onrender.com/users/checkEmail', {
-                // method: 'POST',
-                // headers: {
-                //     'Content-Type' : 'application/json'
-                // },
-                // body: JSON.stringify({
-                //     email: email
-                // })
-                // }).then(res => res.json())
-                // .then(data => {
-                //     (data.length === 0) ? setExists(false) : setExists(true)
-                // })
-            // } else {
-            //     setValidEmail(false)
-            // }
+            if(email.match(valid_email)){
+                setValidEmail(true)
+            } else {
+                setValidEmail(false)
+            }
+
+            // check if email already exists
+            fetch('http://localhost:4000/user/checkEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+                }).then(res => res.json())
+                .then(data => {
+                    data ? setEmailExists(true) : setEmailExists(false)
+                })
 
             if(password.match(valid_password)) {
                 setValidPassword(true)
@@ -67,17 +92,66 @@ export default function Register() {
                 setVerified(false)
             }            
     
-            if(isValidEmail && isValidPassword && isVerified) {
+            if(isValidEmail && isValidPassword && isVerified && !emailExists && !usernameExists) {
+                console.log('Btn must be active')
                 setIsActive(true)
             } else {
                 setIsActive(false)
             } 
     
-        }, [username, email, password, verifyPassword, isValidUsername, isValidEmail, isValidPassword, isVerified])
+        }, [username, email, password, verifyPassword, isValidUsername, isValidEmail, isValidPassword, isVerified, emailExists, usernameExists, isActive])
 
     function register(e){
+        
         e.preventDefault()
-        location("/home");
+        fetch('http://localhost:4000/user/register', {
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+            username : username,
+            email: email,
+            password : password
+        })
+
+        }).then(res => res.json())
+        .then(data => {
+            if(typeof data.accessToken !== "undefined"){
+                localStorage.setItem('token',data.accessToken)
+
+                Swal.fire({
+                    title: "Welcome.",
+                    text: "this is a safe space.",
+                    color: '#3A3530',
+                    confirmButtonText: "Let me in",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
+                })
+
+                location("/home");
+
+            } else {
+                Swal.fire({
+                    title: "Oh no! Something went wrong :(",
+                    icon: "error",
+                    text: "Please hold on a moment...",
+                    color: '#3A3530',
+                    confirmButtonText: "Try again",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
+                }) 
+            }
+        
+        })
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        setVerifyPassword(verifyPassword);
     }
 
     return (
@@ -92,9 +166,10 @@ export default function Register() {
                     setUsername(e.target.value)
                 }}
                 />
-                {(!isValidUsername && username !== '') && <Form.Text className='error-msg'> Username must be 3-15 characters long and may only contain letters, numbers, and special characters ._-</Form.Text>
+                {(!isValidUsername && username !== '') && <Form.Text className='error-msg'>Username must be 3-15 characters long and may only contain letters, numbers, and special characters ._-</Form.Text>
                 }
-
+                {(usernameExists) && <Form.Text className='error-msg'>Username already taken. Please try another one.</Form.Text>
+                }
 
                 <Form.Control type="email" placeholder="Email Address"
                 autoComplete ="true"
@@ -104,7 +179,9 @@ export default function Register() {
                 }}
                 />
                 
-                {(!isValidEmail && email !== '') && <Form.Text className='error-msg'> Please input a valid email (e.g. juan@example.com).</Form.Text>
+                {(!isValidEmail && email !== '') && <Form.Text className='error-msg'>Please input a valid email (e.g. juan@example.com).</Form.Text>
+                }
+                {(emailExists) && <Form.Text className='error-msg'>An account with this email already exists!</Form.Text>
                 }
                 
                 <Form.Control type="password" placeholder="Password"
@@ -125,7 +202,8 @@ export default function Register() {
                 {(!isVerified && verifyPassword !== '') && <Form.Text className='error-msg'> Passwords must match.</Form.Text>
                 }
                 <Form.Text className='sign-in-text'> <a href='/login'> Already have an account? </a></Form.Text>
-                <button className='sign-up-button' type="submit" onClick={register}>
+                                
+                <button className='sign-up-button' type="submit" onClick={register} disabled={!isActive}>
                     Sign Up
                 </button>
             </Form>

@@ -70,6 +70,7 @@ export default function Home() {
                 />
 
 
+
                 {/* Navbar */}
                 <Offcanvas show={show} onHide={handleClose}>
                     <Offcanvas.Header closeButton className='justify-content-end' />

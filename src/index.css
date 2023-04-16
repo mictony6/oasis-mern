@@ -9,21 +9,22 @@
 }
 
 :root {
-	--darkblue: #B9CBD9;
-	--pink: #FCC9C5;
-	--lightpink: #FEDDD8;
-	--skyblue: #CFE3E2;
-	--text: #3A3530;
-	--btn: #dec5e3;
+    --darkblue: #B9CBD9;
+    --pink: #FCC9C5;
+    --lightpink: #FEDDD8;
+    --skyblue: #CFE3E2;
+    --text: #3A3530;
+	--btn: #d8b4cf;
 	--red: #F9564F;
 	--platinum: #eae7e2ff;
-	--alice-blue: #d7e2e8ff;
-	--beau-blue: #b9cbd9ff;
-	--baby-pink: #fcc9c5ff;
-	--misty-rose: #feddd8ff;
-	--light-cyan: #cfe3e2ff;
-	--light-text: #B6B6B6;
-	--poppins: 'Poppins', sans-serif;
+    --alice-blue: #d7e2e8ff;
+    --beau-blue: #b9cbd9ff;
+    --baby-pink: #fcc9c5ff;
+    --misty-rose: #feddd8ff;
+    --light-cyan: #cfe3e2ff;
+    --light-text: #B6B6B6;
+	--button-confirm: #6f8fab;
+    --poppins: 'Poppins', sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -146,7 +147,23 @@ input {
 .button:hover {
 	background-color: var(--pink);
 	color: #FFFFFF;
-	cursor: pointer;
+}
+
+.button2 {
+	margin-top: 3vh;
+	border-radius: 50px;
+    border-color: white;
+	background-color: var(--button-confirm);
+	color: #FFFFFF;
+	font-size: min(max(1rem, 4vw), 13px);
+	font-weight: bold;
+	padding: .75rem 3rem;
+	letter-spacing: 1px;
+}
+
+.button2:hover {
+	background-color: var(--pink);
+	color: #FFFFFF;
 }
 
 .sign-up {
@@ -216,10 +233,14 @@ input {
 	letter-spacing: 1px;
 }
 
+.sign-up-button:disabled {
+	pointer-events: none;
+	background-color: gray;
+}
+
 .sign-up-button:hover {
 	background-color: var(--pink);
 	color: #FFFFFF;
-	cursor: pointer;
 }
 
 .error-msg {
