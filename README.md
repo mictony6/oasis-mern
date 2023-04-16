@@ -1,10 +1,6 @@
-# Getting Started with Create React App
+### To be fully functional, run it alongside its backend [API](https://github.com/mariefherv/oasis-api).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
+To run this directory, open in terminal and execute one of the following:
 
 ### `npm start`
 
