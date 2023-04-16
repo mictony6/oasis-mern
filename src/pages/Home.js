@@ -29,12 +29,12 @@ export default function Home() {
                     <CreatePost/>
                     <Row className='d-flex flex-row'>
                         <Col xs={1} className='ps-4'>
-                            <label for='sort-type'>Sort by:</label>
+                            <label htmlFor='sort-type'>Sort by:</label>
                         </Col>
                         <Col xs={10} className='p-0 d-flex flex-row'>
                             <select name="sort-type" id="sort-type"
                             className='sort-box'>
-                            <option selected="selected"             value="date">Recent</option>
+                            <option value="date" defaultChecked>Recent</option>
                             <option value="likes">Top</option>
                             </select>
                         </Col>
