@@ -1,13 +1,14 @@
 
 import '../index.css';
 import { useState } from 'react';
-import { Container, Card, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import placeholder from '../static/images/profile_pic_placeholder.svg'
 import heart from '../static/images/love.svg'
 import activeHeart from '../static/images/love-active.svg'
 import expand from '../static/images/expand.svg'
 import TextareaAutosize from 'react-textarea-autosize';
+import {Link} from "react-router-dom";
 
 
 export default function PostCards() {
@@ -76,11 +77,13 @@ export default function PostCards() {
                 </Col>
                 <Col xs={1} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='ms-3'>
-                        <img
+                        {/* TODO: make postID connect to backend*/}
+                       <Link to={"/post/someID"} className='expand-button'> <img
                             src={expand}
                             alt="Expand post"
-                            className='expand-button'
+
                         />
+                       </Link>
                     </Row>
                     <Row className='ms-2 mt-auto'>
                         <button className='comment-button'>

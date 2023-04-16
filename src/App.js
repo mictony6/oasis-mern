@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home'
 import { useState } from 'react';
+import PostDetail from "./pages/PostDetail";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route exact path="/register" element={<Register/>}/>
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/home" element={<Home/>}/>
+        <Route exact path="/post/:id" element={<PostDetail/>}/>
       </Routes>
     </Router>
     </UserProvider>
