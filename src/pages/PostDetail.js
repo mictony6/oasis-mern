@@ -22,7 +22,7 @@ export default function PostDetail() {
                     <AppNavbar />
                 </Col>
                 <Col>
-                    {/* TODO: Replace expand with minimzie*/}
+                    {/* TODO: Replace expand with minimize*/}
                     {"postID: "}{postID}
                     <PostCards/>
                 </Col>

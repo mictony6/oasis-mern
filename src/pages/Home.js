@@ -53,7 +53,7 @@ export default function Home() {
                         <PostCards />
                         <PostCards />
                     </Col>
-                    <Col lg={3} className='p-0 m-0'>
+                    <Col lg={3} className='p-0 m-0 '>
                         <RightSidebar />
                     </Col>
                 </Row>
@@ -121,7 +121,6 @@ export default function Home() {
                         <Offcanvas.Header closeButton className='justify-content-end' />
                         <AppNavbar />
                     </Offcanvas>
-                    <CreatePost />
                 </Container>
                 )
                 {/* Navbar */}
