@@ -8,13 +8,13 @@ import BlogPreviewCard from "./BlogPreviewCard";
 export default function RightSidebar() {
     return (
             <Container fluid className={'sticky-top'}>
-                <ListGroup className={'py-4  '}>
+                <ListGroup className={'my-4 '}>
                     <h5>contacts</h5>
                     <ContactItem/>
                     <ContactItem/>
                     <ContactItem/>
                 </ListGroup>
-                <ListGroup >
+                <ListGroup  >
                     <BlogPreviewCard/>
                 </ListGroup>
 

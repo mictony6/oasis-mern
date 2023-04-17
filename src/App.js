@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Home from './pages/Home'
 import { useState } from 'react';
 import PostDetail from "./pages/PostDetail";
+import Counselling from "./pages/Counselling";
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/home" element={<Home/>}/>
         <Route exact path="/post/:id" element={<PostDetail/>}/>
+        <Route exact path="/counselling" element={<Counselling/>}/>
       </Routes>
     </Router>
     </UserProvider>
