@@ -1,10 +1,11 @@
 import '../index.css';
 import AppNavbar from "../components/AppNavbar";
 import RightSidebar from "../components/RightSidebar";
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Container, ListGroup, ListGroupItem, Row} from "react-bootstrap";
 import { useParams } from 'react-router-dom'
 import {useEffect, useState} from "react";
 import PostCards from "../components/PostCards";
+import CommentItem from "../components/CommentItem";
 
 export default function PostDetail() {
     const { post_id } = useParams()
@@ -12,7 +13,7 @@ export default function PostDetail() {
     const [post, setPost] = useState("")
 
     useEffect(() => {
-    
+
         fetch(`http://localhost:4000/post/view/${post_id}`,
         {method: 'GET',
         headers: {
@@ -35,6 +36,13 @@ export default function PostDetail() {
                 <Col>
                     {/* TODO: Replace expand with minimize*/}
                     <PostCards postProp={post} minimize={false}/>
+
+                    {/*Comment section*/}
+                    <ListGroup className={'rounded-4 '}>
+                        <CommentItem/>
+                        <CommentItem/>
+                        <CommentItem/>
+                    </ListGroup>
                 </Col>
                 <Col lg={3} className='p-0 m-0'>
                     <RightSidebar />
