@@ -61,10 +61,10 @@ export default function CreatePost() {
                     <FormControl placeholder={"Whats on your mind?"} className='border-0 w-100 shadow-none'></FormControl>
                     <Button className=" rounded px-4 bg-primary border-0 " >+</Button>
                 </div>
-                <Dropdown className='d-flex justify-content-center align-items-center flex-column'>
-                    <Image src={placeholder} className="mx-2 w-auto " onMouseEnter={showDropdown}
-                        onMouseLeave={hideDropdown}></Image>
-
+                <Dropdown className='d-flex justify-content-center align-items-center flex-column'
+                onMouseEnter={showDropdown}
+                onMouseLeave={hideDropdown}>
+                    <Image src={placeholder} className="mx-2 w-auto "></Image>
 
                     <Dropdown.Menu show={show}
                         className='profile-dropdown'

@@ -30,7 +30,7 @@ function App() {
         <Route exact path="/register" element={<Register/>}/>
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/home" element={<Home/>}/>
-        <Route exact path="/post/:id" element={<PostDetail/>}/>
+        <Route exact path="/post/:post_id" element={<PostDetail/>}/>
       </Routes>
     </Router>
     </UserProvider>

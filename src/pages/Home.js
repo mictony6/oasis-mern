@@ -9,6 +9,7 @@ import PostCards from '../components/PostCards';
 import CreatePost from '../components/CreatePost';
 
 import RightSidebar from '../components/RightSidebar';
+import { useEffect } from 'react';
 
 
 export default function Home() {
@@ -21,6 +22,26 @@ export default function Home() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [posts, setPosts] = useState([])
+
+    useEffect(() => {
+        fetch("http://localhost:4000/post/viewAll",
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            setPosts(data.map(post => {
+                return(
+                <PostCards key={post.post_id} postProp= {post} minimize={true}/>            
+            )
+        }))
+    })
+    })
+
     return (
         isDesktopOrLaptop ?
             <Container fluid>
@@ -32,26 +53,16 @@ export default function Home() {
                         <CreatePost />
                         <Row className='d-flex flex-row align-items-center px-4'>
                             <Col xs={2} className=''>
-                                <label for='sort-type'>Sort by:</label>
+                                <label htmlFor='sort-type'>Sort by:</label>
                             </Col>
                             <Col xs={10} className='d-flex flex-row'>
-                                {/* <select name="sort-type" id="sort-type"
-                                    className=''>
-                                    <option selected="selected" value="date">Recent</option>
-                                    <option value="likes">Top</option>
-                                </select> */}
-                                <Form.Select aria-label="sort-type" name='' id='sort-type' className="border rounded-3">
-                                    <option selected="selected" value="1">Recent</option>
+                                <Form.Select aria-label="sort-type" name='' id='sort-type' className="border rounded-3" defaultValue={"1"}>
+                                    <option value="1">Recent</option>
                                     <option value="2">Top</option>
                                 </Form.Select>
                             </Col>
                         </Row>
-                        <PostCards />
-                        <PostCards />
-                        <PostCards />
-                        <PostCards />
-                        <PostCards />
-                        <PostCards />
+                        {posts}
                     </Col>
                     <Col lg={3} className='p-0 m-0 '>
                         <RightSidebar />
@@ -81,13 +92,9 @@ export default function Home() {
                                     <label for='sort-type'>Sort by:</label>
                                 </Col>
                                 <Col xs={10} className='d-flex flex-row'>
-                                    {/* <select name="sort-type" id="sort-type"
-                                    className=''>
-                                    <option selected="selected" value="date">Recent</option>
-                                    <option value="likes">Top</option>
-                                </select> */}
-                                    <Form.Select aria-label="sort-type" name='' id='sort-type' className="border rounded-3">
-                                        <option selected="selected" value="1">Recent</option>
+                                    <Form.Select aria-label="sort-type" name='' id='sort-type' className="border rounded-3
+                                    defaultValue='1">
+                                        <option value="1">Recent</option>
                                         <option value="2">Top</option>
                                     </Form.Select>
                                 </Col>

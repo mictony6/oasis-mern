@@ -470,6 +470,12 @@ input {
 	cursor: pointer;
 }
 
+.back-button {
+	width: 65px;
+	height: 65px;
+	cursor: pointer;
+}
+
 .comment-button {
 	padding: 8px 12px;
 	font-size: min(max(1rem, 4vw), 15px);
