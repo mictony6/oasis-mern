@@ -11,6 +11,7 @@ export default function PostDetail() {
     const { post_id } = useParams()
 
     const [post, setPost] = useState("")
+    const [comments, setComments] = useState([])
 
     useEffect(() => {
 
@@ -24,9 +25,24 @@ export default function PostDetail() {
         .then(data => {
         // get all data of the product
             setPost(data[0])
-        }, [])
+        })})
+        
+        fetch(`http://localhost:4000/post/comment/${post_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setComments(data.map(comment => {
+                return(
+                <CommentItem key={comment.comment_id} commentProp= {comment}/>            
+            )
+        }))
     }
     )
+    
     return (
         <Container fluid>
             <Row className='d-flex flex-row'>
@@ -39,9 +55,7 @@ export default function PostDetail() {
 
                     {/*Comment section*/}
                     <ListGroup className={'rounded-4 '}>
-                        <CommentItem/>
-                        <CommentItem/>
-                        <CommentItem/>
+                        {comments}
                     </ListGroup>
                 </Col>
                 <Col lg={3} className='p-0 m-0'>

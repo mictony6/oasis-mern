@@ -102,7 +102,6 @@ export default function Login() {
     }
 
     useEffect(()=> {
-        // Regex for validity
             if(username !== '' && password !== ''){
                 setIsActive(true)
             } else {

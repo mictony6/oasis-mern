@@ -1,21 +1,86 @@
 import {Col, Container, ListGroupItem, Row, Image} from "react-bootstrap";
 import placeholder from '../static/images/profile1.svg';
-import love from '../static/images/love.svg';
+import heart from '../static/images/love.svg'
+import activeHeart from '../static/images/love-active.svg'
+import { useState, useEffect } from "react";
 
-export default function CommentItem(){
+export default function CommentItem({commentProp}){
+
+    const hdate = require('human-date')
+    const {comment_id, username, content, date_commented } = commentProp
+
+    const time = hdate.relativeTime(date_commented)
+
+    const [love, setLove] = useState(false)
+    
+    useEffect(() => {
+        fetch(`http://localhost:4000/post/comment/checkLike/${comment_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data.length !== 0 ? setLove(true) : setLove(false)
+        })
+    }, [comment_id])
+
+    function likeComment(e) {
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/comment/like/${comment_id}`, {
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        }).then(res => res.json())
+        .then(data => {
+            data ? setLove(true) : setLove(false)
+        })
+    }
+
+    function unlikeComment(e) {
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/comment/unlike/${comment_id}`, {
+        method : 'DELETE',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        }).then(res => res.json())
+        .then(data => {
+            data ? setLove(false) : setLove(true)
+        })
+    }
+
     return(
         <ListGroupItem className={'bg-secondary border-0 border-bottom'}>
             <Row className={'d-flex flex-row align-items-center'}>
                 <Col className={'col-2 d-flex flex-column align-items-center '}>
                     <Image src={placeholder}></Image>
-                    <div className={'fw-bold'}>@username</div>
-                    <p><small className={'text-muted '}>42 minutes ago</small></p>
+                    <div className={'fw-bold'}>@{username}</div>
+                    <p><small className={'text-muted '}>{time}</small></p>
                 </Col>
                 <Col >
-                    This is a comment. HAHU. This is a comment. HAHU. This is a comment. HAHU.
+                    {content}
                 </Col>
                 <Col className={'col-2 text-center'}>
-                    <Image src={love} className={'img-fluid'}></Image>
+                    {!love ? 
+                    <img src={heart} 
+                    className='post-heart'
+                    alt='Like comment'
+                    onClick={likeComment}
+                    />
+                    :
+                    <img src={activeHeart} 
+                    className='post-heart'
+                    alt='Unlike comment'
+                    onClick={unlikeComment}
+                    />}
                 </Col>
 
             </Row>

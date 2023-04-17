@@ -477,12 +477,18 @@ input {
 }
 
 .comment-button {
-	padding: 8px 12px;
+	padding: 8px 8px;
 	font-size: min(max(1rem, 4vw), 15px);
 	background: var(--baby-pink);
 	cursor: pointer;
 	border: solid 1px #e7e6e6;
 	border-radius: 28px;
+}
+
+.comment-button:disabled {
+	pointer-events: none;
+	color: white;
+	background-color: gray;
 }
 
 .fake-input {
