@@ -9,6 +9,7 @@
 }
 
 :root {
+
     --darkblue: #B9CBD9;
     --pink: #FCC9C5;
     --lightpink: #FEDDD8;
@@ -323,7 +324,11 @@ input {
 	background: linear-gradient(90deg, #CFE3E2 0%, rgba(255, 255, 255, 0) 111.74%);
 	border-radius: 30px;
 	cursor: pointer;
+	color: #738AA3;
 }
+
+
+
 
 @media screen and (min-width: 1224px) {
 	.nav {
@@ -544,12 +549,48 @@ input {
 	background-color: var(--pink) !important;
 }
 
+.fg-primary{
+	color:#738AA3;
+}
+
+.fg-light{
+	color:#738AA3;
+}
+
 .shadow-focus {
 	border: solid 2px var(--light-text) !important;
 
 }
 
+
 .shadow-focus:focus-within {
 	border: solid 2px var(--darkblue) !important;
 	overflow: hidden;
+}
+
+.hv-100{
+	height: 100vh !important;
+}
+.hv-50{
+	height: 50vh !important;
+}
+
+.hv-25{
+	height: 25vh !important;
+}
+
+.overflow-y{
+	overflow-y: scroll;
+}
+
+.fixed-topright{
+	position:fixed;
+	right:0;
+	top:0;
+}
+
+.fixed-topleft{
+	position:fixed;
+	left:0;
+	top:0;
 }

@@ -1,4 +1,4 @@
-import { Link,  } from 'react-router-dom';
+import {Link, NavLink,} from 'react-router-dom';
 import { Navbar, Nav, Row, Col } from 'react-bootstrap';
 import logo from '../static/images/logo.png'
 import telephone from '../static/images/telephone.svg'
@@ -11,7 +11,7 @@ export default function AppNavbar() {
 	})
 
 	return (
-		<Navbar className="m-0 pe-3 d-flex flex-column flex-grow-1 min-vh-100 sticky-top border-end ">
+		<Navbar className="m-0 pe-3 d-flex flex-column flex-grow-1 sticky-top border-end hv-100">
 			{isDesktopOrLaptop && <Row>
 				<Navbar.Brand as={Link} to="/home" className='d-flex flex-column align-items-center justify-content-center'>
 					<Row className='title mb-1'>
@@ -31,18 +31,10 @@ export default function AppNavbar() {
 				</Navbar.Brand>
 			</Row>}
 			<Row className='d-flex flex-column nav'>
-				<Nav.Item className='nav-links'>
-					Community
-				</Nav.Item>
-				<Nav.Item className='nav-links'>
-					Look for Support
-				</Nav.Item>
-				<Nav.Item className='nav-links'>
-					Blog
-				</Nav.Item >
-				<Nav.Item className='nav-links'>
-					About Us
-				</Nav.Item>
+					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
+					<NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>
+					<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>
+					<NavLink to={'/about-us'} className='nav-links'>About Us</NavLink>
 				{!isDesktopOrLaptop && <Nav.Item className='nav-links'>
 					VAWC Hotlines
 				</Nav.Item>
