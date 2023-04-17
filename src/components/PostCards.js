@@ -173,8 +173,9 @@ export default function PostCards({postProp, minimize}) {
                     <Row className='d-flex justify-content-flex-start mt-2 ms-2'>
                         <p className='post-title'>{subject}</p>
                     </Row>
-                    <Row className='d-flex justify-content-flex-start mt-0 pt-0 ms-2 post-content-text-container'>
-                        <p className='post-content-text'>
+                    <Row className='d-flex justify-content-flex-start mt-0 pt-0 ms-2 post-content-text-container-full'
+                    >
+                        <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
                             {content}
                         </p>
                     </Row>
