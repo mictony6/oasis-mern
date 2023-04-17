@@ -6,7 +6,7 @@ import message_icon from "../static/images/message.svg";
 
 export default function ContactItem() {
     return(
-        <ListGroupItem  >
+        <ListGroupItem >
             <Row className={'d-flex flex-row align-items-center '}>
                 <Col className={' px-1 col-2'}>
                     <Link to={'#profile_link'}><Image src={placeholder} className={'img-fluid  '}></Image></Link>
