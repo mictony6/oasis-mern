@@ -25,6 +25,7 @@ export default function PostCards({postProp, minimize}) {
     const [love, setLove] = useState(false)
     const [comment, setComment] = useState("")
     const [active, setActive] = useState(false)
+    const [count, setCount] = useState("")
     
     const { post_id, subject, content, username, date_posted } = postProp
 
@@ -43,8 +44,19 @@ export default function PostCards({postProp, minimize}) {
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
+        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
+            method : 'GET',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            }).then(res => res.json())
+            .then(data => {
+                data[0].count !== 0 ? setCount(data[0].count) : setCount("")
+        })
+
         comment !== '' ? setActive(true) : setActive(false)
-    }, [post_id, comment])
+    }, [post_id, comment, count, love])
 
     function likePost(e) {
         e.preventDefault()
@@ -137,20 +149,23 @@ export default function PostCards({postProp, minimize}) {
                     <Row className='d-flex justify-content-center post-date-time'>
                         {time}
                     </Row>
-                    {love ? <Row className='d-flex justify-content-center mt-auto pb-1' onClick={unlikePost}>
+                    {love ? 
+                    <Row className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={unlikePost}>
                         <img
                             src={activeHeart}
                             alt="Unlove a post"
                             className='post-heart'
                         />
+                        {count}
                     </Row>
                         :
-                        <Row className='d-flex justify-content-center mt-auto pb-1' onClick={likePost}>
+                        <Row className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={likePost}>
                             <img
                                 src={heart}
                                 alt="Love a post"
                                 className='post-heart'
                             />
+                        {count}
                         </Row>
                     }
                 </Col>

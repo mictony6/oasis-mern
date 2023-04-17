@@ -12,6 +12,7 @@ export default function CommentItem({commentProp}){
     const time = hdate.relativeTime(date_commented)
 
     const [love, setLove] = useState(false)
+    const [count, setCount] = useState("")
     
     useEffect(() => {
         fetch(`http://localhost:4000/post/comment/checkLike/${comment_id}`,
@@ -25,7 +26,19 @@ export default function CommentItem({commentProp}){
         .then(data => {
             data.length !== 0 ? setLove(true) : setLove(false)
         })
-    }, [comment_id])
+
+        fetch(`http://localhost:4000/post/comment/countLikes/${comment_id}`, {
+            method : 'GET',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            }).then(res => res.json())
+            .then(data => {
+                data[0].count !== 0 ? setCount(data[0].count) : setCount("")
+        })
+
+    }, [comment_id, love, count])
 
     function likeComment(e) {
         e.preventDefault()
@@ -81,6 +94,7 @@ export default function CommentItem({commentProp}){
                     alt='Unlike comment'
                     onClick={unlikeComment}
                     />}
+                    {count}
                 </Col>
 
             </Row>
