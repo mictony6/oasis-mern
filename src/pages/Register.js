@@ -3,7 +3,7 @@ import '../index.css';
 import React, { useContext,useEffect, useRef, useState } from "react";
 import { Container, Form } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import Swal from 'sweetalert2'
 
 export default function Register() {
@@ -202,7 +202,7 @@ export default function Register() {
                 />
                 {(!isVerified && verifyPassword !== '') && <Form.Text className='error-msg'> Passwords must match.</Form.Text>
                 }
-                <Form.Text className='sign-in-text'> <a href='/login'> Already have an account? </a></Form.Text>
+                <Form.Text className='sign-in-text'>  <NavLink to={'/login'}> Already have an account? </NavLink></Form.Text>
                                 
                 <button className='sign-up-button' type="submit" onClick={register} disabled={!isActive}>
                     Sign Up

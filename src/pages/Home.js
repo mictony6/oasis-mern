@@ -41,15 +41,14 @@ export default function Home() {
         }))
     })
     })
-
     return (
         isDesktopOrLaptop ?
             <Container fluid>
                 <Row className='d-flex flex-row'>
                     <Col lg={2} className=''>
-                        <AppNavbar />
+                        <AppNavbar/>
                     </Col>
-                    <Col className='d-flex flex-column'>
+                    <Col className='d-flex flex-column my-4 '>
                         <CreatePost />
                         <Row className='d-flex flex-row align-items-center px-4'>
                             <Col xs={2} className=''>

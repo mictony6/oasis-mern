@@ -1,7 +1,8 @@
 import '../index.css';
-import {Col, Container, Form, FormLabel, FormSelect, ListGroup, ListGroupItem, Row} from 'react-bootstrap';
+import {Col, Container, Form, FormLabel, FormSelect, ListGroup, Row, Image, ListGroupItem} from 'react-bootstrap';
 import AppNavbar from '../components/AppNavbar';
 import TheraphistCard from "../components/TheraphistCard";
+import ConsultationCard from "../components/ConsultationCard";
 
 export default function Counselling() {
     return (
@@ -10,8 +11,8 @@ export default function Counselling() {
                 <Col lg={2} className=''>
                     <AppNavbar/>
                 </Col>
-                <Col>
-                    <h3>connect with our therapists</h3>
+                <Col className={'my-4 '}>
+                    <p className={'fg-primary fw-bold display-6'}>connect with our therapists</p>
                     <Row className={'w-100 my-4'}>
                         <Col className={'d-flex flex-row align-items-center'}>
                             <FormLabel htmlFor={'sort-type'} className={'col-2'} >sort by</FormLabel>
@@ -31,11 +32,28 @@ export default function Counselling() {
 
                    </Row>
 
-                    <ListGroup>
+                    <ListGroup >
+                        <TheraphistCard/>
+                        <TheraphistCard/>
+                        <TheraphistCard/>
                         <TheraphistCard/>
                     </ListGroup>
                 </Col>
-                <Col lg={2}>Third col.</Col>
+                <Col lg={3} >
+                    <Container fluid className={'sticky-top'}>
+                        <h5 className={'fg-primary pt-4'}>upcoming consultations</h5>
+                        <ListGroup className={'my-2 overflow-auto'}>
+                            <ConsultationCard/>
+                        </ListGroup>
+                        <h5 className={'fg-primary pt-4'}>recent consultations</h5>
+                        <ListGroup className={'overflow-y'}>
+                            <ConsultationCard/>
+                            <ConsultationCard/>
+                            <ListGroupItem>See More...</ListGroupItem>
+                        </ListGroup>
+
+                    </Container>
+                </Col>
             </Row>
         </Container>
     );
