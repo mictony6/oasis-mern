@@ -24,11 +24,54 @@ export default function PostCards({postProp, minimize}) {
     const [love, setLove] = useState(false)
 
     const handleUnlove = () => setLove(false);
-    const handleLove = () => setLove(true);
 
     const { post_id, subject, content, username, date_posted } = postProp
 
-    const time = hdate.relativeTime(date_posted);
+    const time = hdate.relativeTime(date_posted)
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/post/checkLike/${post_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data.length !== 0 ? setLove(true) : setLove(false)
+        })
+    })
+
+    function likePost(e) {
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/like/${post_id}`, {
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        }).then(res => res.json())
+        .then(data => {
+            data ? setLove(true) : setLove(false)
+        })
+    }
+
+    function unlikePost(e) {
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/unlike/${post_id}`, {
+        method : 'DELETE',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        }).then(res => res.json())
+        .then(data => {
+            data ? setLove(false) : setLove(true)
+        })
+    }
 
     return (
         <Container fluid className='pt-4'>
@@ -47,7 +90,7 @@ export default function PostCards({postProp, minimize}) {
                     <Row className='d-flex justify-content-center post-date-time'>
                         {time}
                     </Row>
-                    {love ? <Row className='d-flex justify-content-center mt-auto pb-1' onClick={handleUnlove}>
+                    {love ? <Row className='d-flex justify-content-center mt-auto pb-1' onClick={unlikePost}>
                         <img
                             src={activeHeart}
                             alt="Unlove a post"
@@ -55,7 +98,7 @@ export default function PostCards({postProp, minimize}) {
                         />
                     </Row>
                         :
-                        <Row className='d-flex justify-content-center mt-auto pb-1' onClick={handleLove}>
+                        <Row className='d-flex justify-content-center mt-auto pb-1' onClick={likePost}>
                             <img
                                 src={heart}
                                 alt="Love a post"
