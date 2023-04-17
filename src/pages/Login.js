@@ -5,7 +5,7 @@ import { Container, Form } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import Swal from 'sweetalert2'
 import UserContext from '../UserContext'
-import { useNavigate } from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import { useEffect } from 'react';
 
 export default function Login() {
@@ -125,7 +125,7 @@ export default function Login() {
                 className='form-text'
                 onChange = {e => setPassword(e.target.value)}
                 />
-                <Form.Text className='sign-in-text'> <a href='/register'> Don't have an account yet? </a></Form.Text>
+                <Form.Text className='sign-in-text'> <NavLink to={'/register'}> Don't have an account yet? </NavLink></Form.Text>
                 <button className='sign-up-button' type="submit" onClick={loginUser} disabled={!isActive}>
                     Sign In
                 </button>
