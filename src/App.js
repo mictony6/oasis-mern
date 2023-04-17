@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import { useState } from 'react';
 import PostDetail from "./pages/PostDetail";
 import Counselling from "./pages/Counselling";
+import Logout from './pages/Logout';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route exact path="/home" element={<Home/>}/>
         <Route exact path="/post/:post_id" element={<PostDetail/>}/>
         <Route exact path="/counselling" element={<Counselling/>}/>
+        <Route exact path="/logout" element={<Logout/>}/>
       </Routes>
     </Router>
     </UserProvider>

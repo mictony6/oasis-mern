@@ -542,6 +542,12 @@ input {
 
 .bg-primary {
 	background-color: var(--pink) !important;
+	color: var(--text)
+}
+
+.bg-primary:disabled {
+	pointer-events: none;
+	background-color: gray !important;
 }
 
 .shadow-focus {
@@ -552,4 +558,12 @@ input {
 .shadow-focus:focus-within {
 	border: solid 2px var(--darkblue) !important;
 	overflow: hidden;
+}
+
+.content-box {
+	margin-top: 20px;
+	width: 100%;
+	padding: 5px 10px;
+	border-radius: 10px;
+	border: solid 1px var(--light-text);
 }

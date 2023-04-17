@@ -31,10 +31,10 @@ export default function AppNavbar() {
 				</Navbar.Brand>
 			</Row>}
 			<Row className='d-flex flex-column nav'>
-				<Nav.Item className='nav-links'>
+				<Nav.Item className='nav-links' as={Link} to="/home">
 					Community
 				</Nav.Item>
-				<Nav.Item className='nav-links'>
+				<Nav.Item className='nav-links' as={Link} to="/counselling">
 					Look for Support
 				</Nav.Item>
 				<Nav.Item className='nav-links'>
