@@ -32,7 +32,7 @@ export default function Home() {
                         <CreatePost />
                         <Row className='d-flex flex-row align-items-center px-4'>
                             <Col xs={2} className=''>
-                                <label for='sort-type'>Sort by:</label>
+                                <label htmlFor='sort-type'>Sort by:</label>
                             </Col>
                             <Col xs={10} className='d-flex flex-row'>
                                 {/* <select name="sort-type" id="sort-type"
