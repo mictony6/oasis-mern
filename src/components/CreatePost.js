@@ -83,6 +83,7 @@ export default function CreatePost() {
                     }
                 })
         })
+        closeModal()
         setSubject("");
         setContent("");
     }

@@ -10,6 +10,7 @@ import CreatePost from '../components/CreatePost';
 
 import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
@@ -17,15 +18,26 @@ export default function Home() {
         query: '(min-width: 1224px)'
     })
 
+    const location = useLocation()
+    const history = useNavigate()
+
+    const getUrl = new URLSearchParams(location.search).get('sort');
+
     const [show, setShow] = useState(false);
+    const [view, setView] = useState(getUrl ? getUrl : 'Recent')
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const [posts, setPosts] = useState([])
 
+    function sortBy(val){
+        setView(val)        
+        history(`${location.pathname}?sort=${val}`);
+    }
+
     useEffect(() => {
-        fetch("http://localhost:4000/post/viewAll",
+        fetch(`http://localhost:4000/post/viewAllBy${view}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -40,7 +52,8 @@ export default function Home() {
             )
         }))
     })
-    })
+    }, [setView, view, posts])
+
     return (
         isDesktopOrLaptop ?
             <Container fluid>
@@ -55,10 +68,17 @@ export default function Home() {
                                 <label htmlFor='sort-type'>Sort by:</label>
                             </Col>
                             <Col xs={10} className='d-flex flex-row'>
-                                <Form.Select aria-label="sort-type" name='' id='sort-type' className="border rounded-3" defaultValue={"1"}>
-                                    <option value="1">Recent</option>
-                                    <option value="2">Top</option>
-                                </Form.Select>
+                                <Form.Control aria-label="sort-type" name='' id='sort-type' className="border rounded-3"
+                                as="select"
+                                value={view}
+                                onChange = {e => {
+                                    sortBy(e.target.value)
+                                    }
+                                }
+                                >
+                                    <option value="Recent">Recent</option>
+                                    <option value="Likes">Top</option>
+                                </Form.Control>
                             </Col>
                         </Row>
                         {posts}
@@ -98,12 +118,7 @@ export default function Home() {
                                     </Form.Select>
                                 </Col>
                             </Row>
-                            <PostCards />
-                            <PostCards />
-                            <PostCards />
-                            <PostCards />
-                            <PostCards />
-                            <PostCards />
+                            {posts}
                         </Col>
                         <Col lg={2} className=''>
                             <RightSidebar />
