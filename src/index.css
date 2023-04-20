@@ -77,10 +77,6 @@ input {
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
-	width: 100%;
-
-	width: 100%;
-
 }
 
 .welcome {
@@ -450,13 +446,29 @@ input {
 	overflow: hidden;
 }
 
-.post-content-text {
+.post-content-text-container-full {
+	max-width: 100%;
+}
+
+.post-content-preview {
 	display: -webkit-box;
 	max-width: 100%;
 	-webkit-line-clamp: 5;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
-	white-space: normal;
+	white-space: pre-wrap;
+}
+
+.post-content-text {
+	display: -webkit-box;
+	max-width: 100%;
+	white-space: pre-wrap;
+}
+
+
+.post-likes {
+	font-weight: 100;
+	font-size: 0.75rem;
 }
 
 .comment-box {
@@ -547,6 +559,20 @@ input {
 
 .bg-primary {
 	background-color: var(--pink) !important;
+	color: var(--text)
+}
+
+.bg-primary:disabled {
+	pointer-events: none;
+	background-color: gray !important;
+}
+
+.fg-primary{
+	color:#738AA3;
+}
+
+.fg-light{
+	color:#738AA3;
 }
 
 .fg-primary{
@@ -566,6 +592,14 @@ input {
 .shadow-focus:focus-within {
 	border: solid 2px var(--darkblue) !important;
 	overflow: hidden;
+}
+
+.content-box {
+	margin-top: 20px;
+	width: 100%;
+	padding: 5px 10px;
+	border-radius: 10px;
+	border: solid 1px var(--light-text);
 }
 
 .hv-100{
