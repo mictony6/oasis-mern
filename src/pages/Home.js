@@ -24,7 +24,7 @@ export default function Home() {
     const getUrl = new URLSearchParams(location.search).get('sort');
 
     const [show, setShow] = useState(false);
-    const [view, setView] = useState(getUrl ? getUrl : 'Recent')
+    const [view, setView] = useState(getUrl ? getUrl : 'Likes')
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

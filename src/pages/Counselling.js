@@ -18,19 +18,17 @@ export default function Counselling() {
                             <FormLabel htmlFor={'sort-type'} className={'col-2'} >sort by</FormLabel>
                             <FormSelect aria-label={'sort-type'}>
                                 <option >online consultations</option>
-                                <option selected={true}> other option</option>
+                                <option > other option</option>
                             </FormSelect>
                         </Col>
                         <Col className={'d-flex flex-row align-items-center'}>
                             <FormLabel htmlFor={'sort-type'} className={'col-4'}>available dates</FormLabel>
                             <FormSelect aria-label={'sort-type'}>
                                 <option >this week</option>
-                                <option selected={true}>this month</option>
+                                <option >this month</option>
                             </FormSelect>
                         </Col>
-
-
-                   </Row>
+            </Row>
 
                     <ListGroup >
                         <TheraphistCard/>
