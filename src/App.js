@@ -9,6 +9,7 @@ import { useState } from 'react';
 import PostDetail from "./pages/PostDetail";
 import Counselling from "./pages/Counselling";
 import Logout from './pages/Logout';
+import Messaging from "./pages/Messaging";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route exact path="/post/:post_id" element={<PostDetail/>}/>
         <Route exact path="/counselling" element={<Counselling/>}/>
         <Route exact path="/logout" element={<Logout/>}/>
+        <Route exact path="/messaging" element={<Messaging/>}/>
       </Routes>
     </Router>
     </UserProvider>
