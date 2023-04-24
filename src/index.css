@@ -59,6 +59,10 @@ a {
 	color: var(--text);
 }
 
+body{
+	max-height: 100vh;
+}
+
 form {
 	display: flex;
 	align-items: center;
@@ -627,4 +631,13 @@ input {
 	position:fixed;
 	left:0;
 	top:0;
+}
+
+.fit-content{
+	width: fit-content;
+}
+
+.chat-box{
+	height: 75vh;
+	overflow-y: scroll;
 }
