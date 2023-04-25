@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import UserContext from '../UserContext';
+import ScrollToBottom from 'react-scroll-to-bottom';
 import Swal from 'sweetalert2'
 import { useContext } from 'react';
 
@@ -103,15 +104,18 @@ export default function MessageBox() {
 
     return(
         <Container fluid>
-            <Container className="chat-box d-flex flex-column">
+            <ScrollToBottom className="chat-box d-flex flex-column">
             <ListGroup className="py-5">
                 {chatHistory}
             </ListGroup>
-            </Container>
+            </ScrollToBottom>
             <Container fluid className="d-flex flex-row flex-nowrap align-items-center justify-content-between">
             <TextareaAutosize className="w-100 rounded-3 border-1 p-2"
                 onChange = {e => setMessage(e.target.value)}
                 value={message}
+                onKeyDown={(e) => (
+                e.key === 'Enter' ? {sendMessage} : null
+            )}
             />
             <Button className="ms-2 rounded-5 text-center"
             onClick={sendMessage}
