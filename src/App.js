@@ -10,6 +10,7 @@ import PostDetail from "./pages/PostDetail";
 import Counselling from "./pages/Counselling";
 import Logout from './pages/Logout';
 import Messaging from "./pages/Messaging";
+import { useEffect } from 'react';
 
 
 function App() {
@@ -25,6 +26,31 @@ function App() {
 		localStorage.clear();
 	};
 
+  useEffect(() => {
+		fetch('http://localhost:4000/user/getUserDetails',{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('token')}`
+			}
+		}).then(res => res.json())
+		.then(data =>{
+			if(typeof data[0].user_id !== "undefined"){
+				setUser({
+					id: data[0].user_id,
+					username: data[0].username,
+					email: data[0].email,
+					role: data[0].role,
+				});
+			} else {
+				setUser({
+          id: null,
+          username: null,
+          email: null,
+          role: null,
+				})
+			}
+		})
+	}, [])
+
   return (
     <UserProvider value={{user, setUser, unsetUser}}>
     <Router>
@@ -36,7 +62,7 @@ function App() {
         <Route exact path="/post/:post_id" element={<PostDetail/>}/>
         <Route exact path="/counselling" element={<Counselling/>}/>
         <Route exact path="/logout" element={<Logout/>}/>
-        <Route exact path="/messaging" element={<Messaging/>}/>
+        <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
       </Routes>
     </Router>
     </UserProvider>

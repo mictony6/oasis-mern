@@ -82,12 +82,12 @@ export default function Login() {
         }
         }).then(res => res.json())
         .then(data => {
-            if(typeof data.user_id !== "undefined"){
+			if(typeof data[0].user_id !== "undefined"){
 				setUser({
-					id: data.user_id,
-					username: data.username,
-                    email: data.email,
-					role: data.role,
+					id: data[0].user_id,
+					username: data[0].username,
+					email: data[0].email,
+					role: data[0].role,
 				});
 			} else {
 				setUser({

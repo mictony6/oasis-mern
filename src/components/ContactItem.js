@@ -4,7 +4,10 @@ import placeholder from "../static/images/profile_pic_placeholder.svg";
 import call_icon from "../static/images/call.svg";
 import message_icon from "../static/images/message.svg";
 
-export default function ContactItem() {
+export default function ContactItem({contactProp, highlight, active}) {
+
+    const {username, contact_id} = contactProp
+
     return(
         <ListGroupItem >
             <Row className={'d-flex flex-row align-items-center '}>
@@ -12,13 +15,13 @@ export default function ContactItem() {
                     <Link to={'#profile_link'}><Image src={placeholder} className={'img-fluid  '}></Image></Link>
                 </Col>
                 <Col className={'fw-bold px-3 '}>
-                    @username
+                    @{username}
                 </Col>
                 <Col  className={'col-2'}>
                     <Link to={'#call_link'}><Image src={call_icon} className={'img-fluid  '}></Image></Link>
                 </Col>
                 <Col  className={'col-2'}>
-                    <Link to={'#chat_link'}> <Image src={message_icon} className={'img-fluid  '}></Image></Link>
+                    <Link to={`/chats/${contact_id}`}> <Image src={message_icon} className={'img-fluid  '}></Image></Link>
                 </Col>
             </Row>
         </ListGroupItem>

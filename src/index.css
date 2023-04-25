@@ -641,3 +641,10 @@ input {
 	height: 75vh;
 	overflow-y: scroll;
 }
+
+.contacts {
+	display: flex;
+	flex-direction: column;
+	height: 260px;
+	overflow: scroll;
+}
