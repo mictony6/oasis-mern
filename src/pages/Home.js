@@ -48,7 +48,7 @@ export default function Home() {
         .then(data => {
             setPosts(data.map(post => {
                 return(
-                <PostCards key={post.post_id} postProp= {post}/>            
+                <PostCards key={post.post_id} postProp= {post} minimize={true}/>            
             )
         }))
     })

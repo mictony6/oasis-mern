@@ -3,15 +3,10 @@ import {
     Col,
     Container,
     ListGroup,
-    Row,
-    Button, Image
+    Row
 } from 'react-bootstrap';
 import AppNavbar from '../components/AppNavbar';
 import ContactItem from "../components/ContactItem";
-import placeholder from "../static/images/profile_pic_placeholder.svg";
-import Chat from "../components/Chat";
-import TextareaAutosize from "react-textarea-autosize";
-import send from "../static/images/send.svg";
 import { useEffect } from 'react';
 import { useState } from 'react';
 import MessageBox from '../components/MessageBox';
