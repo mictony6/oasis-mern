@@ -1,6 +1,6 @@
 
 import '../index.css';
-import { Button, Container, Row } from 'react-bootstrap';
+import {  Container, Row } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';

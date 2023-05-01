@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useState, useEffect } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
+import {Container, Col, Row,   Dropdown,  Image} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import placeholder from '../static/images/profile_pic_placeholder.svg'
 import heart from '../static/images/love.svg'
@@ -11,9 +11,16 @@ import back from '../static/images/back.svg'
 import TextareaAutosize from 'react-textarea-autosize';
 import {Link} from "react-router-dom";
 import Swal from 'sweetalert2'
+import DropdownItem from "react-bootstrap/DropdownItem";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import add from "../static/images/person/person-add.svg";
+import remove from "../static/images/person/person-dash.svg";
+import flag from "../static/images/flag.svg";
+import x_circle from "../static/images/x-circle.svg";
 
 export default function PostCards({postProp, minimize}) {
-    
+
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 1224px)'
     })
@@ -26,7 +33,7 @@ export default function PostCards({postProp, minimize}) {
     const [comment, setComment] = useState("")
     const [active, setActive] = useState(false)
     const [count, setCount] = useState("")
-    
+
     const { post_id, subject, content, username, date_posted } = postProp
 
     const time = hdate.relativeTime(date_posted)
@@ -102,7 +109,7 @@ export default function PostCards({postProp, minimize}) {
             })
             }).then(res => res.json())
             .then(data => {
-                data ? 
+                data ?
                 Swal.fire({
                     title: "Reply Sent!",
                     icon: "success",
@@ -134,8 +141,8 @@ export default function PostCards({postProp, minimize}) {
 
     return (
         <Container fluid className='pt-4'>
-            <Container className=' d-flex flex-row my-1 p-3 rounded-5 bg-secondary'>
-                <Col xs={2} className='post-content-col d-flex flex-column'>
+            <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>
+                <Col lg={2} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='d-flex justify-content-center mt-2'>
                         <img
                             src={placeholder}
@@ -143,13 +150,31 @@ export default function PostCards({postProp, minimize}) {
                             className='post-profile-img'
                         />
                     </Row>
-                    <Row className='d-flex justify-content-center post-username pt-2'>
-                        @{username}
+                    <Row className='d-flex flex-nowrap  justify-content-center post-username pt-2   '>
+                        <Dropdown>
+
+                                <DropdownToggle className={"username  "}>
+                                    @{username}
+
+                                </DropdownToggle>
+                                <DropdownMenu  >
+                                    {/*TODO: get user_id from prop*/}
+                                    <Dropdown.Header>contact</Dropdown.Header>
+                                    <DropdownItem href="/addContact/:contact_person_id"  className={"ps-4"}><Image src={add} className={"pe-3"}></Image>Add</DropdownItem>
+                                    <DropdownItem href="#/action-2" className={"ps-4"}><Image src={remove} className={"pe-3"}></Image>Remove</DropdownItem>
+                                    <DropdownItem href="#/action-2" className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>
+                                    <Dropdown.Header>post</Dropdown.Header>
+                                    <DropdownItem href="#/action-3" className={"ps-4"}><Image src={flag} className={"pe-3"}></Image>Flag</DropdownItem>
+
+                                </DropdownMenu>
+
+                        </Dropdown>
+
                     </Row>
                     <Row className='d-flex justify-content-center post-date-time'>
                         {time}
                     </Row>
-                    {love ? 
+                    {love ?
                     <Row className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={unlikePost}>
                         <img
                             src={activeHeart}
@@ -169,7 +194,7 @@ export default function PostCards({postProp, minimize}) {
                         </Row>
                     }
                 </Col>
-                <Col xs={9} className='post-content-col d-flex flex-column'>
+                <Col lg={9} className='post-content-col d-flex flex-column'>
                     <Row className='d-flex justify-content-flex-start mt-2 ms-2'>
                         <p className='post-title'>{subject}</p>
                     </Row>
@@ -188,9 +213,8 @@ export default function PostCards({postProp, minimize}) {
                         />
                     </Row>
                 </Col>
-                <Col xs={1} className='post-content-col d-flex flex-column align-items-center'>
+                <Col lg={1} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='ms-3'>
-                        {/* TODO: make postID connect to backend*/}
                         {minimize ?
                         <Link to={`/post/${post_id}`} className='expand-button'> <img
                             src={expand}
