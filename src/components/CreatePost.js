@@ -115,7 +115,7 @@ export default function CreatePost() {
                         <Dropdown.Menu show={show}
                             className='profile-dropdown'
                         >
-                            <Dropdown.Item href="profile">Profile</Dropdown.Item>
+                            <Dropdown.Item href="profile">User</Dropdown.Item>
                             <Dropdown.Item href="settings">Settings</Dropdown.Item>
                             <Dropdown.Item href="logout">Logout</Dropdown.Item>
                         </Dropdown.Menu>

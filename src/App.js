@@ -11,6 +11,7 @@ import Counselling from "./pages/Counselling";
 import Logout from './pages/Logout';
 import Messaging from "./pages/Messaging";
 import { useEffect } from 'react';
+import User from "./pages/User";
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
         <Route exact path="/register" element={<Register/>}/>
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/home" element={<Home/>}/>
+        <Route exact path="/user/:user_id" element={<User/>}/>
         <Route exact path="/post/:post_id" element={<PostDetail/>}/>
         <Route exact path="/counselling" element={<Counselling/>}/>
         <Route exact path="/logout" element={<Logout/>}/>
