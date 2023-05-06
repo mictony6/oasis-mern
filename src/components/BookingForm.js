@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {Button, Col, Container, Form, FormGroup, Row} from 'react-bootstrap';
 import {DatePicker} from "rsuite";
 
-
 const BookingForm = () => {
     const maxSteps = 3;
     const [currentStep, setCurrentStep] = useState(1);
