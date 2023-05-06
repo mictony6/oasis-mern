@@ -103,8 +103,6 @@ export default function Home() {
                             <AppNavbar />
                         </Col>
                         <Col className='d-flex flex-column'>
-                            {/* TODO: Make CreatePost component responsive*/}
-
                             <CreatePost />
                             <Row className='d-flex flex-row align-items-center px-4'>
                                 <Col xs={2} className=''>
@@ -143,13 +141,7 @@ export default function Home() {
                         <AppNavbar />
                     </Offcanvas>
                 </Container>
-                )
-                {/* Navbar */}
-                <Offcanvas show={show} onHide={handleClose}>
-                    <Offcanvas.Header closeButton className='justify-content-end' />
-                    <AppNavbar />
-                </Offcanvas>
-                <CreatePost />
+
             </Container>
     )
 }

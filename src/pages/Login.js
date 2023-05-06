@@ -112,7 +112,7 @@ export default function Login() {
     return (
         <div className='pages'>
         <Container fluid className='auth-container'>
-            <Form className='form-container'>
+            <Form className='form-container entry-form'>
                 <Form.Text>
                     <h1 className='sign-in-heading'>Sign in</h1>
                 </Form.Text>
