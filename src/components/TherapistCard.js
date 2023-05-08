@@ -8,7 +8,7 @@ import lnk from '../static/images/linkedin.svg';
 import {useState} from "react";
 import BookingForm from "./BookingForm";
 
-export default function TheraphistCard(){
+export default function TherapistCard(){
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

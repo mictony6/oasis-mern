@@ -16,7 +16,7 @@ export default function AppNavbar() {
 	})
 
 	return (
-		<Navbar className="m-0 pe-3 d-flex flex-column flex-grow-1 sticky-top border-end hv-100">
+		<Navbar className="m-0 pe-3 d-flex flex-column sticky-top vh-100 overflow-hidden">
 			{isDesktopOrLaptop && <Row>
 				<Navbar.Brand as={Link} to="/home" className='d-flex flex-column align-items-center justify-content-center'>
 					<Row className='title mb-1'>

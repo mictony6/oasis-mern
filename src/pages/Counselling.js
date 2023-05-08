@@ -1,8 +1,18 @@
 import '../index.css';
-import {Col, Container, Form, FormLabel, FormSelect, ListGroup, Row, Image, ListGroupItem} from 'react-bootstrap';
+import {
+    Col,
+    Container,
+    FormLabel,
+    FormSelect,
+    ListGroup,
+    Row,
+    ListGroupItem,
+} from 'react-bootstrap';
 import AppNavbar from '../components/AppNavbar';
-import TheraphistCard from "../components/TheraphistCard";
+import TherapistCard from "../components/TherapistCard";
 import ConsultationCard from "../components/ConsultationCard";
+import {Link} from "react-router-dom";
+import Categories from "../components/Categories";
 
 export default function Counselling() {
     return (
@@ -21,30 +31,37 @@ export default function Counselling() {
                                 <option > other option</option>
                             </FormSelect>
                         </Col>
-                        <Col className={'d-flex flex-row align-items-center'}>
+                        <Col className={'d-flex flex-row align-items-center '}>
                             <FormLabel htmlFor={'sort-type'} className={'col-4'}>available dates</FormLabel>
                             <FormSelect aria-label={'sort-type'}>
                                 <option >this week</option>
                                 <option >this month</option>
                             </FormSelect>
                         </Col>
-            </Row>
-
-                    <ListGroup >
-                        <TheraphistCard/>
-                        <TheraphistCard/>
-                        <TheraphistCard/>
-                        <TheraphistCard/>
+                    </Row>
+                    <Categories/>
+                    <ListGroup className={""}>
+                        <TherapistCard/>
+                        <TherapistCard/>
+                        <TherapistCard/>
+                        <TherapistCard/>
                     </ListGroup>
                 </Col>
                 <Col lg={3} >
-                    <Container fluid className={'sticky-top'}>
-                        <h5 className={'fg-primary pt-4'}>upcoming consultations</h5>
-                        <ListGroup className={'my-2 overflow-auto'}>
+                        <Container fluid className='sticky-top vh-100 '>
+
+                        <div className={"d-flex flex-row align-items-start justify-content-between pt-4 px-1    "}>
+                            <h5 className={'fg-primary '}>upcoming consultation</h5>
+
+                        </div>
+                        <ListGroup className={'my-2 '}>
                             <ConsultationCard/>
                         </ListGroup>
-                        <h5 className={'fg-primary pt-4'}>recent consultations</h5>
-                        <ListGroup className={'overflow-y'}>
+                        <div className={"d-flex flex-row align-items-start justify-content-between pt-4 px-1"}>
+                                <h5 className={'fg-primary '}>recent consultations</h5>
+                                <Link className={"text-secondary"} to={"/consultations"}>view all</Link>
+                        </div>
+                        <ListGroup >
                             <ConsultationCard/>
                             <ConsultationCard/>
                             <ListGroupItem>See More...</ListGroupItem>
