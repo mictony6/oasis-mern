@@ -7,7 +7,7 @@ import lnk from '../static/images/linkedin.svg';
 import {useState} from "react";
 import BookingForm from "./BookingForm";
 
-export default function TheraphistCard({therapistProp}){
+export default function TherapistCard({therapistProp}){
 
     const {therapist_id, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link} = therapistProp
 

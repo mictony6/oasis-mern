@@ -1,7 +1,7 @@
 import '../index.css';
 import {Col, Container, Form, FormLabel, FormSelect, ListGroup, Row, Image, ListGroupItem} from 'react-bootstrap';
 import AppNavbar from '../components/AppNavbar';
-import TheraphistCard from "../components/TheraphistCard";
+import TherapistCard from "../components/TherapistCard";
 import ConsultationCard from "../components/ConsultationCard";
 import { useState } from 'react';
 import { useEffect } from 'react';
