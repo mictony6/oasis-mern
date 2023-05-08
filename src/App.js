@@ -12,6 +12,8 @@ import Logout from './pages/Logout';
 import Messaging from "./pages/Messaging";
 import { useEffect } from 'react';
 import User from "./pages/User";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
 function App() {
@@ -53,6 +55,7 @@ function App() {
 	}, [])
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
     <UserProvider value={{user, setUser, unsetUser}}>
     <Router>
       <Routes>
@@ -68,6 +71,7 @@ function App() {
       </Routes>
     </Router>
     </UserProvider>
+    </LocalizationProvider>
 
     
   );

@@ -59,6 +59,10 @@ a {
 	color: var(--text);
 }
 
+a:hover, p:hover {
+	text-decoration: none;
+}
+
 body{
 	max-height: 100vh;
 }

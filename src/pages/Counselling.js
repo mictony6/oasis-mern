@@ -3,8 +3,31 @@ import {Col, Container, Form, FormLabel, FormSelect, ListGroup, Row, Image, List
 import AppNavbar from '../components/AppNavbar';
 import TheraphistCard from "../components/TheraphistCard";
 import ConsultationCard from "../components/ConsultationCard";
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function Counselling() {
+
+    const [therapists, setTherapists] = useState([])
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/therapist/viewAll`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            setTherapists(data.map(therapist => {
+                return(
+                <TheraphistCard key={therapist.therapist_id} therapistProp= {therapist}/>            
+            )
+        }))
+    })
+    }, [therapists])
+
     return (
         <Container fluid>
             <Row className='d-flex flex-row'>
@@ -31,10 +54,7 @@ export default function Counselling() {
             </Row>
 
                     <ListGroup >
-                        <TheraphistCard/>
-                        <TheraphistCard/>
-                        <TheraphistCard/>
-                        <TheraphistCard/>
+                        {therapists}
                     </ListGroup>
                 </Col>
                 <Col lg={3} >
