@@ -22,7 +22,7 @@ export default function Counselling() {
         .then(data => {
             setTherapists(data.map(therapist => {
                 return(
-                <TheraphistCard key={therapist.therapist_id} therapistProp= {therapist}/>            
+                <TherapistCard key={therapist.therapist_id} therapistProp= {therapist}/>            
             )
         }))
     })
