@@ -3,8 +3,6 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import {Button, Col, Container, Form, FormGroup, Row} from 'react-bootstrap';
-// import {DatePicker} from "rsuite";
-
 
 const BookingForm = ({bookingProp}) => {
     

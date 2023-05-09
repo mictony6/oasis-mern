@@ -681,3 +681,8 @@ body{
 	filter:brightness(75%);
 }
 
+
+.datepicker {
+	width: 300px;
+	color: (var(--text));
+}
