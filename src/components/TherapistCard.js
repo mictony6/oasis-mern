@@ -1,5 +1,4 @@
-import {Button, Col, Image, ListGroupItem, Row} from "react-bootstrap";
-import {Modal} from "rsuite";
+import {Button, Col, Image, ListGroupItem, Modal, ModalBody, ModalHeader, ModalTitle, Row} from "react-bootstrap";
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import thumbs_up from '../static/images/thumbs_up.svg';
 import fb from '../static/images/facebook.svg';
@@ -8,7 +7,10 @@ import lnk from '../static/images/linkedin.svg';
 import {useState} from "react";
 import BookingForm from "./BookingForm";
 
-export default function TherapistCard(){
+export default function TherapistCard({therapistProp}){
+
+    const {therapist_id, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link} = therapistProp
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -20,38 +22,43 @@ export default function TherapistCard(){
             <Col className={'col-3 d-flex flex-column align-items-center justify-content-center'}>
                 <Image src={placeholder} className={'p-2 '}></Image>
                 <Row>
-                    <Col><Image src={fb}></Image></Col>
-                    <Col><Image src={twt}></Image></Col>
-                    <Col><Image src={lnk}></Image></Col>
+                    {fb_link && <Col><a href={"https://"+fb_link} target="_blank" rel="noopener noreferrer"><Image src={fb}/></a></Col>}
+                    {twt_link && <Col><a href={"https://"+twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}
+                    {li_link && <Col><a href={"https://"+li_link} target="_blank" rel="noopener noreferrer"><Image src={lnk}/></a></Col>}
                 </Row>
 
             </Col>
             <Col className={'w-100 '}>
-                <h4>Dr. McStuffins</h4>
-                <small className={'text-muted'}><p>Area of Specialty</p></small>
-                <p>is a distinguished professor of health sciences and of counseling psychology and associate dean at the Bouvé College of Health Sciences at Northeastern University and director of the Institute on Urban Health Research. Dr. Amaro's research has focused on alcohol and drug use and addiction among adolescents and adults;</p>
+                <h4>{prefix ? prefix : ''} {first_name} {last_name} {suffix ? suffix : ''}</h4>
+                <small className={'text-muted'}><p>{field}</p></small>
+                <p>{description}</p>
                 <Row className={'align-items-center'}>
                     <Col>
+                        {online ? 
                         <Row>
                             <Col className={'col-1'}><Image src={thumbs_up}></Image></Col>
                             <Col >Online Consultation</Col>
-                        </Row>
+                        </Row> : ''}
+                        {in_person ?
                         <Row>
                             <Col className={'col-1'}><Image src={thumbs_up}></Image></Col>
                             <Col >In-Person Consultation</Col>
-                        </Row>
+                        </Row> : ''}
                     </Col>
                     <Col className={'col-4 d-flex flex-row '}>
                         <Button className={'w-100'} onClick={handleShow}>Book Now</Button>
 
-                        <Modal open={show} onClose={handleClose} >
-                            <Modal.Header closeButton   >
-                                <Modal.Title>book an appointment</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <BookingForm />
-                            </Modal.Body>
-
+                        <Modal show={show} onHide={handleClose} centered size='md'>
+                            <ModalTitle className="mx-3 mt-4"><h4>Book an appointment</h4></ModalTitle>
+                            <ModalBody>
+                                <BookingForm bookingProp={
+                                    {online: online, 
+                                    in_person: in_person,
+                                    last_name: last_name,
+                                    prefix: prefix ? prefix : '',
+                                    suffix: suffix ? suffix : '', 
+                                    }}/>
+                            </ModalBody>
                         </Modal>
                     </Col>
                 </Row>

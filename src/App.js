@@ -12,6 +12,9 @@ import Logout from './pages/Logout';
 import Messaging from "./pages/Messaging";
 import { useEffect } from 'react';
 import User from "./pages/User";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import Therapist from './pages/Therapist';
 
 
 function App() {
@@ -53,6 +56,7 @@ function App() {
 	}, [])
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
     <UserProvider value={{user, setUser, unsetUser}}>
     <Router>
       <Routes>
@@ -61,6 +65,7 @@ function App() {
         <Route exact path="/login" element={<Login/>}/>
         <Route exact path="/home" element={<Home/>}/>
         <Route exact path="/user/:user_id" element={<User/>}/>
+        <Route exact path="/therapist" element={<Therapist/>}/>
         <Route exact path="/post/:post_id" element={<PostDetail/>}/>
         <Route exact path="/counselling" element={<Counselling/>}/>
         <Route exact path="/logout" element={<Logout/>}/>
@@ -68,6 +73,7 @@ function App() {
       </Routes>
     </Router>
     </UserProvider>
+    </LocalizationProvider>
 
     
   );

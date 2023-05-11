@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useState } from 'react';
-import { Container, Card, Col, Row, Dropdown, Form, FormControl, Button, Image, Modal } from 'react-bootstrap';
+import { Container, Dropdown, FormControl, Button, Image, Modal } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import TextareaAutosize from 'react-textarea-autosize';
 import placeholder from '../static/images/profile.svg'

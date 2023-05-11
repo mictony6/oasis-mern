@@ -3,7 +3,7 @@ import {Navbar, Nav, Row, Col, Button, ListGroup} from 'react-bootstrap';
 import logo from '../static/images/logo.png'
 import telephone from '../static/images/telephone.svg'
 import { useMediaQuery } from 'react-responsive';
-import {Modal} from "rsuite";
+import {Modal} from "react-bootstrap";
 import {useState} from "react";
 import HotlineItem from "./HotlineItem";
 
