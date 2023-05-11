@@ -1,17 +1,22 @@
 import {Link, NavLink,} from 'react-router-dom';
-import { Navbar, Nav, Row, Col } from 'react-bootstrap';
+import {Navbar, Nav, Row, Col, Button, ListGroup} from 'react-bootstrap';
 import logo from '../static/images/logo.png'
 import telephone from '../static/images/telephone.svg'
 import { useMediaQuery } from 'react-responsive';
+import {Modal} from "rsuite";
+import {useState} from "react";
+import HotlineItem from "./HotlineItem";
 
 export default function AppNavbar() {
+
+	const [hotlinesShow, setHotlinesShow]= useState(false);
 
 	const isDesktopOrLaptop = useMediaQuery({
 		query: '(min-width: 1224px)'
 	})
 
 	return (
-		<Navbar className="m-0 pe-3 d-flex flex-column flex-grow-1 sticky-top border-end hv-100">
+		<Navbar className="m-0 pe-3 d-flex flex-column sticky-top vh-100 overflow-hidden">
 			{isDesktopOrLaptop && <Row>
 				<Navbar.Brand as={Link} to="/home" className='d-flex flex-column align-items-center justify-content-center'>
 					<Row className='title mb-1'>
@@ -49,7 +54,46 @@ export default function AppNavbar() {
 					/>
 					<p className='helpline-title'>24/7 Helpline</p>
 					<p className='helpline-subtitle'>Always to help you.</p>
-					<button className='contact-button'>Contact</button>
+					<Button onClick={()=> setHotlinesShow(true)} className='contact-button'>Contact</Button>
+					<Modal open={hotlinesShow} onClose={() => setHotlinesShow(false)}>
+						<Modal.Header closeButton>
+							<h3>VAWC Hotlines</h3>
+						</Modal.Header>
+						<Modal.Body>
+							<ListGroup className={'overflow-scroll  	'} >
+								<HotlineItem hotlineProps={
+									{
+										hotlineName: "Provincial Social Welfare",
+										hotlineAddress: "Capital Building",
+										hotlineNumber:"(036)266-3426"
+									}
+								}/>
+								<HotlineItem hotlineProps={
+									{
+										hotlineName: "Women and Children Protection",
+										hotlineAddress: "Angel Salazar Memorial Hospital",
+										hotlineNumber:"(036)266-3426"
+									}
+								}/>
+								<HotlineItem hotlineProps={
+									{
+										hotlineName: "Provincial Social Welfare",
+										hotlineAddress: "Capital Building",
+										hotlineNumber:"(036)266-3426"
+									}
+								}/>
+								<HotlineItem hotlineProps={
+									{
+										hotlineName: "Women and Children Protection",
+										hotlineAddress: "Angel Salazar Memorial Hospital",
+										hotlineNumber:"(036)266-3426"
+									}
+								}/>
+
+
+							</ListGroup>
+						</Modal.Body>
+					</Modal>
 				</div>
 			</Row>}
 		</Navbar>

@@ -28,7 +28,7 @@ export default function RightSidebar() {
     }, [contacts])
 
     return (
-            <Container fluid className='sticky-top scrollable'>
+            <Container fluid className='sticky-top vh-100 overflow-y'>
                 <h5 className='mt-5'>contacts</h5>
                 <ListGroup className='my-4 contacts'>
                     {contacts}

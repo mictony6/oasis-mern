@@ -140,7 +140,7 @@ export default function PostCards({postProp, minimize}) {
     }
 
     return (
-        <Container fluid className='pt-4'>
+        <Container fluid className='pt-2 pb-4'>
             <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>
                 <Col lg={2} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='d-flex justify-content-center mt-2'>

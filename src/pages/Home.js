@@ -12,7 +12,6 @@ import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 1224px)'
@@ -57,24 +56,24 @@ export default function Home() {
     return (
         isDesktopOrLaptop ?
             <Container fluid>
-                <Row className='d-flex flex-row'>
+                <Row className='d-flex flex-row '>
                     <Col lg={2} className=''>
                         <AppNavbar/>
                     </Col>
-                    <Col className='d-flex flex-column my-4 '>
-                        <CreatePost />
+                    <Col className='d-flex flex-column  '>
+                        <CreatePost/>
                         <Row className='d-flex flex-row align-items-center px-4'>
                             <Col xs={2} className=''>
                                 <label htmlFor='sort-type'>Sort by:</label>
                             </Col>
                             <Col xs={10} className='d-flex flex-row'>
                                 <Form.Control aria-label="sort-type" name='' id='sort-type' className="border rounded-3"
-                                as="select"
-                                value={view}
-                                onChange = {e => {
-                                    sortBy(e.target.value)
-                                    }
-                                }
+                                              as="select"
+                                              value={view}
+                                              onChange={e => {
+                                                  sortBy(e.target.value)
+                                              }
+                                              }
                                 >
                                     <option value="Recent">Recent</option>
                                     <option value="Likes">Top</option>
@@ -84,7 +83,7 @@ export default function Home() {
                         {posts}
                     </Col>
                     <Col lg={3} className='p-0 m-0 '>
-                        <RightSidebar />
+                        <RightSidebar/>
                     </Col>
                 </Row>
             </Container>
@@ -97,44 +96,8 @@ export default function Home() {
                     className='nav-toggle mt-4 ms-2'
                     onClick={handleShow}
                 />
+
                 <Container fluid>
-                    <Row className='d-flex flex-row'>
-                        <Col lg={2} className=''>
-                            <AppNavbar />
-                        </Col>
-                        <Col className='d-flex flex-column'>
-                            <CreatePost />
-                            <Row className='d-flex flex-row align-items-center px-4'>
-                                <Col xs={2} className=''>
-                                    <label for='sort-type'>Sort by:</label>
-                                </Col>
-                                <Col xs={10} className='d-flex flex-row'>
-                                    <Form.Select aria-label="sort-type" name='' id='sort-type' className="border rounded-3
-                                    defaultValue='1">
-                                        <option value="1">Recent</option>
-                                        <option value="2">Top</option>
-                                    </Form.Select>
-                                </Col>
-                            </Row>
-                            {posts}
-                        </Col>
-                        <Col lg={2} className=''>
-                            <RightSidebar />
-                        </Col>
-                    </Row>
-                </Container>
-                :
-                <Container fluid>
-                    {/* Navbar toggler for mobile */}
-                    <img
-                        src={toggle}
-                        alt="menu"
-                        className='nav-toggle mt-4 ms-2'
-                        onClick={handleShow}
-                    />
-
-
-
                     {/* Navbar */}
                     <Offcanvas show={show} onHide={handleClose}>
                         <Offcanvas.Header closeButton className='justify-content-end' />
