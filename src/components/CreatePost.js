@@ -90,39 +90,6 @@ export default function CreatePost() {
 
     return (
         <Container fluid>
-            {/* <Row className='d-flex'>
-                <Col md={10} sm={8} className='d-flex justify-content-center align-items-center'>
-                    <input
-                        className='fake-input'
-                        placeholder="What are you thinkin'?"
-                    />
-                </Col>
-                <Col md={1} sm={2} className='d-flex justify-content-center align-items-center'>
-                    <button className='new-post-button'>+</button>
-                </Col>
-                <Col md={1} sm={2} className='d-flex justify-content-center align-items-center flex-column'
-                    onMouseEnter={showDropdown}
-                    onMouseLeave={hideDropdown}
-                >
-
-                    <Dropdown>
-                        <img
-                            src={placeholder}
-                            alt='profile'
-                            className='profile-avatar'
-                        />
-
-                        <Dropdown.Menu show={show}
-                            className='profile-dropdown'
-                        >
-                            <Dropdown.Item href="profile">User</Dropdown.Item>
-                            <Dropdown.Item href="settings">Settings</Dropdown.Item>
-                            <Dropdown.Item href="logout">Logout</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Col>
-            </Row> */}
-
             <Container fluid className="d-flex flex-row my-4 justify-content-between">
                 <div className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
                     <FormControl placeholder="Whats on your mind?" className='border-0 w-100 shadow-none'
@@ -132,11 +99,12 @@ export default function CreatePost() {
                     onClick={openModal}
                     >+</Button>
                 </div>
-                <Dropdown className='d-flex justify-content-center align-items-center flex-column'
-                onMouseEnter={showDropdown}
-                onMouseLeave={hideDropdown}>
-                    <Image src={placeholder} className="mx-2 w-auto "></Image>
 
+                <Dropdown className='profile-avatar d-flex justify-content-center align-items-center flex-column' 
+                onMouseOver={showDropdown}
+                onMouseOut={hideDropdown}
+                >
+                    <Image src={placeholder} className="mx-2 w-auto"/>
                     <Dropdown.Menu show={show}
                         className='profile-dropdown'
                     >

@@ -14,18 +14,23 @@ import Swal from 'sweetalert2'
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
-import add from "../static/images/person/person-add.svg";
-import remove from "../static/images/person/person-dash.svg";
+import person_add from "../static/images/person/person-add.svg";
+import person_remove from "../static/images/person/person-dash.svg";
 import flag from "../static/images/flag.svg";
 import x_circle from "../static/images/x-circle.svg";
+import { useContext } from 'react';
+import UserContext from '../UserContext';
+import { addContact, blockContact, removeContact, unblockContact } from '../functions/contactFunctions';
+import hdate from 'human-date'
+import { PostContext } from '../PostContext';
 
 export default function PostCards({postProp, minimize}) {
+
+    const { updatePost } = useContext(PostContext);
 
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 1224px)'
     })
-
-    const hdate = require('human-date')
 
     const isLandscape = useMediaQuery({ query: '(orientation: landscape)' })
 
@@ -33,12 +38,32 @@ export default function PostCards({postProp, minimize}) {
     const [comment, setComment] = useState("")
     const [active, setActive] = useState(false)
     const [count, setCount] = useState("")
+    const [status, setStatus] = useState("INACTIVE")
+    const [blocked_by, setBlockedBy] = useState(null)
 
-    const { post_id, subject, content, username, date_posted } = postProp
+    const { post_id, subject, content, username, date_posted, user_id } = postProp
+    const { user } = useContext(UserContext)
+
 
     const time = hdate.relativeTime(date_posted)
 
     useEffect(() => {
+        if(user_id !== user.id) {
+            fetch(`http://localhost:4000/contact/view/${user_id}`, {
+            method : 'GET',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            }).then(res => res.json())
+            .then(data => {
+                if(data.length !== 0) {
+                    setStatus(data[0].status)
+                    data[0].blocked_by !== null ? setBlockedBy(data[0].blocked_by) : setBlockedBy(null)
+                }
+        })
+        }
+
         fetch(`http://localhost:4000/post/checkLike/${post_id}`,
         {method: 'GET',
         headers: {
@@ -62,9 +87,22 @@ export default function PostCards({postProp, minimize}) {
                 data[0].count !== 0 ? setCount(data[0].count) : setCount("")
         })
 
-        comment !== '' ? setActive(true) : setActive(false)
-    }, [post_id, comment, count, love])
+        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
+            method : 'GET',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            }).then(res => res.json())
+            .then(data => {
+                data[0].count !== 0 ? setCount(data[0].count) : setCount("")
+        })
 
+        comment !== '' ? setActive(true) : setActive(false)
+        updatePost(post_id, { love, comment, count, user_id, blocked_by });
+
+    }, [post_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost])
+    
     function likePost(e) {
         e.preventDefault()
 
@@ -139,7 +177,28 @@ export default function PostCards({postProp, minimize}) {
         setComment("");
     }
 
+    function add(e){
+        e.preventDefault()
+        setStatus(addContact(user_id))
+    }
+
+    function remove(e){
+        e.preventDefault()
+        setStatus(removeContact(user_id))
+    }
+    
+    function block(e){     
+        e.preventDefault()
+        setStatus(blockContact(user_id))
+    }
+
+    function unblock(e){
+        e.preventDefault()
+        setStatus(unblockContact(user_id))
+    }
+
     return (
+        status !== 'BLOCKED' ? 
         <Container fluid className='pt-2 pb-4'>
             <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>
                 <Col lg={2} className='post-content-col d-flex flex-column align-items-center'>
@@ -152,22 +211,33 @@ export default function PostCards({postProp, minimize}) {
                     </Row>
                     <Row className='d-flex flex-nowrap  justify-content-center post-username pt-2   '>
                         <Dropdown>
-
-                                <DropdownToggle className={"username  "}>
+                                <DropdownToggle className={"username"}>
                                     @{username}
-
                                 </DropdownToggle>
+                                
+                                {user.id !== user_id ? 
                                 <DropdownMenu  >
                                     {/*TODO: get user_id from prop*/}
+                                    <DropdownItem onClick={""}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
                                     <Dropdown.Header>contact</Dropdown.Header>
-                                    <DropdownItem href="/addContact/:contact_person_id"  className={"ps-4"}><Image src={add} className={"pe-3"}></Image>Add</DropdownItem>
-                                    <DropdownItem href="#/action-2" className={"ps-4"}><Image src={remove} className={"pe-3"}></Image>Remove</DropdownItem>
-                                    <DropdownItem href="#/action-2" className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>
+                                    {status === 'INACTIVE' &&
+                                        <DropdownItem onClick={add}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>Add</DropdownItem>}
+
+                                    {status === 'ACTIVE' && <DropdownItem onClick={remove} className={"ps-4"}><Image src={person_remove} className={"pe-3"}></Image>Remove</DropdownItem>}
+                                    
+                                    {status !== 'BLOCKED' && <DropdownItem onClick={block} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>}
+
+                                    {(status === 'BLOCKED' && blocked_by === user.id) && <DropdownItem onClick={unblock} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Unblock</DropdownItem>}
+
                                     <Dropdown.Header>post</Dropdown.Header>
-                                    <DropdownItem href="#/action-3" className={"ps-4"}><Image src={flag} className={"pe-3"}></Image>Flag</DropdownItem>
-
+                                    <DropdownItem onClick={""} className={"ps-4"}><Image src={flag} className={"pe-3"}></Image>Flag</DropdownItem>
                                 </DropdownMenu>
-
+                                :
+                                <DropdownMenu  >
+                                    {/*TODO: get user_id from prop*/}
+                                    <DropdownItem onClick={""}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
+                                </DropdownMenu>
+                                }
                         </Dropdown>
 
                     </Row>
@@ -236,6 +306,14 @@ export default function PostCards({postProp, minimize}) {
                     </Row>
                 </Col>
             </Container>
+        </Container>
+        :
+        <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>         
+            {blocked_by === user.id ? 
+            <p className='p-0 m-0'>You have blocked this user. Do you wish to <span className='text-funct' onClick={unblock}> unblock @{username}</span> to see their posts?</p>
+            :
+            <p className='p-0 m-0'>This user has blocked you. You cannot view their profile, see their posts, nor message them.</p>
+            }
         </Container>
     )
 }
