@@ -632,7 +632,7 @@ body{
 }
 
 .chat-box{
-	height: 75vh;
+	height: 70vh;
 	overflow-y: scroll;
 }
 
@@ -694,4 +694,18 @@ body{
 .text-funct:hover {
 	cursor: pointer;
 	text-decoration: underline;
+}
+
+.highlight-chat {
+	background-color: var(--baby-pink);
+}
+
+.blocked-text {
+	font-style: italic;
+	font-size: .9rem;
+	text-align: center;
+}
+
+.message-date {
+	font-size: .6rem;
 }

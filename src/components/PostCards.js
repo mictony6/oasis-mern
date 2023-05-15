@@ -21,8 +21,8 @@ import x_circle from "../static/images/x-circle.svg";
 import { useContext } from 'react';
 import UserContext from '../UserContext';
 import { addContact, blockContact, removeContact, unblockContact } from '../functions/contactFunctions';
-import hdate from 'human-date'
 import { PostContext } from '../PostContext';
+import dayjs from 'dayjs';
 
 export default function PostCards({postProp, minimize}) {
 
@@ -44,8 +44,10 @@ export default function PostCards({postProp, minimize}) {
     const { post_id, subject, content, username, date_posted, user_id } = postProp
     const { user } = useContext(UserContext)
 
+    const relativeTime = require('dayjs/plugin/relativeTime')
+    dayjs.extend(relativeTime)
 
-    const time = hdate.relativeTime(date_posted)
+    const time = dayjs(date_posted).fromNow()
 
     useEffect(() => {
         if(user_id !== user.id) {
