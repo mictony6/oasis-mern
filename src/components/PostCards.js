@@ -4,10 +4,6 @@ import { useState, useEffect } from 'react';
 import {Container, Col, Row, Dropdown, Image, Button} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import placeholder from '../static/images/profile_pic_placeholder.svg'
-import heart from '../static/images/love.svg'
-import activeHeart from '../static/images/love-active.svg'
-import expand from '../static/images/expand.svg'
-import back from '../static/images/back.svg'
 import TextareaAutosize from 'react-textarea-autosize';
 import {Link} from "react-router-dom";
 import Swal from 'sweetalert2'
