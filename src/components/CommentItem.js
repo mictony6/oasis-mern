@@ -3,13 +3,16 @@ import placeholder from '../static/images/profile1.svg';
 import heart from '../static/images/love.svg'
 import activeHeart from '../static/images/love-active.svg'
 import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 
 export default function CommentItem({commentProp}){
 
-    const hdate = require('human-date')
     const {comment_id, username, content, date_commented } = commentProp
 
-    const time = hdate.relativeTime(date_commented)
+    const relativeTime = require('dayjs/plugin/relativeTime')
+    dayjs.extend(relativeTime)
+
+    const time = dayjs(date_commented).fromNow()
 
     const [love, setLove] = useState(false)
     const [count, setCount] = useState("")

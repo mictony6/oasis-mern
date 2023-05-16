@@ -21,7 +21,10 @@ export default function RightSidebar() {
         .then(data => {
             setContacts(data.map(contact => {
                 return(
-                <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false}/>            
+                contact.status === 'ACTIVE' ? 
+                <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false}/>
+                :
+                null       
             )
         }))
     })

@@ -7,7 +7,6 @@ import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
 import PostCards from '../components/PostCards';
 import CreatePost from '../components/CreatePost';
-
 import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -45,12 +44,8 @@ export default function Home() {
         )
         .then(res => res.json())
         .then(data => {
-            setPosts(data.map(post => {
-                return(
-                <PostCards key={post.post_id} postProp= {post} minimize={true}/>            
-            )
-        }))
-    })
+            setPosts(data)
+        })
     }, [setView, view, posts])
 
     return (
@@ -68,19 +63,20 @@ export default function Home() {
                             </Col>
                             <Col xs={10} className='d-flex flex-row'>
                                 <Form.Control aria-label="sort-type" name='' id='sort-type' className="border rounded-3"
-                                              as="select"
-                                              value={view}
-                                              onChange={e => {
-                                                  sortBy(e.target.value)
-                                              }
-                                              }
+                                    as="select"
+                                    value={view}
+                                    onChange={e => {
+                                    sortBy(e.target.value)
+                                    }
+                                }
                                 >
                                     <option value="Recent">Recent</option>
                                     <option value="Likes">Top</option>
                                 </Form.Control>
                             </Col>
                         </Row>
-                        {posts}
+                        {posts.map(post => (
+                        <PostCards key={post.post_id} postProp={post} minimize={true} />))}
                     </Col>
                     <Col lg={3} className='p-0 m-0 '>
                         <RightSidebar/>

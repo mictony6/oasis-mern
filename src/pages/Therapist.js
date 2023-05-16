@@ -2,7 +2,7 @@ import { useContext } from "react";
 import {Container} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import UserContext from "../UserContext";
-import SetAvailability from "../components/SetAvailability";
+import AddSlots from "../components/AddSlots";
 
 export default function Therapist() {
 
@@ -11,7 +11,7 @@ export default function Therapist() {
     return(
         <Container>
             Therapist Page
-            <SetAvailability/>
+            <AddSlots/>
         </Container>
     );
 }
