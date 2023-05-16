@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useState } from 'react';
-import { Row, Col, Container,  Offcanvas, Form } from 'react-bootstrap';
+import {Row, Col, Container, Offcanvas, Form, Button, Image, ButtonGroup} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
@@ -10,7 +10,9 @@ import CreatePost from '../components/CreatePost';
 
 import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {ScrollRestoration, useLocation, useNavigate} from 'react-router-dom';
+import TextareaAutosize from "react-textarea-autosize";
+import placeholder from "../static/images/profile_pic_placeholder.svg";
 
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -81,11 +83,13 @@ export default function Home() {
                             </Col>
                         </Row>
                         {posts}
+
                     </Col>
-                    <Col lg={3} className='p-0 m-0 '>
+                    <Col lg={3} className='p-0 m-0 z-index-0 '>
                         <RightSidebar/>
                     </Col>
                 </Row>
+
             </Container>
             :
             <Container fluid>
@@ -104,6 +108,7 @@ export default function Home() {
                         <AppNavbar />
                     </Offcanvas>
                 </Container>
+                <ScrollRestoration />
 
             </Container>
     )

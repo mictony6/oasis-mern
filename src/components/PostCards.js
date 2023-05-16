@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useState, useEffect } from 'react';
-import {Container, Col, Row,   Dropdown,  Image} from 'react-bootstrap';
+import {Container, Col, Row, Dropdown, Image, Button} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import placeholder from '../static/images/profile_pic_placeholder.svg'
 import heart from '../static/images/love.svg'
@@ -95,6 +95,8 @@ export default function PostCards({postProp, minimize}) {
         })
     }
 
+
+
     function reply(e) {
         e.preventDefault()
 
@@ -139,16 +141,20 @@ export default function PostCards({postProp, minimize}) {
         setComment("");
     }
 
+    function editPost(e) {
+        e.preventDefault()
+    }
+
+    function deletePost(e) {
+        e.preventDefault()
+    }
+
     return (
         <Container fluid className='pt-2 pb-4'>
-            <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>
+            <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary '>
                 <Col lg={2} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='d-flex justify-content-center mt-2'>
-                        <img
-                            src={placeholder}
-                            alt='profile'
-                            className='post-profile-img'
-                        />
+                        <img src={placeholder} alt='profile' className='post-profile-img'/>
                     </Row>
                     <Row className='d-flex flex-nowrap  justify-content-center post-username pt-2   '>
                         <Dropdown>
@@ -158,7 +164,6 @@ export default function PostCards({postProp, minimize}) {
 
                                 </DropdownToggle>
                                 <DropdownMenu  >
-                                    {/*TODO: get user_id from prop*/}
                                     <Dropdown.Header>contact</Dropdown.Header>
                                     <DropdownItem href="/addContact/:contact_person_id"  className={"ps-4"}><Image src={add} className={"pe-3"}></Image>Add</DropdownItem>
                                     <DropdownItem href="#/action-2" className={"ps-4"}><Image src={remove} className={"pe-3"}></Image>Remove</DropdownItem>
@@ -174,32 +179,32 @@ export default function PostCards({postProp, minimize}) {
                     <Row className='d-flex justify-content-center post-date-time'>
                         {time}
                     </Row>
+
+                    {/*love icon*/}
                     {love ?
                     <Row className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={unlikePost}>
-                        <img
-                            src={activeHeart}
-                            alt="Unlove a post"
-                            className='post-heart'
-                        />
-                        {count}
+                        {/*<img src={activeHeart} alt="Unlove a post" className='post-heart'/>*/}
+                        <Button className={"border-0 text-danger"}><i className={"bi bi-heart-fill"}></i> {count}</Button>
+                        {/*{count}*/}
+                    </Row> :
+                    <Row className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={likePost}>
+                        {/*<img*/}
+                        {/*    src={heart}*/}
+                        {/*    alt="Love a post"*/}
+                        {/*    className='post-heart'*/}
+                        {/*/>*/}
+                        <Button className={"border-0 text-secondary"}><i className={"bi bi-heart"}></i> {count}</Button>
+
+                    {/*{count}*/}
                     </Row>
-                        :
-                        <Row className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={likePost}>
-                            <img
-                                src={heart}
-                                alt="Love a post"
-                                className='post-heart'
-                            />
-                        {count}
-                        </Row>
                     }
+
                 </Col>
                 <Col lg={9} className='post-content-col d-flex flex-column'>
                     <Row className='d-flex justify-content-flex-start mt-2 ms-2'>
                         <p className='post-title'>{subject}</p>
                     </Row>
-                    <Row className='d-flex justify-content-flex-start mt-0 pt-0 ms-2 post-content-text-container-full'
-                    >
+                    <Row className='d-flex justify-content-flex-start mt-0 pt-0 ms-2 post-content-text-container-full'>
                         <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
                             {content}
                         </p>
@@ -213,26 +218,43 @@ export default function PostCards({postProp, minimize}) {
                         />
                     </Row>
                 </Col>
-                <Col lg={1} className='post-content-col d-flex flex-column align-items-center'>
-                    <Row className='ms-3'>
+
+                <Col className='post-content-col d-flex flex-column align-items-center'>
+                    <div className={"d-flex flex-row flex-nowrap align-items-center"}>
                         {minimize ?
-                        <Link to={`/post/${post_id}`} className='expand-button'> <img
-                            src={expand}
-                            alt="Expand post"
-                        />
+                            <Link to={`/post/${post_id}`} >
+                                <i className="bi bi-arrows-expand"></i>
                         </Link>
                         :
-                        <Link to={`/home`} className='back-button'> <img
-                            src={back}
-                            alt="Minimize post"
-                        />
+                        <Link to={`/home`} >
+                            <i className="bi bi-arrow-return-left"></i>
                         </Link>
-                    }
-                    </Row>
+                        }
+
+                        <Dropdown className={"dropstart"}>
+                            <Button type="button" className=" post-options border-0 " data-bs-toggle="dropdown" aria-expanded="false">
+                                <i className="bi bi-three-dots-vertical"></i>
+                            </Button>
+                            <ul className="dropdown-menu">
+                                <Dropdown.Header>post</Dropdown.Header>
+                                <DropdownItem onClick={editPost} className={"ps-4"}>
+                                    <i className="bi bi-pencil-square pe-3"></i>Edit
+                                </DropdownItem>
+                                <DropdownItem onClick={deletePost} className={"ps-4"}>
+                                    <i className="bi bi-trash-fill pe-3"></i>Delete
+                                </DropdownItem>
+
+                            </ul>
+                        </Dropdown>
+
+                    </div>
+
                     <Row className='ms-2 mt-auto'>
-                        <button className='comment-button' onClick={reply} disabled={!active}>
+
+                        <Button className='comment-button p-2 rounded-5' onClick={reply} disabled={!active}>
                             Reply
-                        </button>
+                        </Button>
+
                     </Row>
                 </Col>
             </Container>

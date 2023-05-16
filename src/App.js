@@ -1,6 +1,12 @@
 import './index.css';
 import { UserProvider } from './UserContext';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+// import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider, ScrollRestoration,
+} from "react-router-dom";
 import Welcome from './pages/Welcome';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -55,23 +61,26 @@ function App() {
 		})
 	}, [])
 
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route >
+                <Route exact path="/" element={<Welcome/>}/>
+                <Route exact path="/register" element={<Register/>}/>
+                <Route exact path="/login" element={<Login/>}/>
+                <Route exact path="/home" element={<Home/>}/>
+                <Route exact path="/user/:user_id" element={<User/>}/>
+                <Route exact path="/therapist" element={<Therapist/>}/>
+                <Route exact path="/post/:post_id" element={<PostDetail/>}/>
+                <Route exact path="/counselling" element={<Counselling/>}/>
+                <Route exact path="/logout" element={<Logout/>}/>
+                <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
+            </Route>
+        )
+    );
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
     <UserProvider value={{user, setUser, unsetUser}}>
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Welcome/>}/>
-        <Route exact path="/register" element={<Register/>}/>
-        <Route exact path="/login" element={<Login/>}/>
-        <Route exact path="/home" element={<Home/>}/>
-        <Route exact path="/user/:user_id" element={<User/>}/>
-        <Route exact path="/therapist" element={<Therapist/>}/>
-        <Route exact path="/post/:post_id" element={<PostDetail/>}/>
-        <Route exact path="/counselling" element={<Counselling/>}/>
-        <Route exact path="/logout" element={<Logout/>}/>
-        <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
-      </Routes>
-    </Router>
+        <RouterProvider router={router} />
     </UserProvider>
     </LocalizationProvider>
 

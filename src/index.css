@@ -26,6 +26,12 @@
     --light-text: #B6B6B6;
 	--button-confirm: #6f8fab;
     --poppins: 'Poppins', sans-serif;
+
+	--primary: #584b53;
+	--secondary: #fef5ef;
+	--primary-button: #9d5c63;
+	--secondary-button: #ffffff;
+	--accent: #e4bb97;
 }
 
 ::-webkit-scrollbar {
@@ -298,14 +304,14 @@ body{
 	--bs-offcanvas-width: 250px !important;
 }
 
-.nav {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: space-between;
-	padding: 20px 15px;
-	height: 25%;
-	align-self: flex-start;
-}
+/*.nav {*/
+/*	display: flex;*/
+/*	flex-flow: column nowrap;*/
+/*	justify-content: space-between;*/
+/*	padding: 20px 15px;*/
+/*	height: 25%;*/
+/*	align-self: flex-start;*/
+/*}*/
 
 .nav-links {
 	padding: 5% 30px 5% 15px;
@@ -323,10 +329,10 @@ body{
 
 
 
-@media screen and (min-width: 1224px) {
-	.nav {
-		height: 30vh;
-	}
+/*@media screen and (min-width: 1224px) {*/
+/*	.nav {*/
+/*		height: 30vh;*/
+/*	}*/
 
 	.site-helpline {
 		margin-top: 200px;
@@ -384,7 +390,7 @@ body{
 		position: relative;
 		bottom: 320px;
 	}
-}
+/*}*/
 
 /*post view*/
 .post-content-container {
@@ -425,12 +431,12 @@ body{
 	color: #738AA3;
 }
 
-.post-heart {
-	height: 30px;
-	width: 30px;
-	padding: 0;
-	cursor: pointer;
-}
+/*.post-heart {*/
+/*	height: 30px;*/
+/*	width: 30px;*/
+/*	padding: 0;*/
+/*	cursor: pointer;*/
+/*}*/
 
 .post-title {
 	font-weight: 800;
@@ -468,6 +474,16 @@ body{
 	font-size: 0.75rem;
 }
 
+.post-likes button{
+	--bs-btn-bg:none;
+	--bs-btn-hover-bg: none;
+	--bs-btn-hover-bg: var(--pink);
+	--bs-btn-active-bg: none;
+;
+}
+
+
+
 .comment-box {
 	width: 100%;
 	padding: 5px 10px;
@@ -491,12 +507,11 @@ body{
 }
 
 .comment-button {
-	padding: 8px 8px;
 	font-size: min(max(1rem, 4vw), 15px);
 	background: var(--baby-pink);
+	color: inherit !important;
 	cursor: pointer;
-	border: solid 1px #e7e6e6;
-	border-radius: 28px;
+	border: solid 1px #e7e6e6 !important;
 }
 
 .comment-button:disabled {
@@ -529,7 +544,7 @@ body{
 
 .profile-avatar {
 	cursor: pointer;
-	margin-top: 30;
+	margin-top: 30px;
 }
 
 .profile-dropdown {
@@ -684,5 +699,22 @@ body{
 
 .datepicker {
 	width: 300px;
-	color: (var(--text));
+	color: var(--text);
+}
+
+
+.post-options{
+	--bs-btn-color: #738AA3;
+	--bs-btn-bg: none;
+	--bs-btn-border-color: none;
+	--bs-btn-hover-bg: none;
+	--bs-btn-hover-color: var(--bs-link-hover-color);
+	--bs-btn-hover-border-color: none;
+	--bs-btn-focus-shadow-rgb: 49, 132, 253;
+	--bs-btn-active-color: black;
+	--bs-btn-active-bg: none;
+}
+
+.z-index-0{
+	z-index: 0;
 }
