@@ -1,18 +1,18 @@
 import { useContext } from "react";
-import {Col, Container, Row} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import UserContext from "../UserContext";
 import { useState } from "react";
 import { useEffect } from "react";
 import {DateRangePicker} from "rsuite";
-import {subDays, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, addMonths, subMonths, addHours, startOfHour, startOfDay} from 'date-fns';
+import {subDays, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, addMonths, subMonths, addHours, startOfHour, startOfDay, format} from 'date-fns';
 
-export default function SetAvailability() {
+export default function AddSlots() {
 
     const { id } = useContext(UserContext);
 
-    const [date, setDate] = useState('')
-    const [time, setTime] = useState('')
+    const [dates, setDates] = useState('')
+    const [times, setTimes] = useState('')
 
     const today = new Date()
 
@@ -68,11 +68,27 @@ export default function SetAvailability() {
     ]
 
     useEffect(() => {
-        console.log({date})
-    })
+        console.log(dates, times)
+    }, [dates, times])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if(dates.length !== 0) {
+            setDates(times.map(date => {
+            return format(date, 'MM/dd/yyyy')
+            }))}
+
+        if(times.length !== 0) {
+            setTimes(times.map(time => {
+            let t = new Date(time)
+            return format((addHours(startOfDay(today), t.getHours())), 'HH:mm')
+            }))}
+    }
 
     return(
         <Container>
+        <Form onSubmit={handleSubmit}>
             <Row className='justify-content-center align-items-center mt-5'>
                 <DateRangePicker
                     placeholder="Select Available Dates"
@@ -83,6 +99,7 @@ export default function SetAvailability() {
                     showOneCalendar
                     style={{ width: 300 }}
                     character=" - "
+                    onChange={e => setDates(e)}
                 />
             </Row>
             <Row className='justify-content-center align-items-center mt-5'>
@@ -95,8 +112,14 @@ export default function SetAvailability() {
                     preventOverflow
                     style={{ width: 300 }}
                     character=" - "
+                    onChange={e => setTimes(e)}
                 />
             </Row>
+            <Row className='justify-content-center align-items-center mt-5'>
+                <Button type="submit" className="w-25"> Add slot </Button>
+            </Row>
+        </Form>
+            
         </Container>
     );
 }

@@ -4,12 +4,13 @@ import placeholder from "../static/images/profile_pic_placeholder.svg";
 import call_icon from "../static/images/call.svg";
 import message_icon from "../static/images/message.svg";
 
-export default function ContactItem({contactProp, highlight, active}) {
+export default function ContactItem({contactProp, active}) {
 
     const {username, contact_id} = contactProp
+    const active_user = active
 
     return(
-        <ListGroupItem >
+        <ListGroupItem className={active_user === username ? "highlight-chat":""}>
             <Row className={'d-flex flex-row align-items-center '}>
                 <Col className={' px-1 col-2'}>
                     <Link to={'#profile_link'}><Image src={placeholder} className={'img-fluid  '}></Image></Link>
