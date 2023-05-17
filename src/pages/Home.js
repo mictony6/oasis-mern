@@ -2,22 +2,28 @@
 import '../index.css';
 import { useState } from 'react';
 import {Row, Col, Container, Offcanvas, Form, Button, Image, ButtonGroup} from 'react-bootstrap';
+import { useContext, useState } from 'react';
+import { Row, Col, Container,  Offcanvas, Form } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
 import PostCards from '../components/PostCards';
 import CreatePost from '../components/CreatePost';
-
 import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
 import {ScrollRestoration, useLocation, useNavigate} from 'react-router-dom';
 import TextareaAutosize from "react-textarea-autosize";
 import placeholder from "../static/images/profile_pic_placeholder.svg";
+import { useLocation, useNavigate } from 'react-router-dom';
+import UserContext from '../UserContext';
+import { unblockContact } from '../functions/contactFunctions';
 
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 1224px)'
     })
+
+    const { user } = useContext(UserContext)
 
     const location = useLocation()
     const history = useNavigate()
@@ -47,13 +53,16 @@ export default function Home() {
         )
         .then(res => res.json())
         .then(data => {
-            setPosts(data.map(post => {
-                return(
-                <PostCards key={post.post_id} postProp= {post} minimize={true}/>            
-            )
-        }))
-    })
-    }, [setView, view, posts])
+            setPosts(data.map(post => (
+                post.status !== 'BLOCKED' ? <PostCards key={post.p_id} postProp={post} minimize={true} />
+                : post.blocked_by === user.id ?
+                <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>         
+                    <p className='p-0 m-0'>You have blocked this user. Do you wish to <span className='text-funct' onClick={e => unblockContact(post.user_id)}> unblock @{post.username}</span> to see their posts?</p>
+                </Container>
+                : null
+                )))
+        })
+    }, [setView, view, posts, user.id])
 
     return (
         isDesktopOrLaptop ?
@@ -70,12 +79,12 @@ export default function Home() {
                             </Col>
                             <Col xs={10} className='d-flex flex-row'>
                                 <Form.Control aria-label="sort-type" name='' id='sort-type' className="border rounded-3"
-                                              as="select"
-                                              value={view}
-                                              onChange={e => {
-                                                  sortBy(e.target.value)
-                                              }
-                                              }
+                                    as="select"
+                                    value={view}
+                                    onChange={e => {
+                                    sortBy(e.target.value)
+                                    }
+                                }
                                 >
                                     <option value="Recent">Recent</option>
                                     <option value="Likes">Top</option>

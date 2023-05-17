@@ -4,24 +4,35 @@ import { useState, useEffect } from 'react';
 import {Container, Col, Row, Dropdown, Image, Button} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import placeholder from '../static/images/profile_pic_placeholder.svg'
+import user_placeholder from '../static/images/profile_pic_placeholder.svg'
+import placeholder from '../static/images/profile1.svg';
+import heart from '../static/images/love.svg'
+import activeHeart from '../static/images/love-active.svg'
+import expand from '../static/images/expand.svg'
+import back from '../static/images/back.svg'
 import TextareaAutosize from 'react-textarea-autosize';
 import {Link} from "react-router-dom";
 import Swal from 'sweetalert2'
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
-import add from "../static/images/person/person-add.svg";
-import remove from "../static/images/person/person-dash.svg";
+import person_add from "../static/images/person/person-add.svg";
+import person_remove from "../static/images/person/person-dash.svg";
 import flag from "../static/images/flag.svg";
 import x_circle from "../static/images/x-circle.svg";
+import { useContext } from 'react';
+import UserContext from '../UserContext';
+import { addContact, blockContact, removeContact, unblockContact } from '../functions/contactFunctions';
+import { PostContext } from '../PostContext';
+import dayjs from 'dayjs';
 
 export default function PostCards({postProp, minimize}) {
+
+    const { updatePost } = useContext(PostContext);
 
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 1224px)'
     })
-
-    const hdate = require('human-date')
 
     const isLandscape = useMediaQuery({ query: '(orientation: landscape)' })
 
@@ -29,13 +40,35 @@ export default function PostCards({postProp, minimize}) {
     const [comment, setComment] = useState("")
     const [active, setActive] = useState(false)
     const [count, setCount] = useState("")
+    const [status, setStatus] = useState("INACTIVE")
+    const [blocked_by, setBlockedBy] = useState(null)
 
-    const { post_id, subject, content, username, date_posted } = postProp
+    const { p_id, subject, content, username, date_posted, user_id } = postProp
+    const { user } = useContext(UserContext)
 
-    const time = hdate.relativeTime(date_posted)
+    const relativeTime = require('dayjs/plugin/relativeTime')
+    dayjs.extend(relativeTime)
+
+    const time = dayjs(date_posted).fromNow()
 
     useEffect(() => {
-        fetch(`http://localhost:4000/post/checkLike/${post_id}`,
+        if(user_id !== user.id) {
+            fetch(`http://localhost:4000/contact/view/${user_id}`, {
+            method : 'GET',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            }).then(res => res.json())
+            .then(data => {
+                if(data.length !== 0) {
+                    setStatus(data[0].status)
+                    data[0].blocked_by !== null ? setBlockedBy(data[0].blocked_by) : setBlockedBy(null)
+                }
+        })
+        }
+
+        fetch(`http://localhost:4000/post/checkLike/${p_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -47,7 +80,18 @@ export default function PostCards({postProp, minimize}) {
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
-        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
+        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
+            method : 'GET',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            }).then(res => res.json())
+            .then(data => {
+                data[0].count !== 0 ? setCount(data[0].count) : setCount("")
+        })
+
+        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -59,12 +103,14 @@ export default function PostCards({postProp, minimize}) {
         })
 
         comment !== '' ? setActive(true) : setActive(false)
-    }, [post_id, comment, count, love])
+        updatePost(p_id, { love, comment, count, user_id, blocked_by });
 
+    }, [p_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost])
+    
     function likePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/like/${post_id}`, {
+        fetch(`http://localhost:4000/post/like/${p_id}`, {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json',
@@ -79,7 +125,7 @@ export default function PostCards({postProp, minimize}) {
     function unlikePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/unlike/${post_id}`, {
+        fetch(`http://localhost:4000/post/unlike/${p_id}`, {
         method : 'DELETE',
         headers : {
             'Content-Type' : 'application/json',
@@ -96,7 +142,7 @@ export default function PostCards({postProp, minimize}) {
     function reply(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/comment/${post_id}`, {
+        fetch(`http://localhost:4000/post/comment/${p_id}`, {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json',
@@ -143,6 +189,18 @@ export default function PostCards({postProp, minimize}) {
 
     function deletePost(e) {
         e.preventDefault()
+    function add(e){
+        e.preventDefault()
+        setStatus(addContact(user_id))
+    }
+
+    function remove(e){
+        e.preventDefault()
+        setStatus(removeContact(user_id))
+    }
+    
+    function block(e){     
+        setStatus(blockContact(user_id))
     }
 
     return (
@@ -151,24 +209,40 @@ export default function PostCards({postProp, minimize}) {
                 <Col lg={2} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='d-flex justify-content-center mt-2'>
                         <img src={placeholder} alt='profile' className='post-profile-img'/>
+=======
+                        <img
+                            src={user.id === user_id ? user_placeholder : placeholder}
+                            alt='profile'
+                            className='post-profile-img'
+                        />
                     </Row>
                     <Row className='d-flex flex-nowrap  justify-content-center post-username pt-2   '>
                         <Dropdown>
-
-                                <DropdownToggle className={"username  "}>
+                                <DropdownToggle className={"username"}>
                                     @{username}
-
                                 </DropdownToggle>
+                                
+                                {user.id !== user_id ? 
                                 <DropdownMenu  >
+                                    {/*TODO: get user_id from prop*/}
+                                    <DropdownItem  as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
                                     <Dropdown.Header>contact</Dropdown.Header>
-                                    <DropdownItem href="/addContact/:contact_person_id"  className={"ps-4"}><Image src={add} className={"pe-3"}></Image>Add</DropdownItem>
-                                    <DropdownItem href="#/action-2" className={"ps-4"}><Image src={remove} className={"pe-3"}></Image>Remove</DropdownItem>
-                                    <DropdownItem href="#/action-2" className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>
+                                    {status === 'INACTIVE' &&
+                                        <DropdownItem className={"ps-4"} onClick={add}><Image src={person_add} className={"pe-3"}></Image>Add</DropdownItem>}
+
+                                    {status === 'ACTIVE' && <DropdownItem onClick={remove} className={"ps-4"}><Image src={person_remove} className={"pe-3"}></Image>Remove</DropdownItem>}
+                                    
+                                    {status !== 'BLOCKED' && <DropdownItem onClick={block} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>}
+
                                     <Dropdown.Header>post</Dropdown.Header>
-                                    <DropdownItem href="#/action-3" className={"ps-4"}><Image src={flag} className={"pe-3"}></Image>Flag</DropdownItem>
-
+                                    <DropdownItem onClick={""} className={"ps-4"}><Image src={flag} className={"pe-3"}></Image>Flag</DropdownItem>
                                 </DropdownMenu>
-
+                                :
+                                <DropdownMenu  >
+                                    {/*TODO: get user_id from prop*/}
+                                    <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
+                                </DropdownMenu>
+                                }
                         </Dropdown>
 
                     </Row>
@@ -220,6 +294,11 @@ export default function PostCards({postProp, minimize}) {
                         {minimize ?
                             <Link to={`/post/${post_id}`} >
                                 <i className="bi bi-arrows-expand"></i>
+
+                        <Link to={`/post/${p_id}`} className='expand-button'> <img
+                            src={expand}
+                            alt="Expand post"
+                        />
                         </Link>
                         :
                         <Link to={`/home`} >

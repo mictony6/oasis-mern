@@ -21,6 +21,7 @@ import User from "./pages/User";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Therapist from './pages/Therapist';
+import { PostProvider } from './PostContext';
 
 
 function App() {
@@ -80,7 +81,22 @@ function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
     <UserProvider value={{user, setUser, unsetUser}}>
-        <RouterProvider router={router} />
+    <PostProvider>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Welcome/>}/>
+        <Route exact path="/register" element={<Register/>}/>
+        <Route exact path="/login" element={<Login/>}/>
+        <Route exact path="/home" element={<Home/>}/>
+        <Route exact path="/user/:user_id" element={<User/>}/>
+        <Route exact path="/therapist" element={<Therapist/>}/>
+        <Route exact path="/post/:post_id" element={<PostDetail/>}/>
+        <Route exact path="/counselling" element={<Counselling/>}/>
+        <Route exact path="/logout" element={<Logout/>}/>
+        <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
+      </Routes>
+    </Router>
+    </PostProvider>
     </UserProvider>
     </LocalizationProvider>
 

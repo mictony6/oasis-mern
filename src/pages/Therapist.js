@@ -5,6 +5,7 @@ import UserContext from "../UserContext";
 import SetAvailability from "../components/SetAvailability";
 import AppNavbar from "../components/AppNavbar";
 import AppointmentList from "../components/AppointmentList";
+import AddSlots from "../components/AddSlots";
 
 export default function Therapist() {
 
@@ -22,6 +23,9 @@ export default function Therapist() {
                 </Col>
                 <Col lg={3}></Col>
             </Row>
+        <Container>
+            Therapist Page
+            <AddSlots/>
         </Container>
     );
 }

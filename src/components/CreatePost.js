@@ -1,12 +1,14 @@
 
 import '../index.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Container, Dropdown, FormControl, Button, Image, Modal } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import TextareaAutosize from 'react-textarea-autosize';
-import placeholder from '../static/images/profile.svg'
+import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import Swal from 'sweetalert2'
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 export default function CreatePost() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -22,6 +24,8 @@ export default function CreatePost() {
     const [content, setContent] = useState("");
 
     const [active, setActive] = useState(false)
+
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         subject !== '' && content !== '' ? setActive(true) : setActive(false)
@@ -90,39 +94,6 @@ export default function CreatePost() {
 
     return (
         <Container fluid>
-            {/* <Row className='d-flex'>
-                <Col md={10} sm={8} className='d-flex justify-content-center align-items-center'>
-                    <input
-                        className='fake-input'
-                        placeholder="What are you thinkin'?"
-                    />
-                </Col>
-                <Col md={1} sm={2} className='d-flex justify-content-center align-items-center'>
-                    <button className='new-post-button'>+</button>
-                </Col>
-                <Col md={1} sm={2} className='d-flex justify-content-center align-items-center flex-column'
-                    onMouseEnter={showDropdown}
-                    onMouseLeave={hideDropdown}
-                >
-
-                    <Dropdown>
-                        <img
-                            src={placeholder}
-                            alt='profile'
-                            className='profile-avatar'
-                        />
-
-                        <Dropdown.Menu show={show}
-                            className='profile-dropdown'
-                        >
-                            <Dropdown.Item href="profile">User</Dropdown.Item>
-                            <Dropdown.Item href="settings">Settings</Dropdown.Item>
-                            <Dropdown.Item href="logout">Logout</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Col>
-            </Row> */}
-
             <Container fluid className="d-flex flex-row my-4 justify-content-between">
                 <div className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
                     <FormControl placeholder="Whats on your mind?" className='border-0 w-100 shadow-none'
@@ -132,15 +103,16 @@ export default function CreatePost() {
                     onClick={openModal}
                     >+</Button>
                 </div>
-                <Dropdown className='d-flex justify-content-center align-items-center flex-column'
-                onMouseEnter={showDropdown}
-                onMouseLeave={hideDropdown}>
-                    <Image src={placeholder} className="mx-2 w-auto "></Image>
 
+                <Dropdown className='profile-avatar d-flex justify-content-center align-items-center flex-column' 
+                onMouseOver={showDropdown}
+                onMouseOut={hideDropdown}
+                >
+                    <Image src={user_placeholder} className="mx-2 w-auto"/>
                     <Dropdown.Menu show={show}
                         className='profile-dropdown'
                     >
-                        <Dropdown.Item href="profile">Profile</Dropdown.Item>
+                        <Dropdown.Item as={Link} to={`/user/${user.id}`}>Profile</Dropdown.Item>
                         <Dropdown.Item href="settings">Settings</Dropdown.Item>
                         <Dropdown.Item href="logout">Logout</Dropdown.Item>
                     </Dropdown.Menu>
