@@ -36,7 +36,7 @@ export default function AppNavbar() {
 				</Navbar.Brand>
 			</Row>}
 			<Row className='d-flex flex-column nav'>
-					<NavLink to={'/home'} className='nav-links ' >Community</NavLink>
+					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
 					<NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>
 					<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>
 					<NavLink to={'/about-us'} className='nav-links'>About Us</NavLink>
@@ -55,12 +55,12 @@ export default function AppNavbar() {
 					<p className='helpline-title'>24/7 Helpline</p>
 					<p className='helpline-subtitle'>Always to help you.</p>
 					<Button onClick={()=> setHotlinesShow(true)} className='contact-button'>Contact</Button>
-					<Modal show={hotlinesShow} onHide={() => setHotlinesShow(false)} >
+					<Modal open={hotlinesShow} onClose={() => setHotlinesShow(false)}>
 						<Modal.Header closeButton>
 							<h3>VAWC Hotlines</h3>
 						</Modal.Header>
 						<Modal.Body>
-							<ListGroup className={'overflow-scroll '} >
+							<ListGroup className={'overflow-scroll  	'} >
 								<HotlineItem hotlineProps={
 									{
 										hotlineName: "Provincial Social Welfare",
@@ -79,27 +79,6 @@ export default function AppNavbar() {
 									{
 										hotlineName: "Provincial Social Welfare",
 										hotlineAddress: "Capital Building",
-										hotlineNumber:"(036)266-3426"
-									}
-								}/>
-								<HotlineItem hotlineProps={
-									{
-										hotlineName: "Women and Children Protection",
-										hotlineAddress: "Angel Salazar Memorial Hospital",
-										hotlineNumber:"(036)266-3426"
-									}
-								}/>
-								<HotlineItem hotlineProps={
-									{
-										hotlineName: "Women and Children Protection",
-										hotlineAddress: "Angel Salazar Memorial Hospital",
-										hotlineNumber:"(036)266-3426"
-									}
-								}/>
-								<HotlineItem hotlineProps={
-									{
-										hotlineName: "Women and Children Protection",
-										hotlineAddress: "Angel Salazar Memorial Hospital",
 										hotlineNumber:"(036)266-3426"
 									}
 								}/>
