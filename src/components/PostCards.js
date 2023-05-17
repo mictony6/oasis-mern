@@ -3,7 +3,8 @@ import '../index.css';
 import { useState, useEffect } from 'react';
 import {Container, Col, Row,   Dropdown,  Image} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
-import placeholder from '../static/images/profile_pic_placeholder.svg'
+import user_placeholder from '../static/images/profile_pic_placeholder.svg'
+import placeholder from '../static/images/profile1.svg';
 import heart from '../static/images/love.svg'
 import activeHeart from '../static/images/love-active.svg'
 import expand from '../static/images/expand.svg'
@@ -41,7 +42,7 @@ export default function PostCards({postProp, minimize}) {
     const [status, setStatus] = useState("INACTIVE")
     const [blocked_by, setBlockedBy] = useState(null)
 
-    const { post_id, subject, content, username, date_posted, user_id } = postProp
+    const { p_id, subject, content, username, date_posted, user_id } = postProp
     const { user } = useContext(UserContext)
 
     const relativeTime = require('dayjs/plugin/relativeTime')
@@ -66,7 +67,7 @@ export default function PostCards({postProp, minimize}) {
         })
         }
 
-        fetch(`http://localhost:4000/post/checkLike/${post_id}`,
+        fetch(`http://localhost:4000/post/checkLike/${p_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -78,7 +79,7 @@ export default function PostCards({postProp, minimize}) {
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
-        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
+        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -89,7 +90,7 @@ export default function PostCards({postProp, minimize}) {
                 data[0].count !== 0 ? setCount(data[0].count) : setCount("")
         })
 
-        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
+        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -101,14 +102,14 @@ export default function PostCards({postProp, minimize}) {
         })
 
         comment !== '' ? setActive(true) : setActive(false)
-        updatePost(post_id, { love, comment, count, user_id, blocked_by });
+        updatePost(p_id, { love, comment, count, user_id, blocked_by });
 
-    }, [post_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost])
+    }, [p_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost])
     
     function likePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/like/${post_id}`, {
+        fetch(`http://localhost:4000/post/like/${p_id}`, {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json',
@@ -123,7 +124,7 @@ export default function PostCards({postProp, minimize}) {
     function unlikePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/unlike/${post_id}`, {
+        fetch(`http://localhost:4000/post/unlike/${p_id}`, {
         method : 'DELETE',
         headers : {
             'Content-Type' : 'application/json',
@@ -138,7 +139,7 @@ export default function PostCards({postProp, minimize}) {
     function reply(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/comment/${post_id}`, {
+        fetch(`http://localhost:4000/post/comment/${p_id}`, {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json',
@@ -190,23 +191,16 @@ export default function PostCards({postProp, minimize}) {
     }
     
     function block(e){     
-        e.preventDefault()
         setStatus(blockContact(user_id))
     }
 
-    function unblock(e){
-        e.preventDefault()
-        setStatus(unblockContact(user_id))
-    }
-
     return (
-        status !== 'BLOCKED' ? 
         <Container fluid className='pt-2 pb-4'>
             <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>
                 <Col lg={2} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='d-flex justify-content-center mt-2'>
                         <img
-                            src={placeholder}
+                            src={user.id === user_id ? user_placeholder : placeholder}
                             alt='profile'
                             className='post-profile-img'
                         />
@@ -220,16 +214,14 @@ export default function PostCards({postProp, minimize}) {
                                 {user.id !== user_id ? 
                                 <DropdownMenu  >
                                     {/*TODO: get user_id from prop*/}
-                                    <DropdownItem onClick={""}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
+                                    <DropdownItem  as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
                                     <Dropdown.Header>contact</Dropdown.Header>
                                     {status === 'INACTIVE' &&
-                                        <DropdownItem onClick={add}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>Add</DropdownItem>}
+                                        <DropdownItem className={"ps-4"} onClick={add}><Image src={person_add} className={"pe-3"}></Image>Add</DropdownItem>}
 
                                     {status === 'ACTIVE' && <DropdownItem onClick={remove} className={"ps-4"}><Image src={person_remove} className={"pe-3"}></Image>Remove</DropdownItem>}
                                     
                                     {status !== 'BLOCKED' && <DropdownItem onClick={block} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>}
-
-                                    {(status === 'BLOCKED' && blocked_by === user.id) && <DropdownItem onClick={unblock} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Unblock</DropdownItem>}
 
                                     <Dropdown.Header>post</Dropdown.Header>
                                     <DropdownItem onClick={""} className={"ps-4"}><Image src={flag} className={"pe-3"}></Image>Flag</DropdownItem>
@@ -237,7 +229,7 @@ export default function PostCards({postProp, minimize}) {
                                 :
                                 <DropdownMenu  >
                                     {/*TODO: get user_id from prop*/}
-                                    <DropdownItem onClick={""}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
+                                    <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
                                 </DropdownMenu>
                                 }
                         </Dropdown>
@@ -288,7 +280,7 @@ export default function PostCards({postProp, minimize}) {
                 <Col lg={1} className='post-content-col d-flex flex-column align-items-center'>
                     <Row className='ms-3'>
                         {minimize ?
-                        <Link to={`/post/${post_id}`} className='expand-button'> <img
+                        <Link to={`/post/${p_id}`} className='expand-button'> <img
                             src={expand}
                             alt="Expand post"
                         />
@@ -308,14 +300,6 @@ export default function PostCards({postProp, minimize}) {
                     </Row>
                 </Col>
             </Container>
-        </Container>
-        :
-        <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>         
-            {blocked_by === user.id ? 
-            <p className='p-0 m-0'>You have blocked this user. Do you wish to <span className='text-funct' onClick={unblock}> unblock @{username}</span> to see their posts?</p>
-            :
-            <p className='p-0 m-0'>This user has blocked you. You cannot view their profile, see their posts, nor message them.</p>
-            }
         </Container>
     )
 }

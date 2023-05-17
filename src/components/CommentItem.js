@@ -1,13 +1,16 @@
 import {Col, Container, ListGroupItem, Row, Image} from "react-bootstrap";
+import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
 import heart from '../static/images/love.svg'
 import activeHeart from '../static/images/love-active.svg'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import dayjs from "dayjs";
+import UserContext from "../UserContext";
 
 export default function CommentItem({commentProp}){
 
-    const {comment_id, username, content, date_commented } = commentProp
+    const { user } = useContext(UserContext)
+    const {comment_id, username, user_id, content, date_commented } = commentProp
 
     const relativeTime = require('dayjs/plugin/relativeTime')
     dayjs.extend(relativeTime)
@@ -77,7 +80,7 @@ export default function CommentItem({commentProp}){
         <ListGroupItem className={'bg-secondary border-0 border-bottom'}>
             <Row className={'d-flex flex-row align-items-center'}>
                 <Col className={'col-2 d-flex flex-column align-items-center '}>
-                    <Image src={placeholder}></Image>
+                    <Image src={user.id === user_id ? user_placeholder : placeholder}></Image>
                     <div className={'fw-bold'}>@{username}</div>
                     <p><small className={'text-muted '}>{time}</small></p>
                 </Col>

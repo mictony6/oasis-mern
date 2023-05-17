@@ -1,12 +1,14 @@
 
 import '../index.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Container, Dropdown, FormControl, Button, Image, Modal } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import TextareaAutosize from 'react-textarea-autosize';
-import placeholder from '../static/images/profile.svg'
+import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import Swal from 'sweetalert2'
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 export default function CreatePost() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -22,6 +24,8 @@ export default function CreatePost() {
     const [content, setContent] = useState("");
 
     const [active, setActive] = useState(false)
+
+    const { user } = useContext(UserContext)
 
     useEffect(() => {
         subject !== '' && content !== '' ? setActive(true) : setActive(false)
@@ -104,11 +108,11 @@ export default function CreatePost() {
                 onMouseOver={showDropdown}
                 onMouseOut={hideDropdown}
                 >
-                    <Image src={placeholder} className="mx-2 w-auto"/>
+                    <Image src={user_placeholder} className="mx-2 w-auto"/>
                     <Dropdown.Menu show={show}
                         className='profile-dropdown'
                     >
-                        <Dropdown.Item href="profile">Profile</Dropdown.Item>
+                        <Dropdown.Item as={Link} to={`/user/${user.id}`}>Profile</Dropdown.Item>
                         <Dropdown.Item href="settings">Settings</Dropdown.Item>
                         <Dropdown.Item href="logout">Logout</Dropdown.Item>
                     </Dropdown.Menu>

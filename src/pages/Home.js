@@ -1,6 +1,6 @@
 
 import '../index.css';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Row, Col, Container,  Offcanvas, Form } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
@@ -10,11 +10,15 @@ import CreatePost from '../components/CreatePost';
 import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import UserContext from '../UserContext';
+import { unblockContact } from '../functions/contactFunctions';
 
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 1224px)'
     })
+
+    const { user } = useContext(UserContext)
 
     const location = useLocation()
     const history = useNavigate()
@@ -44,9 +48,16 @@ export default function Home() {
         )
         .then(res => res.json())
         .then(data => {
-            setPosts(data)
+            setPosts(data.map(post => (
+                post.status !== 'BLOCKED' ? <PostCards key={post.p_id} postProp={post} minimize={true} />
+                : post.blocked_by === user.id ?
+                <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>         
+                    <p className='p-0 m-0'>You have blocked this user. Do you wish to <span className='text-funct' onClick={e => unblockContact(post.user_id)}> unblock @{post.username}</span> to see their posts?</p>
+                </Container>
+                : null
+                )))
         })
-    }, [setView, view, posts])
+    }, [setView, view, posts, user.id])
 
     return (
         isDesktopOrLaptop ?
@@ -75,8 +86,7 @@ export default function Home() {
                                 </Form.Control>
                             </Col>
                         </Row>
-                        {posts.map(post => (
-                        <PostCards key={post.post_id} postProp={post} minimize={true} />))}
+                        {posts}
                     </Col>
                     <Col lg={3} className='p-0 m-0 '>
                         <RightSidebar/>
