@@ -566,7 +566,7 @@ body{
 }
 
 .bg-secondary {
-	background-color: rgb(241, 241, 241) !important;
+	background-color: rgba(24, 0, 77, 0.1) !important;
 }
 
 .bg-primary {
@@ -661,7 +661,20 @@ body{
 .username{
 	font-weight: 600;
 	--bs-btn-color: #738AA3;
-	--bs-btn-bg: none;
+	--bs-btn-bg: none !important;
+	--bs-btn-border-color: none !important;
+	--bs-btn-hover-bg: #bbd0d3;
+	--bs-btn-hover-color: #89949a;
+	--bs-btn-hover-border-color: none;
+	--bs-btn-focus-shadow-rgb: 49, 132, 253;
+	--bs-btn-active-color: #daeaf3;
+	--bs-btn-active-bg: #7e8b8d;
+}
+
+.btn{
+	font-weight: 600;
+	--bs-btn-color: #5b6d80;
+	--bs-btn-bg: #afc9ea;
 	--bs-btn-border-color: none;
 	--bs-btn-hover-bg: #bbd0d3;
 	--bs-btn-hover-color: #89949a;

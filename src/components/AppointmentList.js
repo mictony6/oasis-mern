@@ -1,20 +1,20 @@
 import {
-    Button, ButtonGroup, Col,
+    Button, ButtonGroup,  Collapse,
     Container,
     ListGroup,
     ListGroupItem,
-    Nav,
-    NavItem, Row,
     Tab,
-    TabContent,
-    TabPane,
     Tabs
 } from "react-bootstrap";
 import {useState} from "react";
+import BookingForm from "./BookingForm";
+import AddSlots from "./AddSlots";
 
 
 export default function AppointmentList(){
     const [key, setKey] = useState('day');
+
+    const [open, setOpen] = useState(false);
     return(
       < >
           <Container className={"d-flex align-items-center justify-content-between"}>
@@ -60,6 +60,23 @@ export default function AppointmentList(){
                   </ListGroup>
               </Tab>
           </Tabs>
+          <div className={"my-4  bg-secondary rounded-2"}>
+          <Button
+              onClick={() => setOpen(!open)}
+              aria-controls="add-slot-form"
+              aria-expanded={open}
+              className={"w-100"}
+          >
+              Options <i className={open ? "bi bi-caret-up-fill" : "bi bi-caret-down-fill "}></i>
+          </Button>
+
+          <Collapse in={open}>
+              <div id="add-slot-form" className={"p-5 rounded-bottom-3 "}>
+                  <AddSlots/>
+              </div>
+          </Collapse>
+          </div>
+
 
       </>
     );
