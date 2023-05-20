@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useContext, useState } from 'react';
-import { Row, Col, Container,  Offcanvas, Form } from 'react-bootstrap';
+import {Row, Col, Container, Offcanvas, Form, Button, Image, ButtonGroup} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
@@ -39,7 +39,7 @@ export default function Home() {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:4000/post/viewAllBy${view}`,
+        fetch(`http://127.0.0.1:4000/post/viewAllBy${view}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -51,7 +51,7 @@ export default function Home() {
             setPosts(data.map(post => (
                 post.status !== 'BLOCKED' ? <PostCards key={post.p_id} postProp={post} minimize={true} />
                 : post.blocked_by === user.id ?
-                <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>         
+                <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>
                     <p className='p-0 m-0'>You have blocked this user. Do you wish to <span className='text-funct' onClick={e => unblockContact(post.user_id)}> unblock @{post.username}</span> to see their posts?</p>
                 </Container>
                 : null
@@ -63,7 +63,7 @@ export default function Home() {
         isDesktopOrLaptop ?
             <Container fluid>
                 <Row className='d-flex flex-row '>
-                    <Col lg={2} className=''>
+                    <Col lg={2} >
                         <AppNavbar/>
                     </Col>
                     <Col className='d-flex flex-column  '>
@@ -88,13 +88,15 @@ export default function Home() {
                         </Row>
                         {posts}
                     </Col>
-                    <Col lg={3} className='p-0 m-0 '>
+                    <Col lg={3} className='p-0 m-0 z-index-0 '>
                         <RightSidebar/>
                     </Col>
                 </Row>
+
             </Container>
             :
             <Container fluid>
+                <Col className={"d-flex flex-column"}>
                 {/* Navbar toggler for mobile */}
                 <img
                     src={toggle}
@@ -110,6 +112,8 @@ export default function Home() {
                         <AppNavbar />
                     </Offcanvas>
                 </Container>
+                {posts}
+                </Col>
 
             </Container>
     )
