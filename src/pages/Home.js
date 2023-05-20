@@ -63,7 +63,7 @@ export default function Home() {
         isDesktopOrLaptop ?
             <Container fluid>
                 <Row className='d-flex flex-row '>
-                    <Col lg={2} className=''>
+                    <Col lg={2} >
                         <AppNavbar/>
                     </Col>
                     <Col className='d-flex flex-column  '>

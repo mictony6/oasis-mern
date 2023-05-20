@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useContext, useState } from 'react';
-import { Container, Dropdown, FormControl, Button, Image, Modal } from 'react-bootstrap';
+import {Container, Dropdown, FormControl, Button, Image, Modal, ButtonGroup} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import TextareaAutosize from 'react-textarea-autosize';
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
@@ -95,14 +95,14 @@ export default function CreatePost() {
     return (
         <Container fluid>
             <Container fluid className="d-flex flex-row my-4 justify-content-between">
-                <div className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
+                <ButtonGroup className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
                     <FormControl placeholder="Whats on your mind?" className='border-0 w-100 shadow-none'
                     onClick={openModal}
                     ></FormControl>
-                    <Button className="rounded px-4 bg-primary border-0 "
+                    <Button className=" px-4 bg-primary border-0 "
                     onClick={openModal}
-                    >+</Button>
-                </div>
+                    ><i className={"bi bi-plus-lg"}></i> </Button>
+                </ButtonGroup>
 
                 <Dropdown className='profile-avatar d-flex justify-content-center align-items-center flex-column' 
                 onMouseOver={showDropdown}

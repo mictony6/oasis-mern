@@ -17,7 +17,7 @@ export default function TherapistCard({therapistProp}){
 
 
     return (
-        <ListGroupItem className={'border-0 bg-secondary rounded-4 my-2'}>
+        <ListGroupItem className={'border-0 bg-light rounded-4 my-2'}>
         <Row className={'p-4'}>
             <Col className={'col-3 d-flex flex-column align-items-center justify-content-center'}>
                 <Image src={placeholder} className={'p-2 '}></Image>

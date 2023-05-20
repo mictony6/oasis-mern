@@ -198,7 +198,7 @@ export default function PostCards({postProp, minimize}) {
 
     return (
             <Container className={"my-3"}>
-                <Col className={"bg-secondary rounded-4 p-3"}>
+                <Col className={"bg-light rounded-4 p-3"}>
                     <Row className={"align-items-center flex-nowrap p-1"}>
                         <Col lg={2} ></Col>
                         <Col lg={8}>

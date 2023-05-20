@@ -1,10 +1,15 @@
-import {Col, Container, Form, FormLabel, FormSelect, ListGroup, Row, Image, ListGroupItem} from 'react-bootstrap';
+import {
+    Col,
+    Container,
+    Row,
+    Image,
+    Tabs,
+    Tab, Navbar, Nav
+} from 'react-bootstrap';
 import {useParams} from "react-router-dom";
-import '../index.css';
 import AppNavbar from '../components/AppNavbar';
-import ConsultationCard from "../components/ConsultationCard";
-import { useState } from 'react';
-import { useEffect } from 'react';
+import placeholder from '../static/images/profile_pic_placeholder.svg';
+import UserOverview from "../components/user/UserOverview";
 
 
 export default function User() {
@@ -18,23 +23,24 @@ export default function User() {
                     <AppNavbar/>
                 </Col>
                 <Col className={'my-4 '}>
-                    <Row className={'w-100 my-4'}>
-                        <Col className={'d-flex flex-row align-items-center'}>
-
-                        </Col>
-                        <Col className={'d-flex flex-row align-items-center'}>
-
-                        </Col>
-            </Row>
+                    <Row className={'w-100 my-4 rounded-4 bg-light'}>
+                        <Tabs >
+                            <Tab eventKey={"overview"} title={"Overview"}  >
+                                <UserOverview/>
+                            </Tab>
+                            <Tab title={"Posts"} eventKey={"comments"}></Tab>
+                            <Tab title={"Comments"} eventKey={"comments"}></Tab>
+                            <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
+                            <Tab title={"Consultations"} eventKey={"consultations"}></Tab>
+                            <Tab title={"Likes"} eventKey={"likes"}></Tab>
+                        </Tabs>
+                    </Row>
                 </Col>
                 <Col lg={3} >
                     <Container fluid className={'sticky-top'}>
-                        <h5 className={'fg-primary pt-4'}>Other contacts</h5>
-                        <ListGroup className={'my-2 overflow-auto'}>
-                            <ConsultationCard/>
-                            <ConsultationCard/>
-                            <ConsultationCard/>
-                        </ListGroup>
+                        <h5 className={'fg-primary pt-4'}>@username</h5>
+                        <Image src={placeholder}></Image>
+                        <h6>Bio</h6>
 
                     </Container>
                 </Col>

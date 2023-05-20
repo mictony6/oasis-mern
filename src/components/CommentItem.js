@@ -77,7 +77,7 @@ export default function CommentItem({commentProp}){
     }
 
     return(
-        <ListGroupItem className={'bg-secondary border-0 border-bottom'}>
+        <ListGroupItem className={'bg-light border-0 border-bottom'}>
             <Row className={'d-flex flex-row align-items-center'}>
                 <Col className={'col-2 d-flex flex-column align-items-center '}>
                     <Image src={user.id === user_id ? user_placeholder : placeholder}></Image>
