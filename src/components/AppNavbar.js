@@ -1,9 +1,8 @@
 import {Link, NavLink,} from 'react-router-dom';
-import {Navbar, Nav, Row, Col, Button, ListGroup} from 'react-bootstrap';
+import {Navbar, Nav, Row, Col, Button, ListGroup, Modal} from 'react-bootstrap';
 import logo from '../static/images/logo.png'
 import telephone from '../static/images/telephone.svg'
 import { useMediaQuery } from 'react-responsive';
-import {Modal} from "react-bootstrap";
 import {useState} from "react";
 import HotlineItem from "./HotlineItem";
 
@@ -55,7 +54,7 @@ export default function AppNavbar() {
 					<p className='helpline-title'>24/7 Helpline</p>
 					<p className='helpline-subtitle'>Always to help you.</p>
 					<Button onClick={()=> setHotlinesShow(true)} className='contact-button'>Contact</Button>
-					<Modal open={hotlinesShow} onClose={() => setHotlinesShow(false)}>
+					<Modal show={hotlinesShow} onHide={() => setHotlinesShow(false)}>
 						<Modal.Header closeButton>
 							<h3>VAWC Hotlines</h3>
 						</Modal.Header>
