@@ -1,14 +1,10 @@
 
 import '../index.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {Container, Col, Row, Dropdown, Image, Button} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
-import heart from '../static/images/love.svg'
-import activeHeart from '../static/images/love-active.svg'
-import expand from '../static/images/expand.svg'
-import back from '../static/images/back.svg'
 import TextareaAutosize from 'react-textarea-autosize';
 import {Link} from "react-router-dom";
 import Swal from 'sweetalert2'
@@ -19,7 +15,6 @@ import person_add from "../static/images/person/person-add.svg";
 import person_remove from "../static/images/person/person-dash.svg";
 import flag from "../static/images/flag.svg";
 import x_circle from "../static/images/x-circle.svg";
-import { useContext } from 'react';
 import UserContext from '../UserContext';
 import { addContact, blockContact, removeContact, unblockContact } from '../functions/contactFunctions';
 import { PostContext } from '../PostContext';

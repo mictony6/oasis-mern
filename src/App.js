@@ -5,7 +5,7 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
-    RouterProvider, ScrollRestoration,
+    RouterProvider
 } from "react-router-dom";
 import Welcome from './pages/Welcome';
 import Register from './pages/Register';
