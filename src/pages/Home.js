@@ -96,6 +96,7 @@ export default function Home() {
             </Container>
             :
             <Container fluid>
+                <Col className={"d-flex flex-column"}>
                 {/* Navbar toggler for mobile */}
                 <img
                     src={toggle}
@@ -111,6 +112,8 @@ export default function Home() {
                         <AppNavbar />
                     </Offcanvas>
                 </Container>
+                {posts}
+                </Col>
 
             </Container>
     )

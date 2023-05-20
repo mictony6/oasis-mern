@@ -19,6 +19,9 @@ import UserContext from '../UserContext';
 import { addContact, blockContact, removeContact, unblockContact } from '../functions/contactFunctions';
 import { PostContext } from '../PostContext';
 import dayjs from 'dayjs';
+import * as PropTypes from "prop-types";
+
+
 
 export default function PostCards({postProp, minimize}) {
 
@@ -194,128 +197,121 @@ export default function PostCards({postProp, minimize}) {
     }
 
     return (
-        <Container fluid className='pt-2 pb-4'>
-            <Container className=' d-flex flex-row  my-1 p-3 rounded-5 bg-secondary'>
-                <Col lg={2} className='post-content-col d-flex flex-column align-items-center'>
-                    <Row className='d-flex justify-content-center mt-2'>
-                        <img
-                            src={user.id === user_id ? user_placeholder : placeholder}
-                            alt='profile'
-                            className='post-profile-img'
-                        />
+            <Container className={"my-3"}>
+                <Col className={"bg-secondary rounded-4 p-3"}>
+                    <Row className={"align-items-center flex-nowrap p-1"}>
+                        <Col lg={2} ></Col>
+                        <Col lg={8}>
+                            <h5 className={"fw-bold"}>{subject}</h5>
+                        </Col>
+                        <Col lg={2} className={"d-flex flex-row flex-nowrap align-items-center justify-content-end "}>
+                            {minimize ?
+                                <Link to={`/post/${post_id}`}>
+                                    <i className="bi bi-arrows-expand"></i>
+                                </Link>
+                                :
+                                <Link to={`/home`}>
+                                    <i className="bi bi-arrow-return-left"></i>
+                                </Link>
+                            }
+
+                            <Dropdown className={"dropstart"}>
+                                <Button type="button" className=" post-options border-0 " data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    <i className="bi bi-three-dots-vertical"></i>
+                                </Button>
+                                <ul className="dropdown-menu">
+                                    <Dropdown.Header>post</Dropdown.Header>
+                                    <DropdownItem onClick={editPost} className={"ps-4"}>
+                                        <i className="bi bi-pencil-square pe-3"></i>Edit
+                                    </DropdownItem>
+                                    <DropdownItem onClick={deletePost} className={"ps-4"}>
+                                        <i className="bi bi-trash-fill pe-3"></i>Delete
+                                    </DropdownItem>
+
+                                </ul>
+                            </Dropdown>
+                        </Col>
                     </Row>
-                    <Row className='d-flex flex-nowrap  justify-content-center post-username pt-2   '>
-                        <Dropdown>
+                    <Row className={" flex-nowrap  p-1"}>
+                        <Col lg={2} className={"d-flex flex-column align-items-center "}>
+                            <Image src={placeholder} className={"img-fluid"}></Image>
+                            <Dropdown>
                                 <DropdownToggle className={"username"}>
                                     @{username}
                                 </DropdownToggle>
 
                                 {user.id !== user_id ?
-                                <DropdownMenu  >
-                                    {/*TODO: get user_id from prop*/}
-                                    <DropdownItem  as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
-                                    <Dropdown.Header>contact</Dropdown.Header>
-                                    {status === 'INACTIVE' &&
-                                        <DropdownItem className={"ps-4"} onClick={add}><Image src={person_add} className={"pe-3"}></Image>Add</DropdownItem>}
+                                    <DropdownMenu>
+                                        {/*TODO: get user_id from prop*/}
+                                        <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><i
+                                            className="bi bi-person-fill pe-3"></i>View Profile</DropdownItem>
+                                        <Dropdown.Header>contact</Dropdown.Header>
+                                        {status === "INACTIVE" &&
+                                            <DropdownItem className={"ps-4"} onClick={add}><i className={"bi bi-person-add pe-3"}></i>Add</DropdownItem>}
 
-                                    {status === 'ACTIVE' && <DropdownItem onClick={remove} className={"ps-4"}><Image src={person_remove} className={"pe-3"}></Image>Remove</DropdownItem>}
+                                        {status === "ACTIVE" && <DropdownItem onClick={remove} className={"ps-4"}><i
+                                            className={"bi bi-person-remove pe-3"}></i>Remove</DropdownItem>}
 
-                                    {status !== 'BLOCKED' && <DropdownItem onClick={block} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>}
+                                        {status !== "BLOCKED" &&
+                                            <DropdownItem onClick={block} className={"ps-4"}><i className="bi bi-x-circle pe-3"></i>Block</DropdownItem>}
 
-                                    <Dropdown.Header>post</Dropdown.Header>
-                                    <DropdownItem onClick={""} className={"ps-4"}><Image src={flag} className={"pe-3"}></Image>Flag</DropdownItem>
-                                </DropdownMenu>
-                                :
-                                <DropdownMenu  >
-                                    {/*TODO: get user_id from prop*/}
-                                    <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
-                                </DropdownMenu>
+                                        <Dropdown.Header>post</Dropdown.Header>
+                                        <DropdownItem onClick={""} className={"ps-4"}><i className="bi bi-flag pe-3"></i>Flag</DropdownItem>
+                                    </DropdownMenu>
+                                    :
+                                    <DropdownMenu>
+                                        {/*TODO: get user_id from prop*/}
+                                        <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add}
+                                                                                                                 className={"pe-3"}></Image>View
+                                            Profile</DropdownItem>
+                                    </DropdownMenu>
                                 }
-                        </Dropdown>
+                            </Dropdown>
+                            <p className={"text-muted"}><small>{time}</small></p>
+                        </Col>
+                        <Col lg={8}>
 
+                            <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
+                                {content}
+                            </p>
+                        </Col>
                     </Row>
-                    <Row className='d-flex justify-content-center post-date-time'>
-                        {time}
-                    </Row>
-
-                    {/*love icon*/}
-                    {love ?
-                    <Row className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={unlikePost}>
-                        {/*<img src={activeHeart} alt="Unlove a post" className='post-heart'/>*/}
-                        <Button className={"border-0 text-danger"}><i className={"bi bi-heart-fill"}></i> {count}</Button>
-                        {/*{count}*/}
-                    </Row> :
-                    <Row className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={likePost}>
-                        {/*<img*/}
-                        {/*    src={heart}*/}
-                        {/*    alt="Love a post"*/}
-                        {/*    className='post-heart'*/}
-                        {/*/>*/}
-                        <Button className={"border-0 text-secondary"}><i className={"bi bi-heart"}></i> {count}</Button>
-
-                    {/*{count}*/}
-                    </Row>
-                    }
-
-                </Col>
-                <Col lg={9} className='post-content-col d-flex flex-column'>
-                    <Row className='d-flex justify-content-flex-start mt-2 ms-2'>
-                        <p className='post-title'>{subject}</p>
-                    </Row>
-                    <Row className='d-flex justify-content-flex-start mt-0 pt-0 ms-2 post-content-text-container-full'>
-                        <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
-                            {content}
-                        </p>
-                    </Row>
-                    <Row className='d-flex justify-content-flex-start mt-auto pt-0 ms-2 post-content-text-container'>
-                        <TextareaAutosize
-                            className='comment-box'
-                            placeholder='What are your thoughts?'
-                            onChange = {e => setComment(e.target.value)}
-                            value={comment}
-                        />
-                    </Row>
-                </Col>
-
-                <Col className='post-content-col d-flex flex-column align-items-center'>
-                    <div className={"d-flex flex-row flex-nowrap align-items-center"}>
-                        {minimize ?
-                            <Link to={`/post/${post_id}`} >
-                                <i className="bi bi-arrows-expand"></i>
-                        </Link>
-                        :
-                        <Link to={`/home`} >
-                            <i className="bi bi-arrow-return-left"></i>
-                        </Link>
-                        }
-
-                        <Dropdown className={"dropstart"}>
-                            <Button type="button" className=" post-options border-0 " data-bs-toggle="dropdown" aria-expanded="false">
-                                <i className="bi bi-three-dots-vertical"></i>
+                    <Row className={"align-items-center flex-nowrap  p-1"}>
+                        <Col lg={2}>
+                            {love ?
+                                <div
+                                    className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
+                                    onClick={unlikePost}>
+                                    <Button className={"border-0 text-danger"}><i
+                                        className={"bi bi-heart-fill"}></i> {count}</Button>
+                                </div> :
+                                <div
+                                    className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes'
+                                    onClick={likePost}>
+                                    <Button className={"border-0 text-secondary"}><i
+                                        className={"bi bi-heart"}></i> {count}</Button>
+                                </div>
+                            }
+                        </Col>
+                        <Col lg={8}>
+                            <TextareaAutosize
+                                className='comment-box'
+                                placeholder='What are your thoughts?'
+                                onChange={e => setComment(e.target.value)}
+                                value={comment}
+                            />
+                        </Col>
+                        <Col>
+                            <Button className=' d-flex flex-row flex-nowrap p-2 rounded-5 comment-button'
+                                    onClick={reply} disabled={!active}>
+                                <i className={"bi bi-reply me-2"}></i>
+                                Reply
                             </Button>
-                            <ul className="dropdown-menu">
-                                <Dropdown.Header>post</Dropdown.Header>
-                                <DropdownItem onClick={editPost} className={"ps-4"}>
-                                    <i className="bi bi-pencil-square pe-3"></i>Edit
-                                </DropdownItem>
-                                <DropdownItem onClick={deletePost} className={"ps-4"}>
-                                    <i className="bi bi-trash-fill pe-3"></i>Delete
-                                </DropdownItem>
-
-                            </ul>
-                        </Dropdown>
-
-                    </div>
-
-                    <Row className='ms-2 mt-auto'>
-
-                        <Button className='comment-button p-2 rounded-5' onClick={reply} disabled={!active}>
-                            Reply
-                        </Button>
+                        </Col>
 
                     </Row>
                 </Col>
             </Container>
-        </Container>
     )
 }

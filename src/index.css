@@ -505,11 +505,9 @@ body{
 }
 
 .comment-button {
-	font-size: min(max(1rem, 4vw), 15px);
 	background: var(--baby-pink);
 	color: inherit !important;
 	cursor: pointer;
-	border: solid 1px #e7e6e6 !important;
 }
 
 .comment-button:disabled {
