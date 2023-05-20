@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useState, useEffect } from 'react';
-import {Container, Col, Row,   Dropdown,  Image} from 'react-bootstrap';
+import {Container, Col, Row, Dropdown, Image, Button} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
@@ -42,7 +42,7 @@ export default function PostCards({postProp, minimize}) {
     const [status, setStatus] = useState("INACTIVE")
     const [blocked_by, setBlockedBy] = useState(null)
 
-    const { p_id, subject, content, username, date_posted, user_id } = postProp
+    const { post_id, subject, content, username, date_posted, user_id } = postProp
     const { user } = useContext(UserContext)
 
     const relativeTime = require('dayjs/plugin/relativeTime')
@@ -52,7 +52,7 @@ export default function PostCards({postProp, minimize}) {
 
     useEffect(() => {
         if(user_id !== user.id) {
-            fetch(`http://localhost:4000/contact/view/${user_id}`, {
+            fetch(`http://127.0.0.1:4000/contact/view/${user_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -67,7 +67,7 @@ export default function PostCards({postProp, minimize}) {
         })
         }
 
-        fetch(`http://localhost:4000/post/checkLike/${p_id}`,
+        fetch(`http://127.0.0.1:4000/post/checkLike/${post_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -79,18 +79,7 @@ export default function PostCards({postProp, minimize}) {
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
-        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
-            method : 'GET',
-            headers : {
-                'Content-Type' : 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            },
-            }).then(res => res.json())
-            .then(data => {
-                data[0].count !== 0 ? setCount(data[0].count) : setCount("")
-        })
-
-        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
+        fetch(`http://127.0.0.1:4000/post/countLikes/${post_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -102,14 +91,14 @@ export default function PostCards({postProp, minimize}) {
         })
 
         comment !== '' ? setActive(true) : setActive(false)
-        updatePost(p_id, { love, comment, count, user_id, blocked_by });
+        updatePost(post_id, { love, comment, count, user_id, blocked_by });
 
-    }, [p_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost])
-    
+    }, [post_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost])
+
     function likePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/like/${p_id}`, {
+        fetch(`http://127.0.0.1:4000/post/like/${post_id}`, {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json',
@@ -124,7 +113,7 @@ export default function PostCards({postProp, minimize}) {
     function unlikePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/unlike/${p_id}`, {
+        fetch(`http://127.0.0.1:4000/post/unlike/${post_id}`, {
         method : 'DELETE',
         headers : {
             'Content-Type' : 'application/json',
@@ -136,10 +125,12 @@ export default function PostCards({postProp, minimize}) {
         })
     }
 
+
+
     function reply(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/comment/${p_id}`, {
+        fetch(`http://127.0.0.1:4000/post/comment/${post_id}`, {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json',
@@ -190,8 +181,21 @@ export default function PostCards({postProp, minimize}) {
         setStatus(removeContact(user_id))
     }
     
-    function block(e){     
+    function block(e){
         setStatus(blockContact(user_id))
+    }
+
+    function unblock(e){
+        e.preventDefault()
+        setStatus(unblockContact(user_id))
+    }
+
+    function editPost(e) {
+        e.preventDefault()
+    }
+
+    function deletePost(e) {
+        e.preventDefault()
     }
 
     return (
@@ -210,8 +214,8 @@ export default function PostCards({postProp, minimize}) {
                                 <DropdownToggle className={"username"}>
                                     @{username}
                                 </DropdownToggle>
-                                
-                                {user.id !== user_id ? 
+
+                                {user.id !== user_id ?
                                 <DropdownMenu  >
                                     {/*TODO: get user_id from prop*/}
                                     <DropdownItem  as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
@@ -220,7 +224,7 @@ export default function PostCards({postProp, minimize}) {
                                         <DropdownItem className={"ps-4"} onClick={add}><Image src={person_add} className={"pe-3"}></Image>Add</DropdownItem>}
 
                                     {status === 'ACTIVE' && <DropdownItem onClick={remove} className={"ps-4"}><Image src={person_remove} className={"pe-3"}></Image>Remove</DropdownItem>}
-                                    
+
                                     {status !== 'BLOCKED' && <DropdownItem onClick={block} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>}
 
                                     <Dropdown.Header>post</Dropdown.Header>
@@ -238,32 +242,32 @@ export default function PostCards({postProp, minimize}) {
                     <Row className='d-flex justify-content-center post-date-time'>
                         {time}
                     </Row>
+
+                    {/*love icon*/}
                     {love ?
                     <Row className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={unlikePost}>
-                        <img
-                            src={activeHeart}
-                            alt="Unlove a post"
-                            className='post-heart'
-                        />
-                        {count}
+                        {/*<img src={activeHeart} alt="Unlove a post" className='post-heart'/>*/}
+                        <Button className={"border-0 text-danger"}><i className={"bi bi-heart-fill"}></i> {count}</Button>
+                        {/*{count}*/}
+                    </Row> :
+                    <Row className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={likePost}>
+                        {/*<img*/}
+                        {/*    src={heart}*/}
+                        {/*    alt="Love a post"*/}
+                        {/*    className='post-heart'*/}
+                        {/*/>*/}
+                        <Button className={"border-0 text-secondary"}><i className={"bi bi-heart"}></i> {count}</Button>
+
+                    {/*{count}*/}
                     </Row>
-                        :
-                        <Row className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes' onClick={likePost}>
-                            <img
-                                src={heart}
-                                alt="Love a post"
-                                className='post-heart'
-                            />
-                        {count}
-                        </Row>
                     }
+
                 </Col>
                 <Col lg={9} className='post-content-col d-flex flex-column'>
                     <Row className='d-flex justify-content-flex-start mt-2 ms-2'>
                         <p className='post-title'>{subject}</p>
                     </Row>
-                    <Row className='d-flex justify-content-flex-start mt-0 pt-0 ms-2 post-content-text-container-full'
-                    >
+                    <Row className='d-flex justify-content-flex-start mt-0 pt-0 ms-2 post-content-text-container-full'>
                         <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
                             {content}
                         </p>
@@ -277,26 +281,43 @@ export default function PostCards({postProp, minimize}) {
                         />
                     </Row>
                 </Col>
-                <Col lg={1} className='post-content-col d-flex flex-column align-items-center'>
-                    <Row className='ms-3'>
+
+                <Col className='post-content-col d-flex flex-column align-items-center'>
+                    <div className={"d-flex flex-row flex-nowrap align-items-center"}>
                         {minimize ?
-                        <Link to={`/post/${p_id}`} className='expand-button'> <img
-                            src={expand}
-                            alt="Expand post"
-                        />
+                            <Link to={`/post/${post_id}`} >
+                                <i className="bi bi-arrows-expand"></i>
                         </Link>
                         :
-                        <Link to={`/home`} className='back-button'> <img
-                            src={back}
-                            alt="Minimize post"
-                        />
+                        <Link to={`/home`} >
+                            <i className="bi bi-arrow-return-left"></i>
                         </Link>
-                    }
-                    </Row>
+                        }
+
+                        <Dropdown className={"dropstart"}>
+                            <Button type="button" className=" post-options border-0 " data-bs-toggle="dropdown" aria-expanded="false">
+                                <i className="bi bi-three-dots-vertical"></i>
+                            </Button>
+                            <ul className="dropdown-menu">
+                                <Dropdown.Header>post</Dropdown.Header>
+                                <DropdownItem onClick={editPost} className={"ps-4"}>
+                                    <i className="bi bi-pencil-square pe-3"></i>Edit
+                                </DropdownItem>
+                                <DropdownItem onClick={deletePost} className={"ps-4"}>
+                                    <i className="bi bi-trash-fill pe-3"></i>Delete
+                                </DropdownItem>
+
+                            </ul>
+                        </Dropdown>
+
+                    </div>
+
                     <Row className='ms-2 mt-auto'>
-                        <button className='comment-button' onClick={reply} disabled={!active}>
+
+                        <Button className='comment-button p-2 rounded-5' onClick={reply} disabled={!active}>
                             Reply
-                        </button>
+                        </Button>
+
                     </Row>
                 </Col>
             </Container>

@@ -11,7 +11,7 @@ export default function Counselling() {
     const [therapists, setTherapists] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:4000/therapist/viewAll`,
+        fetch(`http://127.0.0.1:4000/therapist/viewAll`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

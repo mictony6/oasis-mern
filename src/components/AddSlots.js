@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import {Button,  Container, Form, Row} from "react-bootstrap";
 import {useParams} from "react-router-dom";
 import UserContext from "../UserContext";
 import { useState } from "react";
@@ -87,9 +87,9 @@ export default function AddSlots() {
     }
 
     return(
-        <Container>
+        <Container className={""}>
         <Form onSubmit={handleSubmit}>
-            <Row className='justify-content-center align-items-center mt-5'>
+            <Row className='justify-content-center align-items-center mt-4'>
                 <DateRangePicker
                     placeholder="Select Available Dates"
                     cleanable
@@ -102,7 +102,7 @@ export default function AddSlots() {
                     onChange={e => setDates(e)}
                 />
             </Row>
-            <Row className='justify-content-center align-items-center mt-5'>
+            <Row className='justify-content-center align-items-center mt-4'>
                 <DateRangePicker
                     placeholder="Select Available Time"
                     format="hh:00 aa"
@@ -115,7 +115,7 @@ export default function AddSlots() {
                     onChange={e => setTimes(e)}
                 />
             </Row>
-            <Row className='justify-content-center align-items-center mt-5'>
+            <Row className='justify-content-center align-items-center mt-4'>
                 <Button type="submit" className="w-25"> Add slot </Button>
             </Row>
         </Form>

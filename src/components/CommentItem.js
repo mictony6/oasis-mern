@@ -21,7 +21,7 @@ export default function CommentItem({commentProp}){
     const [count, setCount] = useState("")
     
     useEffect(() => {
-        fetch(`http://localhost:4000/post/comment/checkLike/${comment_id}`,
+        fetch(`http://127.0.0.1:4000/post/comment/checkLike/${comment_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -33,7 +33,7 @@ export default function CommentItem({commentProp}){
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
-        fetch(`http://localhost:4000/post/comment/countLikes/${comment_id}`, {
+        fetch(`http://127.0.0.1:4000/post/comment/countLikes/${comment_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -49,7 +49,7 @@ export default function CommentItem({commentProp}){
     function likeComment(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/comment/like/${comment_id}`, {
+        fetch(`http://127.0.0.1:4000/post/comment/like/${comment_id}`, {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json',
@@ -64,7 +64,7 @@ export default function CommentItem({commentProp}){
     function unlikeComment(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/comment/unlike/${comment_id}`, {
+        fetch(`http://127.0.0.1:4000/post/comment/unlike/${comment_id}`, {
         method : 'DELETE',
         headers : {
             'Content-Type' : 'application/json',
