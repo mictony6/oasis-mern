@@ -35,7 +35,7 @@ export default function Home() {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:4000/post/viewAllBy${view}`,
+        fetch(`http://127.0.0.1:4000/post/viewAllBy${view}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

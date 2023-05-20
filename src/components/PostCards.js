@@ -47,7 +47,7 @@ export default function PostCards({postProp, minimize}) {
 
     useEffect(() => {
         if(user_id !== user.id) {
-            fetch(`http://localhost:4000/contact/view/${user_id}`, {
+            fetch(`http://127.0.0.1:4000/contact/view/${user_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -62,7 +62,7 @@ export default function PostCards({postProp, minimize}) {
         })
         }
 
-        fetch(`http://localhost:4000/post/checkLike/${post_id}`,
+        fetch(`http://127.0.0.1:4000/post/checkLike/${post_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -74,18 +74,7 @@ export default function PostCards({postProp, minimize}) {
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
-        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
-            method : 'GET',
-            headers : {
-                'Content-Type' : 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            },
-            }).then(res => res.json())
-            .then(data => {
-                data[0].count !== 0 ? setCount(data[0].count) : setCount("")
-        })
-
-        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
+        fetch(`http://127.0.0.1:4000/post/countLikes/${post_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -104,7 +93,7 @@ export default function PostCards({postProp, minimize}) {
     function likePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/like/${post_id}`, {
+        fetch(`http://127.0.0.1:4000/post/like/${post_id}`, {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json',
@@ -119,7 +108,7 @@ export default function PostCards({postProp, minimize}) {
     function unlikePost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/unlike/${post_id}`, {
+        fetch(`http://127.0.0.1:4000/post/unlike/${post_id}`, {
         method : 'DELETE',
         headers : {
             'Content-Type' : 'application/json',
@@ -136,7 +125,7 @@ export default function PostCards({postProp, minimize}) {
     function reply(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/comment/${post_id}`, {
+        fetch(`http://127.0.0.1:4000/post/comment/${post_id}`, {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json',
