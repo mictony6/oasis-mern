@@ -197,49 +197,65 @@ export default function PostCards({postProp, minimize}) {
     function editPost(e) {
         e.preventDefault()
 
-        fetch(`http://localhost:4000/post/edit/${p_id}`, {
-            method : 'PUT',
-            headers : {
-                'Content-Type' : 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                subject: new_subject,
-                content: new_content,
-                edited: true
-            })
-            }).then(res => res.json())
-            .then(data => {
-                data ?
-                Swal.fire({
-                    title: "Post Edited Successfully!",
-                    icon: "success",
-                    text: "You can now see the changes you've made.",
-                    iconColor: '#3A3530',
-                    color: '#3A3530',
-                    confirmButtonText: "OK",
-                    buttonsStyling: false,
-                    customClass: {
-                        confirmButton: 'button2'
-                    }
+        Swal.fire({
+            text: "Are you sure you want to save your changes?",
+            iconColor: '#3A3530',
+            color: '#3A3530',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+            actions: 'my-actions',
+            cancelButton: 'order-1 right-gap',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:4000/post/edit/${p_id}`, {
+                    method : 'PUT',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        subject: new_subject,
+                        content: new_content,
+                        edited: true
+                    })
+                    }).then(res => res.json())
+                    .then(data => {
+                        data ?
+                        Swal.fire({
+                            title: "Post Edited Successfully!",
+                            icon: "success",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                        :
+                        Swal.fire({
+                            title: "Oh No!",
+                            icon: "error",
+                            text: "Something went wrong :( Please try again!",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
                 })
-                :
-                Swal.fire({
-                    title: "Oh No!",
-                    icon: "error",
-                    text: "Something went wrong :( Please try again!",
-                    iconColor: '#3A3530',
-                    color: '#3A3530',
-                    confirmButtonText: "OK",
-                    buttonsStyling: false,
-                    customClass: {
-                        confirmButton: 'button2'
-                    }
-                })
+                setNewSubject(new_subject);
+                setNewContent(new_content);
+                closeModal()
+            }
         })
-        setNewSubject(new_subject);
-        setNewContent(new_content);
-        closeModal()
+
     }
 
     function deletePost(e) {
@@ -298,16 +314,22 @@ export default function PostCards({postProp, minimize}) {
                                         aria-expanded="false">
                                     <i className="bi bi-three-dots-vertical"></i>
                                 </Button>
+                                {user.id === user_id ? 
                                 <ul className="dropdown-menu">
-                                    <Dropdown.Header>post</Dropdown.Header>
                                     <DropdownItem onClick={openModal} className={"ps-4"}>
                                         <i className="bi bi-pencil-square pe-3"></i>Edit
                                     </DropdownItem>
                                     <DropdownItem onClick={deletePost} className={"ps-4"}>
                                         <i className="bi bi-trash-fill pe-3"></i>Delete
                                     </DropdownItem>
-
                                 </ul>
+                                :
+                                <ul className="dropdown-menu">
+                                    <DropdownItem onClick={""} className={"ps-4"}>
+                                        <i className="bi bi-flag pe-3"/>Report
+                                    </DropdownItem>
+                                </ul>
+                                }
                             </Dropdown>
                         </Col>
                     </Row>
@@ -415,7 +437,7 @@ export default function PostCards({postProp, minimize}) {
                         onClick={editPost}
                         disabled={!editActive}
                         >
-                            Edit
+                            Save
                         </Button>
                     </div>
                 </Container>
