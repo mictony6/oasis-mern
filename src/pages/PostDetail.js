@@ -10,7 +10,7 @@ import CommentItem from "../components/CommentItem";
 export default function PostDetail() {
     const { post_id } = useParams()
 
-    const [post, setPost] = useState("")
+    const [post, setPost] = useState([])
     const [comments, setComments] = useState([])
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function PostDetail() {
         .then(res => res.json())
         .then(data => {
         // get all data of the product
-            setPost(data[0])
+        if(data.length !== 0) setPost(<PostCards postProp={data[0]} minimize={false}/>)
         })})
         
         fetch(`http://localhost:4000/post/comment/${post_id}`,
@@ -40,7 +40,7 @@ export default function PostDetail() {
                 <CommentItem key={comment.comment_id} commentProp= {comment}/>            
             )
         }))
-    }
+    }, [post, comments]
     )
     
     return (
@@ -51,8 +51,7 @@ export default function PostDetail() {
                 </Col>
                 <Col>
                     {/* TODO: Replace expand with minimize*/}
-                    <PostCards postProp={post} minimize={false}/>
-
+                        {post}
                     {/*Comment section*/}
                     <ListGroup className={'rounded-4 '}>
                         {comments}
