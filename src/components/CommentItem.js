@@ -1,4 +1,4 @@
-import {Col, Container, ListGroupItem, Row, Image} from "react-bootstrap";
+import {Col, Container, ListGroupItem, Row, Image, Button} from "react-bootstrap";
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
 import heart from '../static/images/love.svg'
@@ -88,19 +88,20 @@ export default function CommentItem({commentProp}){
                     {content}
                 </Col>
                 <Col className={'col-2 text-center'}>
-                    {!love ? 
-                    <img src={heart} 
-                    className='post-heart'
-                    alt='Like comment'
-                    onClick={likeComment}
-                    />
-                    :
-                    <img src={activeHeart} 
-                    className='post-heart'
-                    alt='Unlike comment'
-                    onClick={unlikeComment}
-                    />}
-                    {count}
+                {love ?
+                    <div
+                        className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
+                        onClick={unlikeComment}>
+                        <Button className={"border-0 text-danger"}><i
+                            className={"bi bi-heart-fill"}></i> {count}</Button>
+                    </div> :
+                    <div
+                        className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes'
+                        onClick={likeComment}>
+                        <Button className={"border-0 text-secondary"}><i
+                            className={"bi bi-heart"}></i> {count}</Button>
+                    </div>
+                }
                 </Col>
 
             </Row>
