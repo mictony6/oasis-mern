@@ -60,7 +60,7 @@ export default function PostCards({postProp, minimize}) {
 
     useEffect(() => {
         if(user_id !== user.id) {
-            fetch(`http://127.0.0.1:4000/contact/view/${user_id}`, {
+            fetch(`http://localhost:4000/contact/view/${user_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -75,7 +75,7 @@ export default function PostCards({postProp, minimize}) {
         })
         }
 
-        fetch(`http://127.0.0.1:4000/post/checkLike/${p_id}`,
+        fetch(`http://localhost:4000/post/checkLike/${p_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -87,7 +87,7 @@ export default function PostCards({postProp, minimize}) {
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
-        fetch(`http://127.0.0.1:4000/post/countLikes/${p_id}`, {
+        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -107,7 +107,7 @@ export default function PostCards({postProp, minimize}) {
     function likePost(e) {
         e.preventDefault()
 
-        fetch(`http://127.0.0.1:4000/post/like/${p_id}`, {
+        fetch(`http://localhost:4000/post/like/${p_id}`, {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json',
@@ -122,7 +122,7 @@ export default function PostCards({postProp, minimize}) {
     function unlikePost(e) {
         e.preventDefault()
 
-        fetch(`http://127.0.0.1:4000/post/unlike/${p_id}`, {
+        fetch(`http://localhost:4000/post/unlike/${p_id}`, {
         method : 'DELETE',
         headers : {
             'Content-Type' : 'application/json',
@@ -139,7 +139,7 @@ export default function PostCards({postProp, minimize}) {
     function reply(e) {
         e.preventDefault()
 
-        fetch(`http://127.0.0.1:4000/post/comment/${p_id}`, {
+        fetch(`http://localhost:4000/post/comment/${p_id}`, {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json',
@@ -335,7 +335,11 @@ export default function PostCards({postProp, minimize}) {
                     </Row>
                     <Row className={" flex-nowrap  p-1"}>
                         <Col lg={2} className={"d-flex flex-column align-items-center "}>
-                            <Image src={placeholder} className={"img-fluid"}></Image>
+                        {user.id !== user_id ?
+                        <Image src={placeholder} className={"img-fluid"}></Image>
+                        :
+                        <Image src={user_placeholder} className={"img-fluid"}></Image>
+                        }
                             <Dropdown>
                                 <DropdownToggle className={"username"}>
                                     @{username}

@@ -101,7 +101,6 @@ const BookingForm = ({bookingProp}) => {
                                     setDate(e)
                                     setOpenCalendar(false)}} />
                             }
-
                         </Col>
                         <Col >
                             <TimeField 

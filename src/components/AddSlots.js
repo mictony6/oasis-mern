@@ -4,8 +4,12 @@ import {useParams} from "react-router-dom";
 import UserContext from "../UserContext";
 import { useState } from "react";
 import { useEffect } from "react";
-import {DateRangePicker} from "rsuite";
-import {subDays, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, addMonths, subMonths, addHours, startOfHour, startOfDay, format} from 'date-fns';
+import { DateRangePicker } from "rsuite";
+import {subDays, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, addMonths, subMonths, addHours, startOfHour, startOfDay, format, eachDayOfInterval, eachHourOfInterval} from 'date-fns';
+import { isBefore } from "date-fns";
+import { isToday } from "date-fns";
+import dayjs from "dayjs";
+import Swal from "sweetalert2";
 
 export default function AddSlots() {
 
@@ -67,8 +71,12 @@ export default function AddSlots() {
         },
     ]
 
+    const disabledDate = (date) => {
+        return isBefore(date, new Date()) || isToday(date);
+    };
+
     useEffect(() => {
-        console.log(dates, times)
+        
     }, [dates, times])
 
     const handleSubmit = (e) => {
@@ -86,6 +94,57 @@ export default function AddSlots() {
             }))}
     }
 
+    function addSlot(e) {
+        e.preventDefault()
+
+        const datesArray = eachDayOfInterval({ start: dates[0], end: dates[1]})
+        const timesArray = eachHourOfInterval({ start: times[0], end: times[1] })
+
+        for(let i in datesArray) {
+            for(let j in timesArray) {
+                fetch(`http://localhost:4000/therapist/addSlot`, {
+                    method : 'POST',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        therapist_id: 1,
+                        date: dayjs(datesArray[i]).format('YYYY-MM-DD'),
+                        time: dayjs(timesArray[j]).format('HH:mm')
+                    })
+                    }).then(res => res.json())
+                    .then(data => {
+                        data ?
+                        Swal.fire({
+                            title: "Slots Added!",
+                            icon: "success",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                        :
+                        Swal.fire({
+                            title: "Oh No!",
+                            icon: "error",
+                            text: "Something went wrong :( Please try again!",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                })
+            }
+        }
+    }
+
     return(
         <Container className={""}>
         <Form onSubmit={handleSubmit}>
@@ -93,13 +152,13 @@ export default function AddSlots() {
                 <DateRangePicker
                     placeholder="Select Available Dates"
                     cleanable
-                    // appearance="subtle"
                     ranges={predefinedDateRanges}
                     preventOverflow
                     showOneCalendar
                     style={{ width: 300 }}
                     character=" - "
                     onChange={e => setDates(e)}
+                    shouldDisableDate={disabledDate}
                 />
             </Row>
             <Row className='justify-content-center align-items-center mt-4'>
@@ -116,7 +175,7 @@ export default function AddSlots() {
                 />
             </Row>
             <Row className='justify-content-center align-items-center mt-4'>
-                <Button type="submit" className="w-25"> Add slot </Button>
+                <Button type="submit" className="w-25" onClick={addSlot}> Add slot </Button>
             </Row>
         </Form>
             

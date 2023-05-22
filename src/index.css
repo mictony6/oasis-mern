@@ -761,3 +761,8 @@ body{
 
 
 }
+
+.datepicker-single {
+	position: relative;
+	z-index: 10;
+}

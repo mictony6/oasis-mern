@@ -22,6 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Therapist from './pages/Therapist';
 import { PostProvider } from './PostContext';
+import { TherapistProvider } from './TherapistContext'
 
 
 function App() {
@@ -32,6 +33,21 @@ function App() {
     email: null,
     role: null,
 	});
+
+  const [therapist, setTherapist] = useState({
+    therapist_id: null,
+    prefix: null,
+    first_name: null,
+    last_name: null,
+    suffix: null,
+    field: null,
+    description: null,
+    online: null,
+    in_person: null,
+    fb_link: null,
+    twt_link: null,
+    li_link: null
+  })
 
   const unsetUser = () => {
 		localStorage.clear();
@@ -60,7 +76,48 @@ function App() {
 				})
 			}
 		})
-	}, [])
+
+    if(user.role === 'Therapist' ){
+      fetch('http://localhost:4000/therapist/view',{
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('token')}`
+			}
+		}).then(res => res.json())
+		.then(data =>{
+			if(typeof data[0].user_id !== "undefined"){
+				setTherapist({
+          therapist_id: data[0].therapist_id,
+          prefix: data[0].prefix,
+          first_name: data[0].first_name,
+          last_name: data[0].last_name,
+          suffix: data[0].suffix,
+          field: data[0].field,
+          description: data[0].description,
+          online: data[0].online,
+          in_person: data[0].in_person,
+          fb_link: data[0].fb_link,
+          twt_link: data[0].twt_link,
+          li_link: data[0].li_link
+				});
+			} else {
+				setTherapist({
+          therapist_id: null,
+          prefix: null,
+          first_name: null,
+          last_name: null,
+          suffix: null,
+          field: null,
+          description: null,
+          online: null,
+          in_person: null,
+          fb_link: null,
+          twt_link: null,
+          li_link: null
+				})
+			}
+		})
+    }
+	}, [user.role])
 
     const router = createBrowserRouter(
         createRoutesFromElements(
@@ -70,7 +127,7 @@ function App() {
                 <Route exact path="/login" element={<Login/>}/>
                 <Route exact path="/home" element={<Home/>}/>
                 <Route exact path="/user/:user_id" element={<User/>}/>
-                <Route exact path="/therapist" element={<Therapist/>}/>
+                {user.role === 'Therapist' && <Route exact path="/therapist/:therapist_id" element={<Therapist/>}/>}
                 <Route exact path="/post/:post_id" element={<PostDetail/>}/>
                 <Route exact path="/counselling" element={<Counselling/>}/>
                 <Route exact path="/logout" element={<Logout/>}/>
@@ -81,9 +138,11 @@ function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
     <UserProvider value={{user, setUser, unsetUser}}>
+    <TherapistProvider value={{therapist, setTherapist}}>
     <PostProvider>
         <RouterProvider router={router} />
     </PostProvider>
+    </TherapistProvider>
     </UserProvider>
     </LocalizationProvider>
 
