@@ -48,11 +48,14 @@ export default function AppointmentList(){
         )
         .then(res => res.json())
         .then(data => {
+            data.length !== 0 ?
             setSlots(data.map(slot => {
                 return(
                     <Slot key={slot.slot_id} slotProp= {slot}/>            
                 )
             }))
+            :
+            setSlots(<p className="mx-auto">You have no slots for this date. You can add slots from the dropdown below.</p>)
         })
 
     }, [date, key])
