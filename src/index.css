@@ -723,7 +723,7 @@ body{
 	--bs-btn-hover-border-color: none;
 	--bs-btn-focus-shadow-rgb: 49, 132, 253;
 	--bs-btn-active-color: black;
-	--bs-btn-active-bg: none;
+	--bs-btn-active-bg: rgba(128, 128, 128, 0.337);
 }
 
 .text-funct {

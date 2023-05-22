@@ -5,8 +5,9 @@ import {Link} from "react-router-dom";
 export default function BlogPreviewCard() {
     return(
         <Card>
-            <h5>featured blogs</h5>
             <Card.Header>
+            <h6>featured blogs</h6>
+
                 <Card.Img src={blog_header}></Card.Img>
             </Card.Header>
             <Card.Body>
