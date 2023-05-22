@@ -4,7 +4,7 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Navbar, Nav
+    Tab
 } from 'react-bootstrap';
 import {useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
@@ -31,7 +31,6 @@ export default function User() {
                             <Tab title={"Posts"} eventKey={"comments"}></Tab>
                             <Tab title={"Comments"} eventKey={"comments"}></Tab>
                             <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
-                            <Tab title={"Consultations"} eventKey={"consultations"}></Tab>
                             <Tab title={"Likes"} eventKey={"likes"}></Tab>
                         </Tabs>
                     </Row>

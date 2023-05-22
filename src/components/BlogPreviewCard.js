@@ -12,7 +12,7 @@ export default function BlogPreviewCard() {
             <Card.Body>
                 <Card.Title>Understanding the Impact of Trauma</Card.Title>
                 <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultrices ut mi nec cursus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis quis ipsum vel urna pretium luctus venenatis quis justo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultrices ut mi nec cursus. 
                 </Card.Text>
             </Card.Body>
             <Card.Footer>
