@@ -35,7 +35,7 @@ export default function AppNavbar() {
 					</Row>
 				</Navbar.Brand>
 			</Row>}
-			<Row className='d-flex flex-column nav bg-light rounded-4 p-2'>
+			<Row className='d-flex flex-column nav bg-light rounded-4 border border-1 p-2'>
 					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
 					<NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>
 					<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>

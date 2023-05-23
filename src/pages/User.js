@@ -4,12 +4,13 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, NavItem, Nav, ListGroupItem
+    Tab, Button, NavItem, Nav
 } from 'react-bootstrap';
-import {NavLink, useParams} from "react-router-dom";
+import { useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import UserOverview from "../components/user/UserOverview";
+import profile_banner from "../static/images/bg.png"
 
 
 export default function User() {
@@ -37,11 +38,16 @@ export default function User() {
                 </Col>
                 <Col lg={3} >
                     {/*profile options*/}
-                    <Container fluid className={"d-flex flex-column my-4"}>
-                        <div className={"bg-light border border-1 rounded-4 px-2 py-3"}>
+                    <Container fluid className={"d-flex flex-column my-4 "}>
+                        <div className={"bg-light border border-1 rounded-4 px-2 py-3 position-relative"}>
                             <Container>
+                                <div className={"profile-banner overflow-hidden "}>
+                                    <label>
+                                    <Image src={profile_banner} className={"w-100 h-auto"}/>
+                                    </label>
+                                </div>
                                 <Container fluid className={"position-relative text-center"}>
-                                    <Image src={placeholder}/>
+                                    <Image src={placeholder} className={"profile-pic"}/>
                                 </Container>
                                 <h5 className={"text-center py-1"}>@Mic Tony</h5>
                                 <p className={"text-center "}><small >user/mictony - 3yrs</small></p>
