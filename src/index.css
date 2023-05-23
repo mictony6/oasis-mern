@@ -766,3 +766,8 @@ body{
 .notif-panel{
 	max-height: 25rem;
 }
+
+.datepicker-single {
+	position: relative;
+	z-index: 10;
+}
