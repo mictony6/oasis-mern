@@ -39,7 +39,7 @@ export default function AppNavbar() {
 					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
 					<NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>
 					<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>
-					<NavLink to={'/about-us'} className='nav-links'>About Us</NavLink>
+					<NavLink to={'/about'} className='nav-links'>About Us</NavLink>
 				{!isDesktopOrLaptop && <Nav.Item className='nav-links '>
 					VAWC Hotlines
 				</Nav.Item>

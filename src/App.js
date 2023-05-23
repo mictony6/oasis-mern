@@ -23,6 +23,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Therapist from './pages/Therapist';
 import { PostProvider } from './PostContext';
 import Settings from './pages/Settings';
+import About from './pages/About';
 
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
         createRoutesFromElements(
             <Route >
                 <Route exact path="/" element={<Welcome/>}/>
+                <Route exact path="/about" element={<About/>}/>
                 <Route exact path="/register" element={<Register/>}/>
                 <Route exact path="/login" element={<Login/>}/>
                 <Route exact path="/home" element={<Home/>}/>
