@@ -8,6 +8,11 @@
 	padding: 0;
 }
 
+html{
+	font-family: 'Segoe UI', sans-serif;
+	font-size: 1rem;
+}
+
 :root {
 
     --darkblue: #B9CBD9;
