@@ -232,7 +232,7 @@ body{
 	letter-spacing: 1px;
 }
 
-.sign-up-button:disabled {
+.sign-up-button:disabled, .next-button:disabled {
 	pointer-events: none;
 	background-color: gray;
 }

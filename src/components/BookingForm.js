@@ -1,4 +1,5 @@
 import { DateCalendar, DateField, DatePicker, DigitalClock, TimeField } from '@mui/x-date-pickers';
+import { parse, set } from 'date-fns';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
@@ -6,17 +7,19 @@ import {Button, Col, Container, Form, FormGroup, Row} from 'react-bootstrap';
 
 const BookingForm = ({bookingProp}) => {
     
-    const {online, in_person, last_name, prefix, suffix} = bookingProp
+    const {therapist_id, online, in_person, last_name, prefix, suffix} = bookingProp
 
     const maxSteps = 3;
     const [currentStep, setCurrentStep] = useState(1);
     const [submitted, setSubmitted] = useState(false);
     const [mode, setMode] = useState('')
-    const [date, setDate] = useState('')
-    const [time, setTime] = useState('')
+    const [date, setDate] = useState(null)
+    const [time, setTime] = useState(null)
     const [openTime, setOpenTime] = useState(false)
     const [openCalendar, setOpenCalendar] = useState(false)
     const [datetime, setDateTime] = useState('')
+    const [slot, setSlotID] = useState(null)
+    const [active, setActive] = useState(false)
 
     let [humanizedDate, setHumanizedDate] = useState('')
     let [humanizedTime, setHumanizedTime] = useState('')
@@ -32,15 +35,34 @@ const BookingForm = ({bookingProp}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (currentStep < maxSteps) {
+        if(currentStep === 1) {
+            setCurrentStep(currentStep + 1);
+            fetch(`http://localhost:4000/therapist/getSlotsByDate/${therapist_id}`, {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    date: dayjs(date).format('YYYY-MM-DD'),
+                    time: dayjs(time).format('HH:mm:ss')
+                })
+                }).then(res => res.json())
+                .then(data => {
+                    if(data.length !== 0) {
+                        const datetime = parse(data[0].date.concat(" ", data[0].time), 'yyyy-MM-dd HH:mm:ss', new Date());
+                        setSlotID(data[0].slot_id)
+                        setDateTime(datetime)
+                    }
+                })
+        } else if (currentStep < maxSteps) {
             setCurrentStep(currentStep + 1);
         } else {
             setCurrentStep(maxSteps+1);
-            setSubmitted(true);
             // console.log(formData);
             // do something with form data
-        }
-    };
+            }
+        };
 
     const handleBack = () => {
         setCurrentStep(currentStep - 1);
@@ -51,6 +73,8 @@ const BookingForm = ({bookingProp}) => {
         setHumanizedDate(dayjs(new Date(date)).format('MMMM DD[,] YYYY'))
 
         setDateTime(new Date(humanizedDate.concat(" "+humanizedTime)))
+
+        time !== null && date !== null ? setActive(true) : setActive(false)
     }, [time, date, humanizedDate, humanizedTime])
 
     return (    
@@ -129,17 +153,10 @@ const BookingForm = ({bookingProp}) => {
             {currentStep === 3 && (
                 <>
                     <Form.Label className={"fw-bold"}>Confirm Appointment</Form.Label>
-                        <p> Are you sure you want to book an <b>{mode==='inPerson' ? "In-Person Consultation": "Online Consultation"}</b> with <b> {prefix ? prefix : ''} {last_name} {suffix ? suffix : ''}</b>on the following date and time?<br/>
-                        <div className='d-flex mt-4 justify-content-center'><b className='fw-bold'>{humanizedDate} ({humanizedTime})</b></div></p>
+                        <p> Are you sure you want to book an <b>{mode==='inPerson' ? "In-Person Consultation": "Online Consultation"}</b> with <b> {prefix ? prefix : ''} {last_name} {suffix ? suffix : ''}</b>on the following date and time?<br/></p>
+                        <div className='d-flex mt-4 justify-content-center'><b className='fw-bold'>{humanizedDate} ({humanizedTime})</b></div>
                 </>
             )}
-            {submitted && (
-                <Container>
-                    Thank you!
-                </Container>
-            )}
-
-
             {/*buttons*/}
             {(submitted === false ) &&
                 (<FormGroup className={"align-self-end mt-2 "}>
@@ -148,14 +165,11 @@ const BookingForm = ({bookingProp}) => {
                         )}
                         {(currentStep === maxSteps ) ?
                             (<Button type="submit" className={"m-1"}>Confirm</Button>)
-                            :(<Button type="submit" className={"m-1"}>Next</Button>)
+                            :(<Button type="submit" className={"m-1 next-button"} disabled={(currentStep === 2 && !active)}>Next</Button>)
                         }
                     </FormGroup>
                 )
             }
-
-
-
         </Form>
     );
 };
