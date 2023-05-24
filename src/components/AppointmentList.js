@@ -8,14 +8,13 @@ import {
     Tabs
 } from "react-bootstrap";
 import {useState} from "react";
-import BookingForm from "./BookingForm";
 import AddSlots from "./AddSlots";
 import { format } from "date-fns";
 import { DateCalendar } from "@mui/x-date-pickers";
 import { useEffect } from "react";
 import dayjs from 'dayjs';
-import Slot from "./Slots";
 import { useLocation, useNavigate } from "react-router-dom";
+import Booking from "./Booking";
 
 
 export default function AppointmentList(){
@@ -32,7 +31,6 @@ export default function AppointmentList(){
     let [humanizedDate, setHumanizedDate] = useState('')
 
     useEffect(() => {
-        console.log(date)
         setHumanizedDate(dayjs(new Date(date)).format('MMMM DD'))
 
         fetch(`http://localhost:4000/therapist/getSlotsBy${key}/1`,
@@ -51,7 +49,7 @@ export default function AppointmentList(){
             data.length !== 0 ?
             setSlots(data.map(slot => {
                 return(
-                    <Slot key={slot.slot_id} slotProp= {slot}/>            
+                    <Booking key={slot.slot_id} bookingProp= {slot}/>            
                 )
             }))
             :
