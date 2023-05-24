@@ -8,7 +8,6 @@ import {
     Tabs
 } from "react-bootstrap";
 import {useState} from "react";
-import BookingForm from "./BookingForm";
 import AddSlots from "./AddSlots";
 import { format } from "date-fns";
 import { DateCalendar } from "@mui/x-date-pickers";
