@@ -293,8 +293,8 @@ export default function PostCards({postProp, minimize}) {
     return (
             <Container className={"mt-3"}>
                 <div className={"bg-light rounded-4 border border-1 "}>
-                    <Container className={"d-flex p-3"}>
-                        <div className={"d-flex flex-column align-items-center justify-content-center col-2 pe-0"}>
+                    <Container className={"d-flex py-4 px-3"}>
+                        <div className={"d-flex flex-column align-items-center justify-content-between col-2  pe-0"}>
                             {user.id !== user_id ?
                                 <Image src={placeholder} className={"img-fluid"}></Image>
                                 :
@@ -333,15 +333,29 @@ export default function PostCards({postProp, minimize}) {
                             </Dropdown>
                             <p className={"text-muted"}><small>{time} </small></p>
                             <p className={"text-muted"}><small>{edited ? <i>(edited)</i> : null }</small></p>
+                            {love ?
+                                <div
+                                    className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
+                                    onClick={unlikePost}>
+                                    <Button className={"border-0 text-danger"}><i
+                                        className={"bi bi-heart-fill"}></i> {count}</Button>
+                                </div> :
+                                <div
+                                    className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes'
+                                    onClick={likePost}>
+                                    <Button className={"border-0 text-secondary"}><i
+                                        className={"bi bi-heart"}></i> {count}</Button>
+                                </div>
+                            }
                         </div>
-                        <div className={"d-flex flex-column align-items-start justify-content-between p-3 pe-0 flex-grow-1"}>
+                        <div className={"d-flex flex-column align-items-start justify-content-between p-2 pe-0 flex-grow-1"}>
                             <h5 className={"fw-bold"}>{subject}</h5>
                             <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
                                 {content}
 
                             </p>
                             <TextareaAutosize
-                                className='comment-box'
+                                className='comment-box '
                                 placeholder='What are your thoughts?'
                                 onChange={e => setComment(e.target.value)}
                                 value={comment}
