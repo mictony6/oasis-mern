@@ -39,7 +39,7 @@ export default function User() {
                 <Col lg={3} >
                     {/*profile options*/}
                     <Container fluid className={"d-flex flex-column my-4 "}>
-                        <div className={"bg-light border border-1 rounded-4 px-2 py-3 position-relative"}>
+                        <div className={"bg-white border border-1 rounded-4 px-2 py-3 position-relative"}>
                             <Container>
                                 <div className={"profile-banner overflow-hidden "}>
                                     <label>
