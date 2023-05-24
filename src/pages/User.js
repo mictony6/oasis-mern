@@ -60,7 +60,7 @@ export default function User() {
                                 <Container fluid className={"my-1"}></Container>
                                 <Container fluid className={"d-flex flex-row flex-wrap p-1 "}>
                                     <div className={"mb-2 flex-grow-1"}>
-                                        <h6>Karma</h6>
+                                        <h6>Likes</h6>
                                         <div className={"d-flex aligns-items-center mt-1"}>
                                             <i className={"bi bi-hearts me-1"}></i>
                                             <span><small>100</small></span>
