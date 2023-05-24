@@ -2,7 +2,6 @@ import { Col, Image, ListGroupItem, Row} from "react-bootstrap";
 import { Link} from "react-router-dom";
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
-import call_icon from "../static/images/call.svg";
 import message_icon from "../static/images/message.svg";
 import { useContext } from "react";
 import UserContext from "../UserContext";
@@ -21,9 +20,6 @@ export default function ContactItem({contactProp, active}) {
                 </Col>
                 <Col className={'fw-bold px-3 '}>
                     @{username}
-                </Col>
-                <Col  className={'col-2'}>
-                    <Link to={'#call_link'}><Image src={call_icon} className={'img-fluid  '}></Image></Link>
                 </Col>
                 <Col  className={'col-2'}>
                     <Link to={`/chats/${contact_id}`}> <Image src={message_icon} className={'img-fluid  '}></Image></Link>

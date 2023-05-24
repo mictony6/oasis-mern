@@ -22,6 +22,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Therapist from './pages/Therapist';
 import { PostProvider } from './PostContext';
+import Settings from './pages/Settings';
+import About from './pages/About';
 import { TherapistProvider } from './TherapistContext'
 
 
@@ -123,6 +125,7 @@ function App() {
         createRoutesFromElements(
             <Route >
                 <Route exact path="/" element={<Welcome/>}/>
+                <Route exact path="/about" element={<About/>}/>
                 <Route exact path="/register" element={<Register/>}/>
                 <Route exact path="/login" element={<Login/>}/>
                 <Route exact path="/home" element={<Home/>}/>
@@ -132,6 +135,7 @@ function App() {
                 <Route exact path="/counselling" element={<Counselling/>}/>
                 <Route exact path="/logout" element={<Logout/>}/>
                 <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
+                <Route exact path="/settings" element={<Settings/>}/>
             </Route>
         )
     );

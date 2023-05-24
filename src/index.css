@@ -8,6 +8,11 @@
 	padding: 0;
 }
 
+html{
+	/*font-family: 'Segoe UI', sans-serif;*/
+	font-size: 1rem;
+}
+
 :root {
 
     --darkblue: #B9CBD9;
@@ -48,9 +53,13 @@ body::-webkit-scrollbar-track {
 }
 
 ::-webkit-scrollbar-thumb {
-	visibility: hidden;
 	border-radius: 30px;
-	background-color: rgba(112, 112, 112, 0.73);
+	background-color: rgb(126, 126, 126);
+}
+
+::-webkit-scrollbar-track {
+	border-radius: 30px;
+	background-color: rgb(213, 213, 213);
 }
 
 
@@ -66,7 +75,7 @@ a {
 
 body{
 	max-height: 100vh;
-	background-color: rgba(223, 232, 223, 0.74);
+	background-color: rgba(226, 232, 230, 0.74);
 }
 
 
@@ -649,10 +658,7 @@ body{
 }
 
 .contacts {
-	display: flex;
-	flex-direction: column;
-	height: 260px;
-	overflow: scroll;
+	max-height: 260px;
 }
 
 .username{
@@ -722,7 +728,7 @@ body{
 	--bs-btn-hover-border-color: none;
 	--bs-btn-focus-shadow-rgb: 49, 132, 253;
 	--bs-btn-active-color: black;
-	--bs-btn-active-bg: none;
+	--bs-btn-active-bg: rgba(128, 128, 128, 0.337);
 }
 
 .text-funct {
@@ -762,7 +768,27 @@ body{
 
 }
 
+.notif-panel{
+	max-height: 25rem;
+}
+
 .datepicker-single {
 	position: relative;
 	z-index: 10;
+}
+
+.profile-banner{
+	position:absolute;
+	padding:0;
+	margin:0;
+	top:0;
+	left:0;
+	height:94px;
+	background-color:red;
+	border-top-left-radius: 1rem;
+	border-top-right-radius: 1rem ;
+}
+
+.profile-pic{
+	height:160px;
 }
