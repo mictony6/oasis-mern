@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useContext, useState } from 'react';
-import {Row, Col, Container, Offcanvas, Form, Button, Image, ButtonGroup} from 'react-bootstrap';
+import {Row, Col, Container, Offcanvas, Form} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
@@ -9,7 +9,7 @@ import PostCards from '../components/PostCards';
 import CreatePost from '../components/CreatePost';
 import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {ScrollRestoration, useLocation, useNavigate} from 'react-router-dom';
 import UserContext from '../UserContext';
 import { unblockContact } from '../functions/contactFunctions';
 

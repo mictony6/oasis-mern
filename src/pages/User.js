@@ -4,13 +4,14 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, NavItem, Nav
+    Tab, Button, NavItem, Nav, ListGroup
 } from 'react-bootstrap';
 import { useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
+import PostMinimal from "../components/PostMinimal";
 
 
 export default function User() {
@@ -29,7 +30,14 @@ export default function User() {
                             <Tab eventKey={"overview"} title={"Overview"}  >
                                 <UserOverview/>
                             </Tab>
-                            <Tab title={"Posts"} eventKey={"comments"}></Tab>
+                            <Tab title={"Posts"} eventKey={"posts"}>
+                                <ListGroup>
+                                    <PostMinimal/>
+                                    <PostMinimal/>
+                                    <PostMinimal/>
+                                    <PostMinimal/>
+                                </ListGroup>
+                            </Tab>
                             <Tab title={"Comments"} eventKey={"comments"}></Tab>
                             <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
                             <Tab title={"Likes"} eventKey={"likes"}></Tab>
