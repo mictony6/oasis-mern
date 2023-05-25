@@ -1,4 +1,4 @@
-import {Button, Col, Image, ListGroupItem, Modal, ModalBody, ModalHeader, ModalTitle, Row, Form, FormGroup} from "react-bootstrap";
+import {Button, Col, Image, ListGroupItem, Modal, ModalBody, ModalHeader, ModalTitle, Row, Form } from "react-bootstrap";
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import thumbs_up from '../static/images/thumbs_up.svg';
 import fb from '../static/images/facebook.svg';
@@ -8,8 +8,9 @@ import {useState} from "react";
 import dayjs from 'dayjs';
 import { useEffect } from "react";
 import { DateCalendar, DateField, DigitalClock, TimeField } from "@mui/x-date-pickers";
-import { parse } from "date-fns";
+import { parse, setDay } from "date-fns";
 import Swal from "sweetalert2";
+import { FormGroup, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function TherapistCard({therapistProp}){
 
@@ -24,12 +25,13 @@ export default function TherapistCard({therapistProp}){
     const [currentStep, setCurrentStep] = useState(1);
     const [mode, setMode] = useState('')
     const [date, setDate] = useState(null)
-    const [time, setTime] = useState(null)
-    const [openTime, setOpenTime] = useState(false)
+    const [time, setTime] = useState('')
     const [openCalendar, setOpenCalendar] = useState(false)
     const [datetime, setDateTime] = useState('')
     const [slot_id, setSlotID] = useState(null)
     const [active, setActive] = useState(false)
+    const [timeslots, setTimeslots] = useState([])
+    const [days, setDays] = useState([])
 
     let [humanizedDate, setHumanizedDate] = useState('')
     let [humanizedTime, setHumanizedTime] = useState('')
@@ -55,10 +57,11 @@ export default function TherapistCard({therapistProp}){
                 },
                 body: JSON.stringify({
                     date: dayjs(date).format('YYYY-MM-DD'),
-                    time: dayjs(time).format('HH:mm:ss')
+                    time: dayjs(time, 'hh:mm A').format('HH:mm:ss')
                 })
                 }).then(res => res.json())
                 .then(data => {
+                    console.log(data)
                     if(data.length !== 0) {
                         const datetime = parse(data[0].date.concat(" ", data[0].time), 'yyyy-MM-dd HH:mm:ss', new Date());
                         setSlotID(data[0].slot_id)
@@ -107,7 +110,7 @@ export default function TherapistCard({therapistProp}){
                         }
                 })
             })
-            setTime(null)
+            setTime('')
             setDate(null)
             setSlotID(null)
             setCurrentStep(1)
@@ -126,7 +129,52 @@ export default function TherapistCard({therapistProp}){
         setDateTime(new Date(humanizedDate.concat(" "+humanizedTime)))
 
         time !== null && date !== null ? setActive(true) : setActive(false)
-    }, [time, date, humanizedDate, humanizedTime])
+
+        if(date !== null) {
+            fetch(`http://localhost:4000/therapist/getTimeSlotByDate/${therapist_id}`, {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    date: dayjs(date).format('YYYY-MM-DD'),
+                })
+                }).then(res => res.json())
+                .then(data => {
+                    setTimeslots(data.map(timeslot => {
+                        const parsedTime = parse(timeslot.time, 'HH:mm:ss', new Date())
+                        const hDate = dayjs(parsedTime).format('hh:mm A')
+                            
+                        return <MenuItem key={timeslot.slot_id} value={hDate}> {hDate} </MenuItem>
+                            }
+                            
+                            ))}
+                        )
+                }
+
+            fetch(`http://localhost:4000/therapist/getDays/${therapist_id}`, {
+                    method : 'GET',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                    }).then(res => res.json())
+                    .then(data => {
+                        setDays(data)})
+        }, [time, date, humanizedDate, humanizedTime, therapist_id])
+
+        const enableSpecificDays = (day) => {
+            const formatDate = dayjs(day).format('YYYY-MM-DD')
+
+            // Check if the date is present in the disabledDays array
+            for (let i = 0; i < days.length; i++) {
+                if (formatDate === days[i].date) {
+                return false; // Disable the date
+                }
+            }
+            return true; // Enable the date
+        };
 
 
     return (
@@ -206,30 +254,30 @@ export default function TherapistCard({therapistProp}){
                                                             {openCalendar &&
                                                                 <DateCalendar
                                                                 minDate={tomorrow}
+                                                                shouldDisableDate={enableSpecificDays}
                                                                 onChange={e => {
                                                                     setDate(e)
                                                                     setOpenCalendar(false)}} />
                                                             }
                                                         </Col>
                                                         <Col >
-                                                            <TimeField 
-                                                                onClick={e => setOpenTime(true)}
-                                                                value = {time}
+                                                        <FormGroup>
+                                                        <FormControl>
+                                                            <InputLabel id="time-select-label">Select Time</InputLabel>
+                                                            <Select
+                                                                labelId="time-select-label"
+                                                                disabled = { date === null }
+                                                                value={time}
                                                                 label="Select Time"
-                                                                slotProps={{
-                                                                textField: {
-                                                                }
-                                                            }}
-                                                            />
-                                                            {openTime && 
-                                                                <DigitalClock timeStep={30}
-                                                                skipDisabled
-                                                                minTime={eightAM}
-                                                                maxTime={fivePM}
                                                                 onChange={e => {
-                                                                    setTime(e)
-                                                                    setOpenTime(false)}}
-                                                            />} 
+                                                                    setTime(e.target.value)
+                                                                }}
+                                                                >
+                                                                {timeslots}
+                                                            </Select>
+                                                        </FormControl>
+                                                        </FormGroup>
+                                                            
                                                         </Col>
                                                     </Row>
                                                 </>
@@ -239,18 +287,18 @@ export default function TherapistCard({therapistProp}){
                                                 <>
                                                     <Form.Label className={"fw-bold"}>Confirm Appointment</Form.Label>
                                                         <p> Are you sure you want to book an <b>{mode==='inPerson' ? "In-Person Consultation": "Online Consultation"}</b> with <b> {prefix ? prefix : ''} {last_name} {suffix ? suffix : ''}</b>on the following date and time?<br/></p>
-                                                        <div className='d-flex mt-4 justify-content-center'><b className='fw-bold'>{humanizedDate} ({humanizedTime})</b></div>
+                                                        <div className='d-flex mt-4 justify-content-center'><b className='fw-bold'>{humanizedDate} ({time})</b></div>
                                                 </>
                                             )}
                                             {/*buttons*/}
-                                            <FormGroup className={"align-self-end mt-2 "}>
+                                            <Form.Group className={"align-self-end mt-2 "}>
                                                         {(currentStep > 1) && (
                                                             <Button onClick={handleBack} className={"m-1"}>Back</Button>
                                                         )}
                                                         {(currentStep === maxSteps ) ?
                                                             (<Button type="submit" className={"m-1"}>Confirm</Button>)
                                                             :(<Button type="submit" className={"m-1 next-button"} disabled={(currentStep === 2 && !active)}>Next</Button>)}
-                                                    </FormGroup>
+                                            </Form.Group>
                                         </Form>
                             </ModalBody>
                         </Modal>
