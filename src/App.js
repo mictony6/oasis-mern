@@ -26,7 +26,6 @@ import Settings from './pages/Settings';
 import About from './pages/About';
 import { TherapistProvider } from './TherapistContext'
 
-
 function App() {
 
   const [user, setUser] = useState({
@@ -130,7 +129,7 @@ function App() {
                 <Route exact path="/login" element={<Login/>}/>
                 <Route exact path="/home" element={<Home/>}/>
                 <Route exact path="/user/:user_id" element={<User/>}/>
-                {user.role === 'Therapist' && <Route exact path="/therapist/:therapist_id" element={<Therapist/>}/>}
+                {user.role === 'Therapist' && <Route exact path="/therapist" element={<Therapist/>}/>}
                 <Route exact path="/post/:post_id" element={<PostDetail/>}/>
                 <Route exact path="/counselling" element={<Counselling/>}/>
                 <Route exact path="/logout" element={<Logout/>}/>

@@ -15,10 +15,14 @@ import { useEffect } from "react";
 import dayjs from 'dayjs';
 import { useLocation, useNavigate } from "react-router-dom";
 import Booking from "./Booking";
+import { useContext } from "react";
+import TherapistContext from "../TherapistContext";
 
 
 export default function AppointmentList(){
+    const {therapist}  = useContext(TherapistContext)
     const [key, setKey] = useState('Day');
+    
 
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState(new Date())
@@ -33,7 +37,7 @@ export default function AppointmentList(){
     useEffect(() => {
         setHumanizedDate(dayjs(new Date(date)).format('MMMM DD'))
 
-        fetch(`http://localhost:4000/therapist/getSlotsBy${key}/1`,
+        fetch(`http://localhost:4000/booking/getSlotsBy${key}/${therapist.therapist_id}`,
         {method: 'POST',
         headers: {
             'Content-Type' : 'application/json',
@@ -49,14 +53,14 @@ export default function AppointmentList(){
             data.length !== 0 ?
             setSlots(data.map(slot => {
                 return(
-                    <Booking key={slot.slot_id} bookingProp= {slot}/>            
+                    <Booking key={slot.slot_id} bookingProp= {slot}/>
                 )
             }))
             :
             setSlots(<p className="mx-auto">You have no slots for this date. You can add slots from the dropdown below.</p>)
         })
 
-    }, [date, key])
+    }, [date, key, therapist.therapist_id])
 
     function nextDay(){
         setDate(dayjs(date).add(1, 'day'))

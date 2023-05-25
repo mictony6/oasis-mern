@@ -5,8 +5,11 @@ import telephone from '../static/images/telephone.svg'
 import { useMediaQuery } from 'react-responsive';
 import {useState} from "react";
 import HotlineItem from "./HotlineItem";
+import { useContext } from 'react';
+import UserContext from '../UserContext';
 
 export default function AppNavbar() {
+	const { user } = useContext(UserContext)
 
 	const [hotlinesShow, setHotlinesShow]= useState(false);
 
@@ -37,7 +40,8 @@ export default function AppNavbar() {
 			</Row>}
 			<Row className='d-flex flex-column nav bg-light rounded-4 border border-1 p-2'>
 					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
-					<NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>
+					{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>}
+					{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>Appointments</NavLink>}
 					<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>
 					<NavLink to={'/about'} className='nav-links'>About Us</NavLink>
 				{!isDesktopOrLaptop && <Nav.Item className='nav-links '>

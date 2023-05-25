@@ -43,7 +43,7 @@ export default function RightSidebar() {
                     aria-controls="contact-list"
                     aria-expanded={showContacts}
                 >
-                    <h6 >contacts {showContacts ? <i class="bi bi-caret-up-fill"></i> : <i class="bi bi-caret-right-fill"></i>}</h6>
+                    <h6 >contacts {showContacts ? <i className="bi bi-caret-up-fill"></i> : <i className="bi bi-caret-right-fill"></i>}</h6>
                 </Link>
 
                 <Collapse in={showContacts} >

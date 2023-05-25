@@ -119,7 +119,8 @@ export default function CreatePost() {
                 </Dropdown> */}
 
                 <Dropdown>
-                    <Button type="button" data-bs-toggle="dropdown" aria-expanded="false" className="border-0">
+                    <Button type="button" data-bs-toggle="dropdown" aria-expanded="false" className="border-0"
+                    style={{background: 'transparent'}}>
                     <Image src={user_placeholder} className="mx-2 w-auto"/>
                     </Button>
 
