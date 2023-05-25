@@ -8,7 +8,7 @@ import {useState} from "react";
 import dayjs from 'dayjs';
 import { useEffect } from "react";
 import { DateCalendar, DateField, DigitalClock, TimeField } from "@mui/x-date-pickers";
-import { parse } from "date-fns";
+import { parse, setDay } from "date-fns";
 import Swal from "sweetalert2";
 import { FormGroup, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
@@ -31,6 +31,7 @@ export default function TherapistCard({therapistProp}){
     const [slot_id, setSlotID] = useState(null)
     const [active, setActive] = useState(false)
     const [timeslots, setTimeslots] = useState([])
+    const [days, setDays] = useState([])
 
     let [humanizedDate, setHumanizedDate] = useState('')
     let [humanizedTime, setHumanizedTime] = useState('')
@@ -143,7 +144,7 @@ export default function TherapistCard({therapistProp}){
                 .then(data => {
                     setTimeslots(data.map(timeslot => {
                         const parsedTime = parse(timeslot.time, 'HH:mm:ss', new Date())
-                        const hDate = dayjs(parsedTime).format('HH:mm A')
+                        const hDate = dayjs(parsedTime).format('hh:mm A')
                             
                         return <MenuItem key={timeslot.slot_id} value={hDate}> {hDate} </MenuItem>
                             }
@@ -151,7 +152,29 @@ export default function TherapistCard({therapistProp}){
                             ))}
                         )
                 }
+
+            fetch(`http://localhost:4000/therapist/getDays/${therapist_id}`, {
+                    method : 'GET',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                    }).then(res => res.json())
+                    .then(data => {
+                        setDays(data)})
         }, [time, date, humanizedDate, humanizedTime, therapist_id])
+
+        const enableSpecificDays = (day) => {
+            const formatDate = dayjs(day).format('YYYY-MM-DD')
+
+            // Check if the date is present in the disabledDays array
+            for (let i = 0; i < days.length; i++) {
+                if (formatDate === days[i].date) {
+                return false; // Disable the date
+                }
+            }
+            return true; // Enable the date
+        };
 
 
     return (
@@ -231,6 +254,7 @@ export default function TherapistCard({therapistProp}){
                                                             {openCalendar &&
                                                                 <DateCalendar
                                                                 minDate={tomorrow}
+                                                                shouldDisableDate={enableSpecificDays}
                                                                 onChange={e => {
                                                                     setDate(e)
                                                                     setOpenCalendar(false)}} />
