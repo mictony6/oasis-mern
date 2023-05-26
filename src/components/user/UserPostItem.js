@@ -1,11 +1,11 @@
 import {Button, Container, Image, ListGroup} from "react-bootstrap";
-import placeholder from "../static/images/profile_pic_placeholder.svg";
+import placeholder from "../../static/images/profile_pic_placeholder.svg";
 import {Link} from "react-router-dom";
 
-export default function PostMinimal(){
+export default function UserPostItem(){
     return(
         <ListGroup.Item className={"p-3 pb-0"}>
-            <Link className={"text-decoration-none"}>
+            <Link to={""} className={"text-decoration-none"}>
             <div className={"d-flex align-items-center"}>
                 <div className={"pe-3 ps-2 text-center"}>
                     <Button className={"bg-light"}><i className={"bi bi-heart"}></i></Button>

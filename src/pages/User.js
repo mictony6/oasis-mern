@@ -11,7 +11,8 @@ import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
-import PostMinimal from "../components/PostMinimal";
+import UserPostItem from "../components/user/UserPostItem";
+import UserCommentItem from '../components/user/UserCommentItem';
 
 
 export default function User() {
@@ -32,13 +33,22 @@ export default function User() {
                             </Tab>
                             <Tab title={"Posts"} eventKey={"posts"}>
                                 <ListGroup>
-                                    <PostMinimal/>
-                                    <PostMinimal/>
-                                    <PostMinimal/>
-                                    <PostMinimal/>
+                                    <UserPostItem/>
+                                    <UserPostItem/>
+                                    <UserPostItem/>
+                                    <UserPostItem/>
+
                                 </ListGroup>
                             </Tab>
-                            <Tab title={"Comments"} eventKey={"comments"}></Tab>
+                            <Tab title={"Comments"} eventKey={"comments"}>
+                                <ListGroup>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                </ListGroup>
+                            </Tab>
                             <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
                             <Tab title={"Likes"} eventKey={"likes"}></Tab>
                         </Tabs>
