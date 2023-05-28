@@ -64,6 +64,7 @@ export default function TherapistCard({therapistProp}){
                     console.log(data)
                     if(data.length !== 0) {
                         const datetime = parse(data[0].date.concat(" ", data[0].time), 'yyyy-MM-dd HH:mm:ss', new Date());
+                        console.log(datetime)
                         setSlotID(data[0].slot_id)
                         setDateTime(datetime)
                     }
@@ -79,7 +80,8 @@ export default function TherapistCard({therapistProp}){
                 },
                 body: JSON.stringify({
                     therapist_id: therapist_id,
-                    consultation_date: datetime
+                    consultation_date: datetime,
+                    consultation_type: mode
                 })
                 }).then(res => res.json())
                 .then(data => {
@@ -225,7 +227,7 @@ export default function TherapistCard({therapistProp}){
                                                         >
                                                             <option value=''>--select options--</option>
                                                             <option value={"online"} disabled={!online}>Online Consultation</option>
-                                                            <option value={"inPerson"} disabled={!in_person}>In-Person Consultation</option>
+                                                            <option value={"in_person"} disabled={!in_person}>In-Person Consultation</option>
                                                     </select>
                                                 </Form.Group>
                                                 <Form.Group >
@@ -286,7 +288,7 @@ export default function TherapistCard({therapistProp}){
                                             {currentStep === 3 && (
                                                 <>
                                                     <Form.Label className={"fw-bold"}>Confirm Appointment</Form.Label>
-                                                        <p> Are you sure you want to book an <b>{mode==='inPerson' ? "In-Person Consultation": "Online Consultation"}</b> with <b> {prefix ? prefix : ''} {last_name} {suffix ? suffix : ''}</b>on the following date and time?<br/></p>
+                                                        <p> Are you sure you want to book an <b>{mode==='in_person' ? "In-Person Consultation": "Online Consultation"}</b> with <b> {prefix ? prefix : ''} {last_name} {suffix ? suffix : ''}</b>on the following date and time?<br/></p>
                                                         <div className='d-flex mt-4 justify-content-center'><b className='fw-bold'>{humanizedDate} ({time})</b></div>
                                                 </>
                                             )}

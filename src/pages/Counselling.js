@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 export default function Counselling() {
 
     const [therapists, setTherapists] = useState([])
+    const [upcomingBookings, setUpcomingBookings] = useState([])
+    const [pastBookings, setPastBookings] = useState([])
 
     useEffect(() => {
         fetch(`http://127.0.0.1:4000/therapist/viewAll`,
@@ -25,7 +27,47 @@ export default function Counselling() {
                 <TherapistCard key={therapist.therapist_id} therapistProp= {therapist}/>            
             )
         }))
-    })
+        })
+
+        fetch(`http://localhost:4000/booking/retrieveConfirmedBookings`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data.length !== 0 ?
+            setUpcomingBookings(data.map(booking => {
+                return(
+                <ConsultationCard key={booking.booking_id} bookingProp= {booking}/>            
+            )
+            }))
+            :
+            setUpcomingBookings(<small><em>You have no upcoming consultations.</em></small>)
+        })
+        
+
+        fetch(`http://localhost:4000/booking/retrievePastBookings`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data.length !== 0 ?
+            setPastBookings(data.map(booking => {
+                return(
+                <ConsultationCard key={booking.booking_id} bookingProp= {booking}/>            
+            )
+            }))
+            :
+            setPastBookings(<small><em> You have no recent consultations.</em></small>)         
+
+        })
     }, [therapists])
 
     return (
@@ -61,13 +103,11 @@ export default function Counselling() {
                     <Container fluid className={'sticky-top'}>
                         <h5 className={'fg-primary pt-4'}>upcoming consultations</h5>
                         <ListGroup className={'my-2 overflow-auto'}>
-                            <ConsultationCard/>
+                            {upcomingBookings}
                         </ListGroup>
                         <h5 className={'fg-primary pt-4'}>recent consultations</h5>
                         <ListGroup className={'overflow-y'}>
-                            <ConsultationCard/>
-                            <ConsultationCard/>
-                            <ListGroupItem>See More...</ListGroupItem>
+                            {pastBookings}
                         </ListGroup>
 
                     </Container>

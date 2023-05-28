@@ -12,7 +12,7 @@ const NotificationItem = () => {
                         <h6>@user has sent you</h6>
                         <Dropdown >
                             <Button className="border-0 post-options" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                                <i class="bi bi-three-dots"></i> 
+                                <i className="bi bi-three-dots"></i> 
                             </Button>
                             <ul className="dropdown-menu" >
                                 <Dropdown.Item>Mark as read</Dropdown.Item>

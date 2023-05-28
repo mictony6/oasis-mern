@@ -152,6 +152,15 @@ body{
 	letter-spacing: 1px;
 }
 
+.deny-button {
+	background-color: #ff908c;
+}
+
+.deny-button:hover {
+	background-color: #ff908c;
+	filter:brightness(110%);
+}
+
 .button:hover {
 	background-color: var(--pink);
 	color: #FFFFFF;
@@ -795,4 +804,15 @@ body{
 
 .appointment-list {
 	height:25rem;
+}
+
+.spinner-container {
+	padding: 0;
+    margin: 2% 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
