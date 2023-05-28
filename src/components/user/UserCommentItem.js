@@ -94,7 +94,7 @@ const UserCommentItem = ({commentProp}) => {
                                 <Container className={"d-flex w-100 p-2 mb-1"}>
                                 {love ?
                                 <div className={"pe-3 ps-2 text-center"} onClick={unlikeComment}>
-                                    <Button className={"bg-light border-0 text-danger"}><i className={"bi bi-heart-fill"} z></i></Button>
+                                    <Button className={"bg-light border-0 text-danger"}><i className={"bi bi-heart-fill"}></i></Button>
                                     <span>{count}</span>
                                 </div>
                                 :

@@ -98,13 +98,19 @@ export default function UserPostItem({postProp}){
         })
     }
 
+    const navigate = useNavigate()
+
+    function nav(link) {
+        navigate(link)
+    }
+
     return(
         <ListGroup.Item className={"p-3 pb-0"}>
-            <Link to={""} className={"text-decoration-none"}>
+            <Link to={`/post/${p_id}`} className={"text-decoration-none"}>
             <div className={"d-flex align-items-center"}>
                 {love ?
                 <div className={"pe-3 ps-2 text-center"} onClick={unlikePost}>
-                    <Button className={"bg-light border-0 text-danger"}><i className={"bi bi-heart-fill"} z></i></Button>
+                    <Button className={"bg-light border-0 text-danger"}><i className={"bi bi-heart-fill"}></i></Button>
                     <span>{count}</span>
                 </div>
                 :
@@ -121,7 +127,7 @@ export default function UserPostItem({postProp}){
                     <p className={"text-muted"}><small>Posted by @{username} <i className={"bi bi-dot"}></i>{time}</small></p>
                     <Container fluid >
                         <div className={"d-flex flex-grow-1 py-2 align-items-baseline"}>
-                            <Link to={`/post/${p_id}`}><i className={"bi bi-arrows-angle-expand "}></i></Link>
+                            <Button className={"me-2 bg-light"} onClick={e => {nav(`/post/${p_id}`)}}><i className={"bi bi-arrows-angle-expand "}></i></Button>
                             <Button className={"me-2 bg-light"}><i className={"bi bi-chat "}></i> Comments</Button>
                             <Button className={"me-2 bg-light"}><i className={"bi bi-eye-slash "}></i> Hide</Button>
 

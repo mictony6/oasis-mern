@@ -19,7 +19,7 @@ export default function UserOverview() {
     const history = useNavigate()
 
     const getUrl = new URLSearchParams(location.search).get('sort');
-    const [view, setView] = useState(getUrl ? getUrl : 'Likes')
+    const [view, setView] = useState(getUrl ? getUrl : 'Recent')
 
     useEffect(() => {
         fetch(`http://localhost:4000/post/viewAllCommentsPostsBy${view}/${user.id}`,
@@ -51,8 +51,8 @@ export default function UserOverview() {
     return(
         <Container >
             <Container className={"p-3 bg-body"}>
-                <Button className={"me-3"} onClick={() => {sortBy('Recent')}}>New</Button>
-                <Button  className={"me-3"} onClick={() => {sortBy('Likes')}}>Top</Button>
+                <Button className={view === 'Recent' ? 'me-3 bg-primary' : 'me-3'} onClick={() => {sortBy('Recent')}}>New</Button>
+                <Button  className={view === 'Likes' ? 'me-3 bg-primary' : 'me-3'} onClick={() => {sortBy('Likes')}}>Top</Button>
             </Container>
 
             <ListGroup>
