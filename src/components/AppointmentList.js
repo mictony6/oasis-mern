@@ -22,7 +22,7 @@ import TherapistContext from "../TherapistContext";
 export default function AppointmentList(){
     const {therapist}  = useContext(TherapistContext)
     const [key, setKey] = useState('Day');
-    
+
 
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState(new Date())
@@ -103,17 +103,17 @@ export default function AppointmentList(){
               className="mb-3"
           >
               <Tab eventKey="Day" title="Day">
-                  <ListGroup>
+                  <ListGroup className={"appointment-list overflow-auto"}>
                     {slots}
                   </ListGroup>
               </Tab>
               <Tab eventKey="Week" title="Week">
-                  <ListGroup>
+                  <ListGroup className={"appointment-list overflow-auto"}>
                     {slots}
                   </ListGroup>
               </Tab>
               <Tab eventKey="Month" title="Month" >
-                  <ListGroup>
+                  <ListGroup className={"appointment-list overflow-auto"}>
                     {slots}
                   </ListGroup>
               </Tab>

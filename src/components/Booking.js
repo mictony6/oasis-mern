@@ -51,7 +51,7 @@ export default function Booking({bookingProp}){
             }
             }).then(res => res.json())
             .then(data => {
-                data ? 
+                data ?
                 Swal.fire({
                     title: "Appointment confirmed!",
                     icon: "success",
@@ -91,7 +91,7 @@ export default function Booking({bookingProp}){
             }
             }).then(res => res.json())
             .then(data => {
-                data ? 
+                data ?
                 Swal.fire({
                     title: "Appointment denied.",
                     icon: "success",
@@ -124,7 +124,7 @@ export default function Booking({bookingProp}){
     return(
         <ListGroupItem className={"border-0 my-1"}>
         <Container>
-            {!availability ? 
+            {!availability ?
             <Row>
                 <Col sm={6} className="d-flex align-items-center">
                     <Col sm={2} className="d-flex align-items-center">
@@ -140,10 +140,10 @@ export default function Booking({bookingProp}){
                     </Col>
                 </Col>
                 <Col sm={2} className="d-flex align-items-center">
-                    <small className="text-muted"> {humanizedDate} ({humanizedTime}) </small> 
+                    <small className="text-muted"> {humanizedDate} ({humanizedTime}) </small>
                 </Col>
                 <Col sm={4} className="d-flex align-items-center justify-content-end" >
-                    {confirmation ? 
+                    {confirmation ?
                         <small className="text-muted"><em>confirmed</em></small>
                         :
                         null

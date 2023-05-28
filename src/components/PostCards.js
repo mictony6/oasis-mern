@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
 import TextareaAutosize from 'react-textarea-autosize';
-import {Link} from "react-router-dom";
+import {Link, ScrollRestoration} from "react-router-dom";
 import Swal from 'sweetalert2'
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
@@ -291,55 +291,15 @@ export default function PostCards({postProp, minimize}) {
     }
 
     return (
-            <Container className={"my-3"}>
-                <Col className={"bg-light rounded-4 border border-1 p-3"}>
-                    <Row className={"align-items-center flex-nowrap p-1"}>
-                        <Col lg={2} ></Col>
-                        <Col lg={8}>
-                            <h5 className={"fw-bold"}>{subject}</h5>
-                        </Col>
-                        <Col lg={2} className={"d-flex flex-row flex-nowrap align-items-center justify-content-end "}>
-                            {minimize ?
-                                <Link to={`/post/${p_id}`}>
-                                    <i className="bi bi-arrows-expand"></i>
-                                </Link>
+            <Container className={"mt-3"}>
+                <div className={"bg-light rounded-4 border border-1 "}>
+                    <Container className={"d-flex py-4 px-3"}>
+                        <div className={"d-flex flex-column align-items-center justify-content-between col-2  pe-0"}>
+                            {user.id !== user_id ?
+                                <Image src={placeholder} className={"img-fluid"}></Image>
                                 :
-                                <Link to={`/home`}>
-                                    <i className="bi bi-arrow-return-left"></i>
-                                </Link>
+                                <Image src={user_placeholder} className={"img-fluid"}></Image>
                             }
-
-                            <Dropdown className={"dropstart"}>
-                                <Button type="button" className=" post-options border-0 " data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                    <i className="bi bi-three-dots-vertical"></i>
-                                </Button>
-                                {user.id === user_id ? 
-                                <ul className="dropdown-menu">
-                                    <DropdownItem onClick={openModal} className={"ps-4"}>
-                                        <i className="bi bi-pencil-square pe-3"></i>Edit
-                                    </DropdownItem>
-                                    <DropdownItem onClick={deletePost} className={"ps-4"}>
-                                        <i className="bi bi-trash-fill pe-3"></i>Delete
-                                    </DropdownItem>
-                                </ul>
-                                :
-                                <ul className="dropdown-menu">
-                                    <DropdownItem onClick={""} className={"ps-4"}>
-                                        <i className="bi bi-flag pe-3"/>Report
-                                    </DropdownItem>
-                                </ul>
-                                }
-                            </Dropdown>
-                        </Col>
-                    </Row>
-                    <Row className={" flex-nowrap  p-1"}>
-                        <Col lg={2} className={"d-flex flex-column align-items-center "}>
-                        {user.id !== user_id ?
-                        <Image src={placeholder} className={"img-fluid"}></Image>
-                        :
-                        <Image src={user_placeholder} className={"img-fluid"}></Image>
-                        }
                             <Dropdown>
                                 <DropdownToggle className={"username"}>
                                     @{username}
@@ -371,16 +331,8 @@ export default function PostCards({postProp, minimize}) {
                                     </DropdownMenu>
                                 }
                             </Dropdown>
-                            <p className={"text-muted"}><small>{time} {edited ? <i>(edited)</i> : null }</small></p>
-                        </Col>
-                        <Col lg={8}>
-                            <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
-                                {content}
-                            </p>
-                        </Col>
-                    </Row>
-                    <Row className={"align-items-center flex-nowrap  p-1"}>
-                        <Col lg={2}>
+                            <p className={"text-muted"}><small>{time} </small></p>
+                            <p className={"text-muted"}><small>{edited ? <i>(edited)</i> : null }</small></p>
                             {love ?
                                 <div
                                     className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
@@ -395,25 +347,65 @@ export default function PostCards({postProp, minimize}) {
                                         className={"bi bi-heart"}></i> {count}</Button>
                                 </div>
                             }
-                        </Col>
-                        <Col lg={8}>
+                        </div>
+                        <div className={"d-flex flex-column align-items-start justify-content-between p-2 pe-0 flex-grow-1"}>
+                            <h5 className={"fw-bold"}>{subject}</h5>
+                            <p className={minimize ? 'post-content-preview' : 'post-content-text'}>
+                                {content}
+
+                            </p>
                             <TextareaAutosize
-                                className='comment-box'
+                                className='comment-box '
                                 placeholder='What are your thoughts?'
                                 onChange={e => setComment(e.target.value)}
                                 value={comment}
                             />
-                        </Col>
-                        <Col>
+                        </div>
+                        <div className={"d-flex flex-column align-items-end justify-content-between p-3 pe-0 "}>
+                            <div className={"d-flex flex-row flex-nowrap align-items-center"}>
+                            {minimize ?
+                                <Link to={`/post/${p_id}`} >
+                                    <i className="bi bi-arrows-expand"></i>
+                                </Link>
+                                :
+                                <Link to={`/home`}>
+                                    <i className="bi bi-arrow-return-left"></i>
+                                </Link>
+                            }
+
+                            <Dropdown className={"dropstart"}>
+                                <Button type="button" className=" post-options border-0 " data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    <i className="bi bi-three-dots-vertical"></i>
+                                </Button>
+                                {user.id === user_id ?
+                                    <ul className="dropdown-menu">
+                                        <DropdownItem onClick={openModal} className={"ps-4"}>
+                                            <i className="bi bi-pencil-square pe-3"></i>Edit
+                                        </DropdownItem>
+                                        <DropdownItem onClick={deletePost} className={"ps-4"}>
+                                            <i className="bi bi-trash-fill pe-3"></i>Delete
+                                        </DropdownItem>
+                                    </ul>
+                                    :
+                                    <ul className="dropdown-menu">
+                                        <DropdownItem onClick={""} className={"ps-4"}>
+                                            <i className="bi bi-flag pe-3"/>Report
+                                        </DropdownItem>
+                                    </ul>
+                                }
+                            </Dropdown>
+                            </div>
+                            <div className={"flex-grow-1"}></div>
+
                             <Button className=' d-flex flex-row flex-nowrap p-2 rounded-5 comment-button'
                                     onClick={reply} disabled={!active}>
                                 <i className={"bi bi-reply me-2"}></i>
                                 Reply
                             </Button>
-                        </Col>
-
-                    </Row>
-                </Col>
+                        </div>
+                    </Container>
+                </div>
                 <Modal show={open} size="lg" className="mt-auto" centered onHide={closeModal}>
                 <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
                     <h3 className='py-3'>Edit Post</h3>

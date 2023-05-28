@@ -802,6 +802,10 @@ body{
 	height:160px;
 }
 
+.appointment-list {
+	height:25rem;
+}
+
 .spinner-container {
 	padding: 0;
     margin: 2% 0;

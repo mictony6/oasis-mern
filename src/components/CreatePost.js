@@ -104,20 +104,6 @@ export default function CreatePost() {
                     ><i className={"bi bi-plus-lg"}></i> </Button>
                 </ButtonGroup>
 
-                {/* <Dropdown className='profile-avatar d-flex justify-content-center align-items-center flex-column' 
-                onMouseOver={showDropdown}
-                onMouseOut={hideDropdown}
-                >
-                    <Image src={user_placeholder} className="mx-2 w-auto"/>
-                    <Dropdown.Menu show={show}
-                        className='profile-dropdown'
-                    >
-                        <Dropdown.Item as={Link} to={`/user/${user.id}`}>Profile</Dropdown.Item>
-                        <Dropdown.Item as ={Link} to={'/settings'}>Settings</Dropdown.Item>
-                        <Dropdown.Item href="logout">Logout</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown> */}
-
                 <Dropdown>
                     <Button type="button" data-bs-toggle="dropdown" aria-expanded="false" className="border-0"
                     style={{background: 'transparent'}}>

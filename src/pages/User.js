@@ -4,13 +4,15 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, NavItem, Nav
+    Tab, Button, NavItem, Nav, ListGroup
 } from 'react-bootstrap';
 import { useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
+import UserPostItem from "../components/user/UserPostItem";
+import UserCommentItem from '../components/user/UserCommentItem';
 
 
 export default function User() {
@@ -29,8 +31,24 @@ export default function User() {
                             <Tab eventKey={"overview"} title={"Overview"}  >
                                 <UserOverview/>
                             </Tab>
-                            <Tab title={"Posts"} eventKey={"comments"}></Tab>
-                            <Tab title={"Comments"} eventKey={"comments"}></Tab>
+                            <Tab title={"Posts"} eventKey={"posts"}>
+                                <ListGroup>
+                                    <UserPostItem/>
+                                    <UserPostItem/>
+                                    <UserPostItem/>
+                                    <UserPostItem/>
+
+                                </ListGroup>
+                            </Tab>
+                            <Tab title={"Comments"} eventKey={"comments"}>
+                                <ListGroup>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                    <UserCommentItem/>
+                                </ListGroup>
+                            </Tab>
                             <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
                             <Tab title={"Likes"} eventKey={"likes"}></Tab>
                         </Tabs>
@@ -60,7 +78,7 @@ export default function User() {
                                 <Container fluid className={"my-1"}></Container>
                                 <Container fluid className={"d-flex flex-row flex-wrap p-1 "}>
                                     <div className={"mb-2 flex-grow-1"}>
-                                        <h6>Karma</h6>
+                                        <h6>Likes</h6>
                                         <div className={"d-flex aligns-items-center mt-1"}>
                                             <i className={"bi bi-hearts me-1"}></i>
                                             <span><small>100</small></span>
