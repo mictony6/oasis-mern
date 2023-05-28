@@ -6,18 +6,48 @@ import {
     Tabs,
     Tab, Button, NavItem, Nav, ListGroup
 } from 'react-bootstrap';
-import { useParams} from "react-router-dom";
+import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
 import UserPostItem from "../components/user/UserPostItem";
 import UserCommentItem from '../components/user/UserCommentItem';
+import { useEffect, useState } from 'react';
 
 
 export default function User() {
 
     const { user_id } = useParams();
+    const [posts, setPosts] = useState([])
+
+    useEffect(() => {
+        fetch(`http://localhost:4000/post/viewByUser/${user_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            setPosts(data.map(post => (
+                <UserPostItem key={post.post_id} postProp={post}/>
+                )))
+        })
+    })
+
+    const location = useLocation()
+    const history = useNavigate()
+
+    const getUrl = new URLSearchParams(location.search).get('tab');
+    const [tab, setTab] = useState(getUrl ? getUrl : 'overview')
+
+
+    function viewTab(val){
+        setTab(val)        
+        history(`${location.pathname}?tab=${val}`);
+    }
 
     return(
         <Container fluid>
@@ -27,20 +57,17 @@ export default function User() {
                 </Col>
                 <Col className={'my-4 '}>
                     <Row className={'w-100 my-4 rounded-4 bg-light'}>
-                        <Tabs >
-                            <Tab eventKey={"overview"} title={"Overview"}  >
+                        <Tabs onSelect={e => viewTab(e)}
+                        activeKey={tab}>
+                            <Tab title={"Overview"} eventKey={'overview'} value='overview'>
                                 <UserOverview/>
                             </Tab>
-                            <Tab title={"Posts"} eventKey={"posts"}>
+                            <Tab title={"Posts"} eventKey={'posts'} value='posts'>
                                 <ListGroup>
-                                    <UserPostItem/>
-                                    <UserPostItem/>
-                                    <UserPostItem/>
-                                    <UserPostItem/>
-
+                                    {posts}
                                 </ListGroup>
                             </Tab>
-                            <Tab title={"Comments"} eventKey={"comments"}>
+                            <Tab title={"Comments"} eventKey={'comments'} value='comments'>
                                 <ListGroup>
                                     <UserCommentItem/>
                                     <UserCommentItem/>
