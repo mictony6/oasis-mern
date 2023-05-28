@@ -9,7 +9,7 @@ export default function UserPostItem({postProp}){
 
     const { user } = useContext(UserContext)
 
-    const { post_id, subject, content, date_posted, user_id, username } = postProp
+    const { p_id, subject, content, date_time, user_id, username } = postProp
 
     const [love, setLove] = useState(false)
     const [count, setCount] = useState("")
@@ -17,10 +17,10 @@ export default function UserPostItem({postProp}){
     const relativeTime = require('dayjs/plugin/relativeTime')
     dayjs.extend(relativeTime)
 
-    const time = dayjs(date_posted).fromNow()
+    const time = dayjs(date_time).fromNow()
 
     useEffect(() => {
-        fetch(`http://localhost:4000/post/checkLike/${post_id}`,
+        fetch(`http://localhost:4000/post/checkLike/${p_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -32,7 +32,7 @@ export default function UserPostItem({postProp}){
             data.length !== 0 ? setLove(true) : setLove(false)
         })
 
-        fetch(`http://localhost:4000/post/countLikes/${post_id}`, {
+        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
             method : 'GET',
             headers : {
                 'Content-Type' : 'application/json',
@@ -43,16 +43,76 @@ export default function UserPostItem({postProp}){
                 data[0].count !== 0 ? setCount(data[0].count) : setCount("")
         })
 
-    }, [post_id, count, love, user_id, user.id, subject, content])
+        fetch(`http://localhost:4000/post/checkLike/${p_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data.length !== 0 ? setLove(true) : setLove(false)
+        })
+
+        fetch(`http://localhost:4000/post/countLikes/${p_id}`, {
+            method : 'GET',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            }).then(res => res.json())
+            .then(data => {
+                data[0].count !== 0 ? setCount(data[0].count) : setCount("")
+        })
+
+    }, [p_id, count, love, user_id, user.id, subject, content])
+
+    function likePost(e) {
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/like/${p_id}`, {
+        method : 'POST',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        }).then(res => res.json())
+        .then(data => {
+            data ? setLove(true) : setLove(false)
+        })
+    }
+
+    function unlikePost(e) {
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/unlike/${p_id}`, {
+        method : 'DELETE',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        }).then(res => res.json())
+        .then(data => {
+            data ? setLove(false) : setLove(true)
+        })
+    }
 
     return(
         <ListGroup.Item className={"p-3 pb-0"}>
             <Link to={""} className={"text-decoration-none"}>
             <div className={"d-flex align-items-center"}>
-                <div className={"pe-3 ps-2 text-center"}>
-                    <Button className={"bg-light"}><i className={"bi bi-heart"}></i></Button>
+                {love ?
+                <div className={"pe-3 ps-2 text-center"} onClick={unlikePost}>
+                    <Button className={"bg-light border-0 text-danger"}><i className={"bi bi-heart-fill"} z></i></Button>
                     <span>{count}</span>
                 </div>
+                :
+                <div className={"pe-3 ps-2 text-center"} onClick={likePost}>
+                    <Button className={"bg-light border-0 text-secondary"}><i className={"bi bi-heart"}></i></Button>
+                    <span>{count}</span>
+                </div>
+                }
                 <div >
                     <Image src={placeholder}></Image>
                 </div>
@@ -61,7 +121,7 @@ export default function UserPostItem({postProp}){
                     <p className={"text-muted"}><small>Posted by @{username} <i className={"bi bi-dot"}></i>{time}</small></p>
                     <Container fluid >
                         <div className={"d-flex flex-grow-1 py-2 align-items-baseline"}>
-                            <Link to={`/post/${post_id}`}><i className={"bi bi-arrows-angle-expand "}></i></Link>
+                            <Link to={`/post/${p_id}`}><i className={"bi bi-arrows-angle-expand "}></i></Link>
                             <Button className={"me-2 bg-light"}><i className={"bi bi-chat "}></i> Comments</Button>
                             <Button className={"me-2 bg-light"}><i className={"bi bi-eye-slash "}></i> Hide</Button>
 

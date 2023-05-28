@@ -20,6 +20,7 @@ export default function User() {
 
     const { user_id } = useParams();
     const [posts, setPosts] = useState([])
+    const [comments, setComments] = useState([])
 
     useEffect(() => {
         fetch(`http://localhost:4000/post/viewByUser/${user_id}`,
@@ -32,8 +33,24 @@ export default function User() {
         .then(res => res.json())
         .then(data => {
             setPosts(data.map(post => (
-                <UserPostItem key={post.post_id} postProp={post}/>
+                <UserPostItem key={post.p_id} postProp={post}/>
                 )))
+        })
+
+        fetch(`http://localhost:4000/post/viewCommentsByUser/${user_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data.length !== 0 ?
+            setComments(data.map(comment => (
+                <UserCommentItem key={comment.c_id} commentProp={comment}/>
+                ))) 
+                : setComments(null)
         })
     })
 
@@ -69,11 +86,7 @@ export default function User() {
                             </Tab>
                             <Tab title={"Comments"} eventKey={'comments'} value='comments'>
                                 <ListGroup>
-                                    <UserCommentItem/>
-                                    <UserCommentItem/>
-                                    <UserCommentItem/>
-                                    <UserCommentItem/>
-                                    <UserCommentItem/>
+                                    {comments}
                                 </ListGroup>
                             </Tab>
                             <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
