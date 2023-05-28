@@ -1,4 +1,4 @@
-import {Button, ButtonGroup, Col, Container, Image, ListGroupItem, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Container, Dropdown, Image, ListGroupItem, Row} from "react-bootstrap";
 import placeholder from "../static/images/profile_pic_placeholder.svg";
 import ContactItem from "./ContactItem";
 import {useState} from "react";
@@ -7,6 +7,12 @@ import UserContext from "../UserContext";
 import { useEffect } from "react";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownItem from "react-bootstrap/DropdownItem";
+import person_add from "../static/images/person/person-add.svg";
+import person_remove from "../static/images/person/person-dash.svg";
+import x_circle from "../static/images/x-circle.svg";
 
 export default function Booking({bookingProp}){
 
@@ -127,22 +133,28 @@ export default function Booking({bookingProp}){
             {!availability ?
             <Row>
                 <Col sm={6} className="d-flex align-items-center">
-                    <Col sm={2} className="d-flex align-items-center">
-                        <Image src={placeholder}></Image>
+                    <Col sm={1} className="d-flex align-items-center">
+
+                        <Image src={placeholder} className={"img-fluid slot-img"}></Image>
                     </Col>
                     <Col className="px-4">
+
                         <Row>
-                            <small className="text-muted"><em>username</em></small>
-                        </Row>
-                        <Row>
-                            <h4>{username}</h4>
+                            <Dropdown>
+                                <DropdownToggle className={"border-start border-2 rounded-0 username"}>{username}</DropdownToggle>
+                                <DropdownMenu  >
+                                    <DropdownItem  onClick={()=>{}}  className={"ps-4"}><i className={"bi bi-person pe-2"}></i>View Profile</DropdownItem>
+                                    <DropdownItem onClick={()=>{}}  className={"ps-4"}><i className={"bi bi-person-add pe-2"}></i>Add</DropdownItem>
+                                    <DropdownItem onClick={()=>{}}  className={"ps-4"}><i className="bi bi-x-circle pe-2"></i>Block</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
                         </Row>
                     </Col>
                 </Col>
                 <Col sm={2} className="d-flex align-items-center">
                     <small className="text-muted"> {humanizedDate} ({humanizedTime}) </small>
                 </Col>
-                <Col sm={4} className="d-flex align-items-center justify-content-end" >
+                <Col sm={2} className="d-flex align-items-center justify-content-start" >
                     {confirmation ?
                         <small className="text-muted"><em>confirmed</em></small>
                         :
@@ -157,6 +169,11 @@ export default function Booking({bookingProp}){
                         :
                         null
                     }
+
+                </Col>
+                <Col sm={2} className={"d-flex align-items-center justify-content-end"}>
+                    <Button className={"ms-2  border border-1"}><i className={"bi bi-chat-dots-fill text-white"}></i></Button>
+
                 </Col>
             </Row>
             :

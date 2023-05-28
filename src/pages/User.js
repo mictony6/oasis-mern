@@ -49,8 +49,12 @@ export default function User() {
                                     <UserCommentItem/>
                                 </ListGroup>
                             </Tab>
-                            <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
-                            <Tab title={"Likes"} eventKey={"likes"}></Tab>
+                            <Tab title={"Contacts"} eventKey={"contacts"}>
+                                {/*display contacts*/}
+                            </Tab>
+                            <Tab title={"Likes"} eventKey={"likes"}>
+                                {/*display all liked posts*/}
+                            </Tab>
                         </Tabs>
                     </Row>
                 </Col>

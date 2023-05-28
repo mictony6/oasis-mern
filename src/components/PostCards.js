@@ -361,7 +361,7 @@ export default function PostCards({postProp, minimize}) {
                                 value={comment}
                             />
                         </div>
-                        <div className={"d-flex flex-column align-items-end justify-content-between p-3 pe-0 "}>
+                        <div className={"d-flex flex-column align-items-end justify-content-between p-2 pe-0 "}>
                             <div className={"d-flex flex-row flex-nowrap align-items-center"}>
                             {minimize ?
                                 <Link to={`/post/${p_id}`} >
