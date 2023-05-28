@@ -100,9 +100,9 @@ export default function MessageBox({status, blocked_by}) {
     }, [chatHistory, params, message])
 
     return(
-        <Container fluid>
-            <ScrollToBottom className="chat-box d-flex flex-column">
-            <ListGroup className="py-5">
+        <Container >
+            <ScrollToBottom className="chat-box d-flex flex-column ">
+            <ListGroup className="py-5 ">
                 {chatHistory}
             </ListGroup>
             </ScrollToBottom>

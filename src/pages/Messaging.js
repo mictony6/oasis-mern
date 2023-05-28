@@ -91,17 +91,17 @@ export default function Messaging() {
                 <Col lg={2} className=''>
                     <AppNavbar/>
                 </Col>
-                <Col className='my-4'>
+                <Col className='my-4 '>
                     <p className='fg-primary fw-bold display-6'>connect</p>
                     <Row>
                         <Col lg={4}>
-                            <h5>active now</h5>
-                            <ListGroup className={"p-2"}>
+                            <h5>active chats</h5>
+                            <ListGroup id="chat-list" className={"p-2 bg-light "}>
                                 {contacts}
                             </ListGroup>
                         </Col>
-                        <Col  className={" px-0 me-4 pb-2 border border-2 rounded-3"}>
-                            <div className={"border-bottom border-1 d-flex align-items-center justify-content-center bg-secondary py-4 fw-bold  "}>
+                        <Col  className={" px-0 me-4 pb-2 border border-2 rounded-3 bg-light"}>
+                            <div className={"border-bottom shadow-sm d-flex align-items-center justify-content-center bg-secondary py-4 fw-bold  "}>
                                 <Dropdown>
                                     <DropdownToggle className={"username  "}>
                                         @{activeContact.username}

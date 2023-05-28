@@ -77,33 +77,41 @@ export default function CommentItem({commentProp}){
     }
 
     return(
-        <ListGroupItem className={'bg-light border-0 border-bottom'}>
-            <Row className={'d-flex flex-row align-items-center'}>
-                <Col className={'col-2 d-flex flex-column align-items-center '}>
-                    <Image src={user.id === user_id ? user_placeholder : placeholder}></Image>
-                    <div className={'fw-bold'}>@{username}</div>
-                    <p><small className={'text-muted '}>{time}</small></p>
-                </Col>
-                <Col >
-                    {content}
-                </Col>
-                <Col className={'col-2 text-center'}>
-                {love ?
-                    <div
-                        className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
-                        onClick={unlikeComment}>
-                        <Button className={"border-0 text-danger"}><i
-                            className={"bi bi-heart-fill"}></i> {count}</Button>
-                    </div> :
-                    <div
-                        className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes'
-                        onClick={likeComment}>
-                        <Button className={"border-0 text-secondary"}><i
-                            className={"bi bi-heart"}></i> {count}</Button>
+        <>
+        <ListGroupItem className={"bg-transparent border-0"}>
+            <div className={"bg-light rounded-4 border border-1 "}>
+                <Container className={"d-flex py-4 px-3"}>
+                    <div className={"d-flex flex-column align-items-center justify-content-between col-2 pe-0"}>
+                        <Image src={user.id === user_id ? user_placeholder : placeholder} className={"img-fluid"}></Image>
+                        <div className={'fw-bold'}>@{username}</div>
+                        <p><small className={'text-muted '}>{time}</small></p>
                     </div>
-                }
-                </Col>
-            </Row>
+
+                    <div className={"d-flex flex-column align-items-start justify-content-between p-2 pe-0 flex-grow-1"}>
+                        {content}
+                    </div>
+
+                    <div className={"d-flex flex-column align-items-end justify-content-between p-2 pe-0 "}>
+                        {love ?
+                        <div
+                            className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
+                            onClick={unlikeComment}>
+                            <Button className={"border-0 text-danger"}><i
+                                className={"bi bi-heart-fill"}></i> {count}</Button>
+                        </div> :
+                        <div
+                            className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes'
+                            onClick={likeComment}>
+                            <Button className={"border-0 text-secondary"}><i
+                                className={"bi bi-heart"}></i> {count}</Button>
+                        </div>
+                        }
+                    </div>
+
+                </Container>
+            </div>
+
         </ListGroupItem>
+        </>
     );
 }

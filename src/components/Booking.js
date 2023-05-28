@@ -13,6 +13,7 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import person_add from "../static/images/person/person-add.svg";
 import person_remove from "../static/images/person/person-dash.svg";
 import x_circle from "../static/images/x-circle.svg";
+import {Link} from "react-router-dom";
 
 export default function Booking({bookingProp}){
 
@@ -143,9 +144,10 @@ export default function Booking({bookingProp}){
                             <Dropdown>
                                 <DropdownToggle className={"border-start border-2 rounded-0 username"}>{username}</DropdownToggle>
                                 <DropdownMenu  >
-                                    <DropdownItem  onClick={()=>{}}  className={"ps-4"}><i className={"bi bi-person pe-2"}></i>View Profile</DropdownItem>
-                                    <DropdownItem onClick={()=>{}}  className={"ps-4"}><i className={"bi bi-person-add pe-2"}></i>Add</DropdownItem>
-                                    <DropdownItem onClick={()=>{}}  className={"ps-4"}><i className="bi bi-x-circle pe-2"></i>Block</DropdownItem>
+                                    <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><i
+                                        className="bi bi-person-fill pe-3"></i>View Profile</DropdownItem>
+                                    <DropdownItem className={"ps-4"} onClick={()=>{}}><i className={"bi bi-person-add pe-3"}></i>Add</DropdownItem>
+                                    <DropdownItem onClick={()=>{}} className={"ps-4"}><i className="bi bi-x-circle pe-3"></i>Block</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </Row>
@@ -172,7 +174,7 @@ export default function Booking({bookingProp}){
 
                 </Col>
                 <Col sm={2} className={"d-flex align-items-center justify-content-end"}>
-                    <Button className={"ms-2  border border-1"}><i className={"bi bi-chat-dots-fill text-white"}></i></Button>
+                    <Link as={"button"} to={"/chats/"+user_id} className={"btn ms-3 border"}><i className={"bi bi-chat-dots-fill text-white"}></i></Link>
 
                 </Col>
             </Row>
