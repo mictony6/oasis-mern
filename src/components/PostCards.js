@@ -6,7 +6,7 @@ import { useMediaQuery } from 'react-responsive'
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
 import TextareaAutosize from 'react-textarea-autosize';
-import {Link, ScrollRestoration} from "react-router-dom";
+import {Link, ScrollRestoration, useNavigate} from "react-router-dom";
 import Swal from 'sweetalert2'
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
@@ -290,6 +290,11 @@ export default function PostCards({postProp, minimize}) {
         })
     }
 
+    const navigate = useNavigate()
+    const goBack = () => {  
+        navigate(-1);
+    };
+
     return (
             <Container className={"mt-3"}>
                 <div className={"bg-light rounded-4 border border-1 "}>
@@ -368,7 +373,7 @@ export default function PostCards({postProp, minimize}) {
                                     <i className="bi bi-arrows-expand"></i>
                                 </Link>
                                 :
-                                <Link to={`/home`}>
+                                <Link onClick={goBack}>
                                     <i className="bi bi-arrow-return-left"></i>
                                 </Link>
                             }
