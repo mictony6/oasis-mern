@@ -230,11 +230,6 @@ export default function TherapistCard({therapistProp}){
                                                             <option value={"in_person"} disabled={!in_person}>In-Person Consultation</option>
                                                     </select>
                                                 </Form.Group>
-                                                <Form.Group >
-
-                                                    {/* <Form.Label htmlFor="consultation-clinic">clinic</Form.Label>
-                                                    <Form.Control id="consultation-clinic" name="clinic" type="text" onChange={handleInputChange}  placeholder="* Insert name here *" ></Form.Control> */}
-                                                </Form.Group>
                                                 </>
 
                                             )}

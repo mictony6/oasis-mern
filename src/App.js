@@ -67,6 +67,11 @@ function App() {
 					username: data[0].username,
 					email: data[0].email,
 					role: data[0].role,
+          bio: data[0].bio,
+          registration_date: data[0].registration_date,
+          fb_link: data[0].fb_link,
+          twt_link: data[0].twt_link,
+          li_link: data[0].li_link
 				});
 			} else {
 				setUser({
@@ -74,6 +79,11 @@ function App() {
           username: null,
           email: null,
           role: null,
+          bio: null,
+          registration_date: null,
+          fb_link: null,
+          twt_link: null,
+          li_link: null
 				})
 			}
 		})

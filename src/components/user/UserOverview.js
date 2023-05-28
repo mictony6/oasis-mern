@@ -5,13 +5,13 @@ import { useContext } from "react";
 import UserContext from "../../UserContext";
 import UserCommentItem from "./UserCommentItem";
 import UserPostItem from "./UserPostItem";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 
 
 export default function UserOverview() {
 
-    const { user } = useContext(UserContext)
+    const { user_id } = useParams();
 
     const [postComments, setPostComments] = useState([])
 
@@ -22,7 +22,7 @@ export default function UserOverview() {
     const [view, setView] = useState(getUrl ? getUrl : 'Recent')
 
     useEffect(() => {
-        fetch(`http://localhost:4000/post/viewAllCommentsPostsBy${view}/${user.id}`,
+        fetch(`http://localhost:4000/post/viewAllCommentsPostsBy${view}/${user_id}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

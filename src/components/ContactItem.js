@@ -9,14 +9,14 @@ import UserContext from "../UserContext";
 export default function ContactItem({contactProp, active}) {
 
     const { user } = useContext(UserContext)
-    const {username, contact_id, user_id} = contactProp
+    const {username, contact_id, contact_person_id } = contactProp
     const active_user = active
 
     return(
         <ListGroupItem className={active_user === username ? "highlight-chat":""}>
             <Row className={'d-flex flex-row align-items-center '}>
                 <Col className={' px-1 col-2'}>
-                    <Link to={'#profile_link'}><Image src={user.id === user_id ? user_placeholder : placeholder} className={'img-fluid  '}></Image></Link>
+                    <Link to={`/user/${contact_person_id}`}><Image src={placeholder} className={'img-fluid'}></Image></Link>
                 </Col>
                 <Col className={'fw-bold px-3 '}>
                     @{username}

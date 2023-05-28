@@ -4,23 +4,60 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, NavItem, Nav, ListGroup
+    Tab, Button, NavItem, Nav, ListGroup, Modal, FormControl, Form, FormLabel
 } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
+import fb from '../static/images/facebook.svg';
+import twt from '../static/images/twitter.svg';
+import lnk from '../static/images/linkedin.svg';
 import UserPostItem from "../components/user/UserPostItem";
 import UserCommentItem from '../components/user/UserCommentItem';
 import { useEffect, useState } from 'react';
+import ContactItem from '../components/ContactItem';
+import { useContext } from 'react';
+import UserContext from '../UserContext';
+import dayjs from 'dayjs'
+import { FormGroup, TextareaAutosize } from '@mui/material';
+import Swal from 'sweetalert2';
 
 
 export default function User() {
 
+    const { user } = useContext(UserContext)
+
     const { user_id } = useParams();
+
     const [posts, setPosts] = useState([])
     const [comments, setComments] = useState([])
+    const [contacts, setContacts] = useState([])
+    const [liked, setLiked] = useState([])
+
+    const [user_username, setUsername] = useState('')
+    const [user_role, setRole] = useState('')
+    const [user_registration_date, setRegistrationDate] = useState('')
+    const [user_fb_link, setFBLink] = useState('')
+    const [user_twt_link, setTwtLink] = useState('')
+    const [user_li_link, setLiLink] = useState('')
+    const [user_bio, setBio] = useState('')
+
+    const [new_username, setNewUsername] = useState(user.username)
+    const [new_fb_link, setNewFBLink] = useState(user.fb_link)
+    const [new_twt_link, setNewTwtLink] = useState(user.twt_link)
+    const [new_li_link, setNewLiLink] = useState(user.li_link)
+    const [newBio, setNewBio] = useState(user.bio)
+
+    const [usernameExists, setUsernameExists] = useState(false)
+    const [isValidUsername, setValidUsername] = useState(false)
+    const [isValidFB, setValidFB] = useState(false)
+    const [isValidTwt, setValidTwt] = useState(false)
+    const [isValidLi, setValidLi] = useState(false)
+
+    const [editActive, setEditActive] = useState(false)
+    const [socialActive, setSocialActive] = useState(false)
 
     useEffect(() => {
         fetch(`http://localhost:4000/post/viewByUser/${user_id}`,
@@ -52,7 +89,104 @@ export default function User() {
                 ))) 
                 : setComments(null)
         })
-    })
+
+        fetch(`http://localhost:4000/contact/viewAll`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            setContacts(data.map(contact => {
+                return(
+                contact.status === 'ACTIVE' ? 
+                <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false}/>
+                :
+                null       
+            )
+        }))
+        })
+
+        fetch(`http://localhost:4000/post/viewAllLikedCommentsPosts/${user_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data.length !== 0 ?
+            setLiked(data.map(item => (
+                item.type === 'comment' ?
+                <UserCommentItem key={item.c_id} commentProp={item}/>
+                :
+                <UserPostItem key={item.p_id} postProp={item}/>
+                ))) 
+                : setLiked(null)
+        })
+
+    }, [new_username, user.id, user.username, user_id, usernameExists])
+
+    useEffect(() => {
+        fetch('http://localhost:4000/user/checkUsername', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({
+                username: new_username
+            })
+        }).then(res => res.json())
+        .then(data => {
+            data ? setUsernameExists(true) : setUsernameExists(false)
+        })
+
+        const valid_username= /^[a-z0-9_.-]{3,15}$/
+        if(new_username){new_username.match(valid_username) ? setValidUsername(true) : setValidUsername(false)}
+        // check if username already exists
+        new_username !== '' && (new_username !== user.username || !usernameExists) && isValidUsername ? setEditActive(true) : setEditActive(false)
+    }, [isValidUsername, new_username, user.username, usernameExists])
+
+    useEffect(() => {
+        const fb_valid = /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9(.?)?]/
+        const twt_valid = /^(https?:\/\/)?(www\.)?twitter\.com\/[a-zA-Z0-9_]{1,15}$/
+        const li_valid = /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[a-zA-Z0-9_-]+\/?$/
+
+        if(new_fb_link){new_fb_link.match(fb_valid) ? setValidFB(true) : setValidFB(false)}
+        if(new_twt_link){new_twt_link.match(twt_valid) ? setValidTwt(true) : setValidTwt(false)}
+        if(new_li_link){new_li_link.match(li_valid) ? setValidLi(true) : setValidLi(false)}
+
+        (!new_fb_link || isValidFB) && (!new_twt_link || isValidTwt) && (!new_li_link || isValidLi) ? setSocialActive(true) : setSocialActive(false)
+    }, [isValidFB, isValidLi, isValidTwt, new_fb_link, new_li_link, new_twt_link])
+
+    useEffect(() => {
+            fetch(`http://localhost:4000/user/getUser/${user_id}`,
+            {method: 'GET',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+            }
+            )
+            .then(res => res.json())
+            .then(data => {
+                setUsername(data[0].username)
+                setRole(data[0].role)
+                setRegistrationDate(dayjs(data[0].registration_date).format('MMMM DD, YYYY'))
+                setFBLink(data[0].fb_link)
+                setTwtLink(data[0].twt_link)
+                setLiLink(data[0].li_link)
+                setBio(data[0].bio)
+
+                setNewUsername(data[0].username)
+                setNewFBLink(data[0].fb_link)
+                setNewTwtLink(data[0].twt_link)
+                setNewLiLink(data[0].li_link)
+                setNewBio(data[0].bio)
+            })
+    }, [user.id, user_id])
 
     const location = useLocation()
     const history = useNavigate()
@@ -60,10 +194,82 @@ export default function User() {
     const getUrl = new URLSearchParams(location.search).get('tab');
     const [tab, setTab] = useState(getUrl ? getUrl : 'overview')
 
-
     function viewTab(val){
         setTab(val)        
         history(`${location.pathname}?tab=${val}`);
+    }
+
+    const [openEdit, setOpenEdit] = useState(false);
+    const [openSocial, setOpenSocial] = useState(false);
+
+    function editUser(e) {
+        e.preventDefault()
+
+        Swal.fire({
+            text: "Are you sure you want to save your changes?",
+            iconColor: '#3A3530',
+            color: '#3A3530',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+            actions: 'my-actions',
+            cancelButton: 'order-1 right-gap',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:4000/user/editDetails`, {
+                    method : 'PATCH',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({
+                        username: new_username,
+                        bio: newBio,
+                        fb_link: new_fb_link,
+                        twt_link: new_twt_link,
+                        li_link: new_li_link
+                    })
+                    }).then(res => res.json())
+                    .then(data => {
+                        data ?
+                        Swal.fire({
+                            title: "Your details have been updated successfully!",
+                            icon: "success",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                        :
+                        Swal.fire({
+                            title: "Oh No!",
+                            icon: "error",
+                            text: "Something went wrong :( Please try again!",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                })
+                setUsername(new_username);
+                setBio(newBio);
+                setFBLink(new_fb_link);
+                setTwtLink(new_twt_link);
+                setLiLink(new_li_link);
+                setOpenEdit(false)
+                setOpenSocial(false)
+            }
+        })
+
     }
 
     return(
@@ -89,8 +295,16 @@ export default function User() {
                                     {comments}
                                 </ListGroup>
                             </Tab>
-                            <Tab title={"Contacts"} eventKey={"contacts"}></Tab>
-                            <Tab title={"Likes"} eventKey={"likes"}></Tab>
+                            <Tab title={"Contacts"} eventKey={"contacts"}>
+                                <ListGroup>
+                                    {contacts}
+                                </ListGroup>
+                            </Tab>
+                            <Tab title={"Likes"} eventKey={"likes"}>
+                                <ListGroup>
+                                    {liked}
+                                </ListGroup>
+                            </Tab>
                         </Tabs>
                     </Row>
                 </Col>
@@ -107,41 +321,54 @@ export default function User() {
                                 <Container fluid className={"position-relative text-center"}>
                                     <Image src={placeholder} className={"profile-pic"}/>
                                 </Container>
-                                <h5 className={"text-center py-1"}>@Mic Tony</h5>
-                                <p className={"text-center "}><small >user/mictony - 3yrs</small></p>
-                                <Button className={"d-flex align-items-center justify-content-between w-100 border-0"}>
+                                <h5 className={"text-center py-1"}>@{user_username}</h5>
+                                <p className={"text-center "}><small >{user_role}</small></p>
+                                {user_id === user.id && 
+                                <Button className={"d-flex align-items-center justify-content-between w-100 border-0"}
+                                onClick={e => setOpenEdit(true)}
+                                >
                                     <i className={"bi bi-pen"}></i>
                                     Edit Profile
                                     <div></div>
-
-                                </Button>
+                                </Button>}
                                 <Container fluid className={"my-1"}></Container>
-                                <Container fluid className={"d-flex flex-row flex-wrap p-1 "}>
-                                    <div className={"mb-2 flex-grow-1"}>
-                                        <h6>Likes</h6>
-                                        <div className={"d-flex aligns-items-center mt-1"}>
+                                <Container fluid className={"d-flex flex-row flex-wrap p-1"}>
+                                    <div className={"d-flex flex-column mb-2 flex-grow-1 align-items-center"}>
+                                        <Row><h6>Likes</h6></Row>
+                                        <Row><div className={"d-flex aligns-items-center mt-1"}>
                                             <i className={"bi bi-hearts me-1"}></i>
                                             <span><small>100</small></span>
                                         </div>
+                                        </Row>
+                                        
                                     </div>
-                                    <div className={"mb-2 flex-grow-1"}>
-                                        <h6>User Day</h6>
-                                        <div className={"d-flex aligns-items-center mt-1"}>
+                                    <div className={"d-flex flex-column mb-2 flex-grow-1 align-items-center"}>
+                                        <Row><h6>User Day</h6></Row>
+                                        <Row><div className={"d-flex aligns-items-center mt-1"}>
                                             <i className={"bi bi-calendar-event me-1"}></i>
-                                            <span><small>July 4, 2002</small></span>
-
+                                            <span><small>{user_registration_date}</small></span>
                                         </div>
+                                        </Row>
+                                        
                                     </div>
+                                    {user_id === user.id &&
+                                    <div className={"d-flex flex-column my-2 flex-grow-1 align-items-center"}>
+                                        <Row>
+                                            {user_fb_link && <Col><a href={user_fb_link.substring(0,5) === "https" ? user_fb_link : "https://"+user_fb_link} target="_blank" rel="noopener noreferrer"><Image src={fb}/></a></Col>}
+                                            {user_twt_link && <Col><a href={user_twt_link.substring(0,5) === "https" ? user_twt_link : "https://"+user_twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}
+                                            {user_li_link && <Col><a href={user_li_link.substring(0,5) === "https" ? user_li_link : "https://"+user_li_link} target="_blank" rel="noopener noreferrer"><Image src={lnk}/></a></Col>}
+                                        </Row>
+                                        <Row>
+                                            <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2"} onClick={e => setOpenSocial(true)}>
+                                                <i className={"bi bi-plus"}></i>
+                                                Edit socials
+                                            </Button>
+                                        </Row>
+                                        
+                                        <Button className={"w-100 mt-4"}>New Post</Button>
+                                    </div>}
+
                                 </Container>
-                                <Nav>
-                                    <NavItem className={"d-flex"}>
-                                        <Button as={"li"} className={" d-flex align-items-center px-2 py-1 me-2"} >
-                                            <i className={"bi bi-plus"}></i>
-                                            Add social link
-                                        </Button>
-                                    </NavItem>
-                                </Nav>
-                                    <Button className={"w-100 mt-2"}>New Post</Button>
                             </Container>
                         </div>
                     </Container>
@@ -157,13 +384,102 @@ export default function User() {
                             </Container>
                             <Container>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur quis sagittis magna. Nullam in leo et eros interdum bibendum. Integer est risus, semper a quam.
+                                    {user_bio ? user_bio : 'No bio available yet.'}
                                 </p>
                             </Container>
+                            <Button className={"w-100 mt-4"}>Edit Bio</Button>
                         </div>
                     </Container>
                 </Col>
             </Row>
+
+            <Modal show={openEdit} size="md" className="mt-auto" centered onHide={e => setOpenEdit(false)}>
+                <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
+                    <h3 className='py-3'>Edit Profile</h3>
+                    <div className='rounded-4 d-flex flex-column p-2 shadow-focus w-100' >
+                        <Form.Label htmlFor='inputUsername'>Enter new username</Form.Label>
+                        <Form.Control
+                            id='inputUsername'
+                            placeholder="Username"
+                            className='border-1 shadow-none'
+                            value={new_username}
+                            onChange = {e => setNewUsername(e.target.value)}
+                        />
+                        {(usernameExists && user.username !== new_username) && <Form.Text className='error-msg'>Username already taken. Please try another one.</Form.Text>
+                        }
+                    </div>
+                    <div className='rounded-4 d-flex flex-column p-2 shadow-focus w-100' >
+                        <Form.Label htmlFor='inputEmail'>Email</Form.Label>
+                        <Form.Control
+                            id='inputUsername'
+                            placeholder="Username"
+                            className='border-1 shadow-none text-muted'
+                            value={user.email}
+                            disabled
+                        />
+                    </div>
+                    <div className='mt-3'>
+                        <Button 
+                        className="rounded px-5 bg-primary border-0"
+                        onClick={editUser}
+                        disabled={!editActive}
+                        >
+                            Save
+                        </Button>
+                    </div>
+                </Container>
+            </Modal>
+
+            <Modal show={openSocial} size="md" className="mt-auto" centered onHide={e => setOpenSocial(false)}>
+                <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
+                    <h3 className='py-3'>Edit Social Links</h3>
+                    <div className='rounded-4 d-flex flex-column p-2 shadow-focus w-100' >
+                        <Form.Label htmlFor='fb-link'>Facebook</Form.Label>
+                        <Form.Control
+                            id='fb-link'
+                            placeholder="www.facebook.com/juandelacruz"
+                            className='border-1 shadow-none'
+                            value={new_fb_link}
+                            onChange = {e => setNewFBLink(e.target.value)}
+                        />
+                        {(new_fb_link && !isValidFB) && <Form.Text className='error-msg'>Please enter a valid Facebook link.</Form.Text>}
+                    </div>
+                    <div className='rounded-4 d-flex flex-column p-2 shadow-focus w-100' >
+                        <Form.Label htmlFor='twt-link'>Twitter</Form.Label>
+                        <Form.Control
+                            id='twt-link'
+                            placeholder="www.twitter.com/juandelacruz"
+                            className='border-1 shadow-none'
+                            value={new_twt_link}
+                            onChange = {e => setNewTwtLink(e.target.value)}
+                        />
+                        {(new_twt_link && !isValidTwt) && <Form.Text className='error-msg'>Please enter a valid Twitter link.</Form.Text>}
+                    </div>
+                    <div className='rounded-4 d-flex flex-column p-2 shadow-focus w-100' >
+                        <Form.Label htmlFor='li-link'>LinkedIn</Form.Label>
+                        <Form.Control
+                            id='li-link'
+                            placeholder="www.linkedin.com/in/juandelacruz"
+                            className='border-1 shadow-none'
+                            value={new_li_link}
+                            onChange = {e => setNewLiLink(e.target.value)}
+                        />
+                        {(new_li_link && !isValidLi) && <Form.Text className='error-msg'>Please enter a valid LinkedIn link.</Form.Text>}
+
+                    </div>
+                    <div className='mt-3'>
+                        <Button 
+                        className="rounded px-5 bg-primary border-0"
+                        onClick={editUser}
+                        disabled={!socialActive}
+                        >
+                            Save
+                        </Button>
+                    </div>
+                </Container>
+            </Modal>
+
+
         </Container>
     );
 }
