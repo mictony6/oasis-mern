@@ -4,7 +4,7 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, NavItem, Nav, ListGroup
+    Tab, Button, NavItem, Nav, ListGroup, ModalTitle, ModalBody, Modal
 } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
@@ -14,12 +14,14 @@ import profile_banner from "../static/images/bg.png"
 import UserPostItem from "../components/user/UserPostItem";
 import UserCommentItem from '../components/user/UserCommentItem';
 import { useEffect, useState } from 'react';
+import ProfileEditForm from "../components/user/ProfileEditForm";
 
 
 export default function User() {
 
     const { user_id } = useParams();
     const [posts, setPosts] = useState([])
+    const [showEdit, setShowEdit] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:4000/post/viewByUser/${user_id}`,
@@ -100,12 +102,15 @@ export default function User() {
                                 </Container>
                                 <h5 className={"text-center py-1"}>@Mic Tony</h5>
                                 <p className={"text-center "}><small >user/mictony - 3yrs</small></p>
-                                <Button className={"d-flex align-items-center justify-content-between w-100 border-0"}>
+                                <Button onClick={()=>{setShowEdit(true)}} className={"d-flex align-items-center justify-content-between w-100 border-0"}>
                                     <i className={"bi bi-pen"}></i>
                                     Edit Profile
                                     <div></div>
-
                                 </Button>
+                                <Modal show={showEdit} onHide={() => {setShowEdit(false)}} >
+                                    <ProfileEditForm/>
+                                </Modal>
+
                                 <Container fluid className={"my-1"}></Container>
                                 <Container fluid className={"d-flex flex-row flex-wrap p-1 "}>
                                     <div className={"mb-2 flex-grow-1"}>
@@ -135,6 +140,7 @@ export default function User() {
                                     <Button className={"w-100 mt-2"}>New Post</Button>
                             </Container>
                         </div>
+
                     </Container>
 
 
