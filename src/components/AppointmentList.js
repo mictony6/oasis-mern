@@ -33,7 +33,7 @@ export default function AppointmentList(){
     useEffect(() => {
         setHumanizedDate(dayjs(new Date(date)).format('MMMM DD'))
 
-        fetch(`http://localhost:4000/therapist/getSlotsBy${key}/1`,
+        fetch(`http://localhost:4000/booking/getSlotsBy${key}/1`,
         {method: 'POST',
         headers: {
             'Content-Type' : 'application/json',
@@ -46,6 +46,7 @@ export default function AppointmentList(){
         )
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             data.length !== 0 ?
             setSlots(data.map(slot => {
                 return(
@@ -99,17 +100,17 @@ export default function AppointmentList(){
               className="mb-3"
           >
               <Tab eventKey="Day" title="Day">
-                  <ListGroup>
+                  <ListGroup className={"appointment-list overflow-auto"}>
                     {slots}
                   </ListGroup>
               </Tab>
               <Tab eventKey="Week" title="Week">
-                  <ListGroup>
+                  <ListGroup className={"appointment-list overflow-auto"}>
                     {slots}
                   </ListGroup>
               </Tab>
               <Tab eventKey="Month" title="Month" >
-                  <ListGroup>
+                  <ListGroup className={"appointment-list overflow-auto"}>
                     {slots}
                   </ListGroup>
               </Tab>

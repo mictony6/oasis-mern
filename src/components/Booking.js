@@ -22,10 +22,11 @@ export default function Booking({bookingProp}){
     }, [date, time])
 
 
+
     return(
         <ListGroupItem className={"border-0 my-1"}>
         <Container>
-            <Row>
+            <Row >
                 <Col sm={6}>
                 <Image src={placeholder}></Image>
                 </Col>
