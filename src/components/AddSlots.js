@@ -5,35 +5,34 @@ import UserContext from "../UserContext";
 import { useState } from "react";
 import { useEffect } from "react";
 import { DateRangePicker } from "rsuite";
-import {subDays, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, addMonths, subMonths, addHours, startOfHour, startOfDay, format, eachDayOfInterval, eachHourOfInterval} from 'date-fns';
+import {subDays, startOfWeek, endOfWeek, addDays, startOfMonth, endOfMonth, addMonths, subMonths, addHours, startOfHour, startOfDay, format, eachDayOfInterval, eachHourOfInterval, addWeeks, endOfDay} from 'date-fns';
 import { isBefore } from "date-fns";
 import { isToday } from "date-fns";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+import TherapistContext from "../TherapistContext";
 
 export default function AddSlots() {
 
     const { id } = useContext(UserContext);
+    const { therapist } = useContext(TherapistContext)
 
-    const [dates, setDates] = useState('')
-    const [times, setTimes] = useState('')
+    const [dates, setDates] = useState(null)
+    const [times, setTimes] = useState(null)
+
+    const [active, setActive] = useState(false)
 
     const today = new Date()
 
     const predefinedDateRanges = [
         {
-            label: 'Today',
-            value: [today, today],
+            label: 'Tomorrow',
+            value: [startOfDay(addDays(today, 1)), endOfDay(addDays(today, 1))],
             placement: 'left'
         },
         {
-            label: 'This week',
-            value: [startOfWeek(today), endOfWeek(today)],
-            placement: 'left'
-        },
-        {
-            label: 'This month',
-            value: [startOfMonth(today), endOfMonth(today)],
+            label: 'Next week',
+            value: [startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 }), addDays(startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 }), 4)],
             placement: 'left'
         },
         {
@@ -76,7 +75,7 @@ export default function AddSlots() {
     };
 
     useEffect(() => {
-        
+        dates !== null && times !== null ? setActive(true) : setActive(false)
     }, [dates, times])
 
     const handleSubmit = (e) => {
@@ -109,7 +108,7 @@ export default function AddSlots() {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify({
-                        therapist_id: 1,
+                        therapist_id: therapist.therapist_id,
                         date: dayjs(datesArray[i]).format('YYYY-MM-DD'),
                         time: dayjs(timesArray[j]).format('HH:mm')
                     })
@@ -175,7 +174,7 @@ export default function AddSlots() {
                 />
             </Row>
             <Row className='justify-content-center align-items-center mt-4'>
-                <Button type="submit" className="w-25" onClick={addSlot}> Add slot </Button>
+                <Button type="submit" className="w-25 next-button" onClick={addSlot} disabled={!active}> Add slot </Button>
             </Row>
         </Form>
             
