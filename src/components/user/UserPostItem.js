@@ -128,8 +128,8 @@ export default function UserPostItem({postProp}){
                     <Container fluid >
                         <div className={"d-flex flex-grow-1 py-2 align-items-baseline"}>
                             <Button className={"me-2 bg-light"} onClick={e => {nav(`/post/${p_id}`)}}><i className={"bi bi-arrows-angle-expand "}></i></Button>
-                            <Button className={"me-2 bg-light"}><i className={"bi bi-chat "}></i> Comments</Button>
-                            <Button className={"me-2 bg-light"}><i className={"bi bi-eye-slash "}></i> Hide</Button>
+                            <Button className={"me-2 bg-light"}><i className={"bi bi-pencil "}></i> Edit</Button>
+                            <Button className={"me-2 bg-light"}><i className={"bi bi-trash "}></i> Delete</Button>
 
                             <div className={"flex-grow-1"}></div>
                         </div>
