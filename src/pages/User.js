@@ -201,6 +201,72 @@ export default function User() {
 
     const [openEdit, setOpenEdit] = useState(false);
     const [openSocial, setOpenSocial] = useState(false);
+    const [openBio, setOpenBio] = useState(false);
+
+    const [subject, setSubject] = useState("")
+    const [content, setContent] = useState("");
+
+    const [open, setOpen] = useState(false);
+    const [active, setActive] = useState(false)
+
+
+    const openModal = (e) => {
+        setOpen(true);
+    }
+    const closeModal = e => {
+        setOpen(false);
+    }
+
+    useEffect(() => {
+        subject !== '' && content !== '' ? setActive(true) : setActive(false)
+    }, [subject, content])
+
+    function createPost(e) {
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/create`, {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                subject: subject,
+                content: content
+            })
+            }).then(res => res.json())
+            .then(data => {
+                data ? 
+                Swal.fire({
+                    title: "Post created!",
+                    icon: "success",
+                    text: "Thank you for sharing.",
+                    iconColor: '#3A3530',
+                    color: '#3A3530',
+                    confirmButtonText: "OK",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
+                })
+                :
+                Swal.fire({
+                    title: "Oh No!",
+                    icon: "error",
+                    text: "Something went wrong :( Please try again!",
+                    iconColor: '#3A3530',
+                    color: '#3A3530',
+                    confirmButtonText: "OK",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
+                })
+        })
+        closeModal()
+        setSubject("");
+        setContent("");
+    }
 
     function editUser(e) {
         e.preventDefault()
@@ -267,6 +333,7 @@ export default function User() {
                 setLiLink(new_li_link);
                 setOpenEdit(false)
                 setOpenSocial(false)
+                setOpenBio(false)
             }
         })
 
@@ -351,22 +418,24 @@ export default function User() {
                                         </Row>
                                         
                                     </div>
-                                    {user_id === user.id &&
                                     <div className={"d-flex flex-column my-2 flex-grow-1 align-items-center"}>
                                         <Row>
                                             {user_fb_link && <Col><a href={user_fb_link.substring(0,5) === "https" ? user_fb_link : "https://"+user_fb_link} target="_blank" rel="noopener noreferrer"><Image src={fb}/></a></Col>}
                                             {user_twt_link && <Col><a href={user_twt_link.substring(0,5) === "https" ? user_twt_link : "https://"+user_twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}
                                             {user_li_link && <Col><a href={user_li_link.substring(0,5) === "https" ? user_li_link : "https://"+user_li_link} target="_blank" rel="noopener noreferrer"><Image src={lnk}/></a></Col>}
                                         </Row>
+                                        {user_id === user.id &&
                                         <Row>
                                             <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2"} onClick={e => setOpenSocial(true)}>
                                                 <i className={"bi bi-plus"}></i>
                                                 Edit socials
                                             </Button>
-                                        </Row>
-                                        
-                                        <Button className={"w-100 mt-4"}>New Post</Button>
-                                    </div>}
+                                        </Row>}
+                                        {user_id === user.id &&
+                                        <Button className={"w-100 mt-4"}
+                                        onClick={openModal}
+                                        >New Post</Button>}
+                                    </div>
 
                                 </Container>
                             </Container>
@@ -387,7 +456,8 @@ export default function User() {
                                     {user_bio ? user_bio : 'No bio available yet.'}
                                 </p>
                             </Container>
-                            <Button className={"w-100 mt-4"}>Edit Bio</Button>
+                            {user_id === user.id &&
+                            <Button className={"w-100 mt-4"} onClick={e => setOpenBio(true)}>Edit Bio</Button>}
                         </div>
                     </Container>
                 </Col>
@@ -474,6 +544,64 @@ export default function User() {
                         disabled={!socialActive}
                         >
                             Save
+                        </Button>
+                    </div>
+                </Container>
+            </Modal>
+
+            <Modal show={openBio} size="md" className="mt-auto" centered onHide={e => setOpenBio(false)}>
+                <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
+                    <h3 className='py-3'>Edit Bio</h3>
+                    <div className='rounded-4 d-flex flex-column p-2 shadow-focus w-100' >
+                    <TextareaAutosize
+                            className='content-box'
+                            placeholder='What are your thoughts?'
+                            minRows={5}
+                            maxRows={7}
+                            onChange = {e => setNewBio(e.target.value)}
+                            value={newBio}
+                        />
+                    </div>
+                    <div className='mt-3'>
+                        <Button 
+                        className="rounded px-5 bg-primary border-0"
+                        onClick={editUser}
+                        disabled={!socialActive}
+                        >
+                            Save
+                        </Button>
+                    </div>
+                </Container>
+            </Modal>
+
+            <Modal show={open} size="lg" className="mt-auto" centered onHide={closeModal}>
+                <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
+                    <h3 className='py-3'>Create A New Post</h3>
+                    <div className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
+                        <FormControl 
+                            placeholder="Title"
+                            className='border-0 w-100 shadow-none'
+                            onChange = {e => setSubject(e.target.value)}
+                            value={subject}
+                        />
+                    </div>
+                    <div className='w-100'>
+                        <TextareaAutosize
+                            className='content-box'
+                            placeholder='What are your thoughts?'
+                            minRows={10}
+                            maxRows={15}
+                            onChange = {e => setContent(e.target.value)}
+                            value={content}
+                        />
+                    </div>
+                    <div className='mt-3'>
+                        <Button 
+                        className="rounded px-5 bg-primary border-0"
+                        onClick={createPost}
+                        disabled={!active}
+                        >
+                            Post
                         </Button>
                     </div>
                 </Container>
