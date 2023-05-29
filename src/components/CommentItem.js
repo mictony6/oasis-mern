@@ -1,4 +1,4 @@
-import {Col, Container, ListGroupItem, Row, Image, Button} from "react-bootstrap";
+import {Col, Container, ListGroupItem, Row, Image, Button, Dropdown} from "react-bootstrap";
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
 import heart from '../static/images/love.svg'
@@ -6,6 +6,11 @@ import activeHeart from '../static/images/love-active.svg'
 import { useState, useEffect, useContext } from "react";
 import dayjs from "dayjs";
 import UserContext from "../UserContext";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownItem from "react-bootstrap/DropdownItem";
+import {Link} from "react-router-dom";
+import person_add from "../static/images/person/person-add.svg";
 
 export default function CommentItem({commentProp}){
 
@@ -19,7 +24,8 @@ export default function CommentItem({commentProp}){
 
     const [love, setLove] = useState(false)
     const [count, setCount] = useState("")
-    
+
+
     useEffect(() => {
         fetch(`http://127.0.0.1:4000/post/comment/checkLike/${comment_id}`,
         {method: 'GET',
@@ -77,33 +83,92 @@ export default function CommentItem({commentProp}){
     }
 
     return(
-        <ListGroupItem className={'bg-light border-0 border-bottom'}>
-            <Row className={'d-flex flex-row align-items-center'}>
-                <Col className={'col-2 d-flex flex-column align-items-center '}>
-                    <Image src={user.id === user_id ? user_placeholder : placeholder}></Image>
-                    <div className={'fw-bold'}>@{username}</div>
-                    <p><small className={'text-muted '}>{time}</small></p>
-                </Col>
-                <Col >
-                    {content}
-                </Col>
-                <Col className={'col-2 text-center'}>
-                {love ?
-                    <div
-                        className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
-                        onClick={unlikeComment}>
-                        <Button className={"border-0 text-danger"}><i
-                            className={"bi bi-heart-fill"}></i> {count}</Button>
-                    </div> :
-                    <div
-                        className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes'
-                        onClick={likeComment}>
-                        <Button className={"border-0 text-secondary"}><i
-                            className={"bi bi-heart"}></i> {count}</Button>
+        <>
+        <ListGroupItem className={"bg-transparent border-0"}>
+            <div className={"bg-light rounded-4 border border-1 "}>
+                <Container className={"d-flex py-4 px-3"}>
+                    <div className={"d-flex flex-column align-items-center justify-content-between col-2 pe-0"}>
+                        <Image src={user.id === user_id ? user_placeholder : placeholder} className={"img-fluid"}></Image>
+
+                        <Dropdown>
+                            <DropdownToggle className={"username mt-1"}>
+                                @{username}
+                            </DropdownToggle>
+
+                            {user.id !== user_id ?
+                                <DropdownMenu>
+                                    {/*TODO: get user_id from prop*/}
+                                    <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><i
+                                        className="bi bi-person-fill pe-3"></i>View Profile</DropdownItem>
+                                    <Dropdown.Header>contact</Dropdown.Header>
+                                    <DropdownItem className={"ps-4"} ><i className={"bi bi-person-add pe-3"}></i>Add</DropdownItem>
+
+                                    <DropdownItem className={"ps-4"}><i className={"bi bi-person-remove pe-3"}></i>Remove</DropdownItem>
+
+                                    <DropdownItem className={"ps-4"}><i className="bi bi-x-circle pe-3"></i>Block</DropdownItem>
+
+                                    <Dropdown.Header>post</Dropdown.Header>
+                                    <DropdownItem onClick={""} className={"ps-4"}><i className="bi bi-flag pe-3"></i>Flag</DropdownItem>
+                                </DropdownMenu>
+                                :
+                                <DropdownMenu>
+                                    {/*TODO: get user_id from prop*/}
+                                    <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><Image src={person_add}                                                                         className={"pe-3"}></Image>View
+                                        Profile</DropdownItem>
+                                </DropdownMenu>
+                            }
+                        </Dropdown>
+                        <p><small className={'text-muted '}>{time}</small></p>
                     </div>
-                }
-                </Col>
-            </Row>
+
+                    <div className={"d-flex flex-column align-items-start justify-content-between p-2 pe-0 flex-grow-1"}>
+                        {content}
+                    </div>
+
+                    <div className={"d-flex flex-column align-items-end justify-content-between p-2 pe-0 "}>
+                        <Dropdown className={"dropstart"}>
+                            <Button type="button" className=" post-options border-0 " data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                <i className="bi bi-three-dots-vertical"></i>
+                            </Button>
+                            {user.id === user_id ?
+                                <ul className="dropdown-menu">
+                                    <DropdownItem  className={"ps-4"}>
+                                        <i className="bi bi-pencil-square pe-3"></i>Edit
+                                    </DropdownItem>
+                                    <DropdownItem  className={"ps-4"}>
+                                        <i className="bi bi-trash-fill pe-3"></i>Delete
+                                    </DropdownItem>
+                                </ul>
+                                :
+                                <ul className="dropdown-menu">
+                                    <DropdownItem onClick={""} className={"ps-4"}>
+                                        <i className="bi bi-flag pe-3"/>Report
+                                    </DropdownItem>
+                                </ul>
+                            }
+                        </Dropdown>
+                        {love ?
+                        <div
+                            className='d-flex flex-row justify-content-center mt-auto pb-1 align-items-center post-likes'
+                            onClick={unlikeComment}>
+                            <Button className={"border-0 text-danger"}><i
+                                className={"bi bi-heart-fill"}></i> {count}</Button>
+                        </div> :
+                        <div
+                            className='d-flex justify-content-center mt-auto pb-1 align-items-center post-likes'
+                            onClick={likeComment}>
+                            <Button className={"border-0 text-secondary"}><i
+                                className={"bi bi-heart"}></i> {count}</Button>
+                        </div>
+                        }
+
+                    </div>
+
+                </Container>
+            </div>
+
         </ListGroupItem>
+        </>
     );
 }

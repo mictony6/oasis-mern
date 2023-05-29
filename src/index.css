@@ -25,7 +25,8 @@ html{
 	--platinum: #eae7e2ff;
     --alice-blue: #d7e2e8ff;
     --beau-blue: #b9cbd9ff;
-    --baby-pink: #fcc9c5ff;
+	--baby-pink: #ecb8b4;
+	--baby-pink-hover: #fcd3cc;
     --misty-rose: #feddd8ff;
     --light-cyan: #cfe3e2ff;
     --light-text: #B6B6B6;
@@ -289,6 +290,7 @@ body{
 	max-height: 64px;
 }
 
+
 .logo-title {
 	font-weight: bold;
 	font-size: min(max(1rem, 3vw), 48px);
@@ -296,6 +298,7 @@ body{
 	color: var(--beau-blue);
 	padding: 0;
 	margin: 0;
+	text-decoration: none !important;
 }
 
 .tagline {
@@ -303,6 +306,8 @@ body{
 	font-weight: normal;
 	font-size: 1rem;
 	text-align: center;
+	text-decoration: none !important;
+
 }
 
 .nav-toggle {
@@ -494,7 +499,7 @@ body{
 	--bs-btn-hover-bg: none;
 	--bs-btn-hover-bg: var(--pink);
 	--bs-btn-active-bg: none;
-;
+
 }
 
 
@@ -685,10 +690,10 @@ body{
 
 .btn{
 	font-weight: 600;
-	--bs-btn-color: #5b6d80;
-	--bs-btn-bg: #afc9ea;
+	--bs-btn-color: #2c343b;
+	--bs-btn-bg: var(--baby-pink);
 	--bs-btn-border-color: none;
-	--bs-btn-hover-bg: #bbd0d3;
+	--bs-btn-hover-bg: var(--baby-pink-hover);
 	--bs-btn-hover-color: #89949a;
 	--bs-btn-hover-border-color: none;
 	--bs-btn-focus-shadow-rgb: 49, 132, 253;
@@ -815,4 +820,14 @@ body{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.slot-img {
+	height:48px;
+	width:auto;
+}
+
+
+#chat-list {
+	max-height:600px;
 }

@@ -9,7 +9,7 @@ import PostCards from '../components/PostCards';
 import CreatePost from '../components/CreatePost';
 import RightSidebar from '../components/RightSidebar';
 import { useEffect } from 'react';
-import {ScrollRestoration, useLocation, useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 import UserContext from '../UserContext';
 import { unblockContact } from '../functions/contactFunctions';
 

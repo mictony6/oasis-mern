@@ -53,7 +53,7 @@ export default function PostDetail() {
                     {/* TODO: Replace expand with minimize*/}
                         {post}
                     {/*Comment section*/}
-                    <ListGroup className={'rounded-4 '}>
+                    <ListGroup className={'rounded-4 mt-2 '}>
                         {comments}
                     </ListGroup>
                 </Col>
