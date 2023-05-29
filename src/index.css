@@ -290,6 +290,7 @@ body{
 	max-height: 64px;
 }
 
+
 .logo-title {
 	font-weight: bold;
 	font-size: min(max(1rem, 3vw), 48px);

@@ -20,7 +20,7 @@ export default function AppNavbar() {
 	return (
 		<Navbar className="m-0 d-flex flex-column sticky-top vh-100 overflow-auto   ">
 			{isDesktopOrLaptop && <Row>
-				<Navbar.Brand as={Link} to="/home" className='d-flex flex-column align-items-center justify-content-center '>
+				<Navbar.Brand as={Link} to="/home" className='d-flex flex-column align-items-center justify-content-center  text-decoration-none'>
 					<Row className='title '>
 						<Col className='p-0'>
 							<img src={logo}
