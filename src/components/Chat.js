@@ -21,8 +21,6 @@ export default function Chat({chatProp}){
     const date = dayjs(message_date).format(`DD MMM YYYY`)
     const relative = dayjs(message_date).fromNow()
 
-    // if chat is from current user then set isUser to true
-    // idk bout variable name hahu kaw lang set nang
     return(
         <ListGroupItem className={"border-0"}>
             {isUser && <Row className={" d-flex align-items-center   flex-row-reverse justify-content-end "}>

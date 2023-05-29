@@ -11,9 +11,6 @@ import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
-import fb from '../static/images/facebook.svg';
-import twt from '../static/images/twitter.svg';
-import lnk from '../static/images/linkedin.svg';
 import UserPostItem from "../components/user/UserPostItem";
 import UserCommentItem from '../components/user/UserCommentItem';
 import { useEffect, useState } from 'react';
@@ -87,7 +84,7 @@ export default function User() {
             data.length !== 0 ?
             setComments(data.map(comment => (
                 <UserCommentItem key={comment.c_id} commentProp={comment}/>
-                ))) 
+                )))
                 : setComments(null)
         })
 
@@ -102,10 +99,10 @@ export default function User() {
         .then(data => {
             setContacts(data.map(contact => {
                 return(
-                contact.status === 'ACTIVE' ? 
+                contact.status === 'ACTIVE' ?
                 <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false}/>
                 :
-                null       
+                null
             )
         }))
         })
@@ -125,7 +122,7 @@ export default function User() {
                 <UserCommentItem key={item.c_id} commentProp={item}/>
                 :
                 <UserPostItem key={item.p_id} postProp={item}/>
-                ))) 
+                )))
                 : setLiked(null)
         })
 
@@ -249,7 +246,7 @@ export default function User() {
             })
             }).then(res => res.json())
             .then(data => {
-                data ? 
+                data ?
                 Swal.fire({
                     title: "Post created!",
                     icon: "success",
@@ -403,7 +400,7 @@ export default function User() {
                                 </Container>
                                 <h5 className={"text-center py-1"}>@{user_username}</h5>
                                 <p className={"text-center "}><small >{user_role}</small></p>
-                                {user_id === user.id && 
+                                {user_id === user.id &&
                                 <Button className={"d-flex align-items-center justify-content-between w-100 border-0"}
                                 onClick={e => setOpenEdit(true)}
                                 >
@@ -427,26 +424,6 @@ export default function User() {
                                             <span><small>{user_registration_date}</small></span>
                                         </div>
                                     </div>
-                                    {/*<div className={"d-flex flex-column my-2 flex-grow-1 align-items-center"}>*/}
-                                    {/*    <Row>*/}
-                                    {/*        {user_fb_link && <Col><a href={user_fb_link.substring(0,5) === "https" ? user_fb_link : "https://"+user_fb_link} target="_blank" rel="noopener noreferrer"><Image src={fb}/></a></Col>}*/}
-                                    {/*        {user_twt_link && <Col><a href={user_twt_link.substring(0,5) === "https" ? user_twt_link : "https://"+user_twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}*/}
-                                    {/*        {user_li_link && <Col><a href={user_li_link.substring(0,5) === "https" ? user_li_link : "https://"+user_li_link} target="_blank" rel="noopener noreferrer"><Image src={lnk}/></a></Col>}*/}
-                                    {/*    </Row>*/}
-                                    {/*    {user_id === user.id &&*/}
-                                    {/*    <Row>*/}
-                                    {/*        <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2"} onClick={e => setOpenSocial(true)}>*/}
-                                    {/*            <i className={"bi bi-plus"}></i>*/}
-                                    {/*            Edit socials*/}
-                                    {/*        </Button>*/}
-                                    {/*    </Row>}*/}
-                                    {/*    {user_id === user.id &&*/}
-                                    {/*    <Button className={"w-100 mt-4"}*/}
-                                    {/*    onClick={openModal}*/}
-                                    {/*    >New Post</Button>}*/}
-                                    {/*</div>*/}
-
-
                                 </Container>
                                 <Nav>
                                             {user_fb_link && <Nav.Item><Nav.Link href={user_fb_link.substring(0,5) === "https" ? user_fb_link : "https://"+user_fb_link} target="_blank" rel="noopener noreferrer">
@@ -522,7 +499,7 @@ export default function User() {
                         />
                     </div>
                     <div className='mt-3'>
-                        <Button 
+                        <Button
                         className="rounded px-5 bg-primary border-0"
                         onClick={editUser}
                         disabled={!editActive}
@@ -571,7 +548,7 @@ export default function User() {
 
                     </div>
                     <div className='mt-3'>
-                        <Button 
+                        <Button
                         className="rounded px-5 bg-primary border-0"
                         onClick={editUser}
                         disabled={!socialActive}
@@ -596,7 +573,7 @@ export default function User() {
                         />
                     </div>
                     <div className='mt-3'>
-                        <Button 
+                        <Button
                         className="rounded px-5 bg-primary border-0"
                         onClick={editUser}
                         disabled={!socialActive}
@@ -611,7 +588,7 @@ export default function User() {
                 <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
                     <h3 className='py-3'>Create A New Post</h3>
                     <div className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
-                        <FormControl 
+                        <FormControl
                             placeholder="Title"
                             className='border-0 w-100 shadow-none'
                             onChange = {e => setSubject(e.target.value)}
@@ -629,7 +606,7 @@ export default function User() {
                         />
                     </div>
                     <div className='mt-3'>
-                        <Button 
+                        <Button
                         className="rounded px-5 bg-primary border-0"
                         onClick={createPost}
                         disabled={!active}

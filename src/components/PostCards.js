@@ -12,9 +12,6 @@ import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import person_add from "../static/images/person/person-add.svg";
-import person_remove from "../static/images/person/person-dash.svg";
-import flag from "../static/images/flag.svg";
-import x_circle from "../static/images/x-circle.svg";
 import UserContext from '../UserContext';
 import { addContact, blockContact, removeContact, unblockContact } from '../functions/contactFunctions';
 import { PostContext } from '../PostContext';
@@ -366,7 +363,7 @@ export default function PostCards({postProp, minimize}) {
                                 value={comment}
                             />
                         </div>
-                        <div className={"d-flex flex-column align-items-end justify-content-between p-3 pe-0 "}>
+                        <div className={"d-flex flex-column align-items-end justify-content-between p-2 pe-0 "}>
                             <div className={"d-flex flex-row flex-nowrap align-items-center"}>
                             {minimize ?
                                 <Link to={`/post/${p_id}`} >
