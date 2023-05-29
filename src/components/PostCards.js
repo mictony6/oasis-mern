@@ -303,7 +303,7 @@ export default function PostCards({postProp, minimize}) {
                                 <Image src={user_placeholder} className={"img-fluid"}></Image>
                             }
                             <Dropdown>
-                                <DropdownToggle className={"username"}>
+                                <DropdownToggle className={"username mt-1"}>
                                     @{username}
                                 </DropdownToggle>
 
