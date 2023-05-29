@@ -35,6 +35,7 @@ export default function User() {
     const [comments, setComments] = useState([])
     const [contacts, setContacts] = useState([])
     const [liked, setLiked] = useState([])
+    const [count, setCount] = useState(0)
 
     const [user_username, setUsername] = useState('')
     const [user_role, setRole] = useState('')
@@ -126,6 +127,18 @@ export default function User() {
                 <UserPostItem key={item.p_id} postProp={item}/>
                 ))) 
                 : setLiked(null)
+        })
+
+        fetch(`http://localhost:4000/post/countUserLikes/${user_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            data ? setCount(data[0].count) : setCount(0)
         })
 
     }, [new_username, user.id, user.username, user_id, usernameExists])
@@ -404,7 +417,7 @@ export default function User() {
                                         <Row><h6>Likes</h6></Row>
                                         <Row><div className={"d-flex aligns-items-center mt-1"}>
                                             <i className={"bi bi-hearts me-1"}></i>
-                                            <span><small>100</small></span>
+                                            <span><small>{count}</small></span>
                                         </div>
                                         </Row>
                                         
