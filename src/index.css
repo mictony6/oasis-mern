@@ -599,6 +599,10 @@ body{
 	background-color: gray !important;
 }
 
+.bg-danger:hover {
+	filter:brightness(120%);
+}
+
 .fg-primary{
 	color:#738AA3;
 }
@@ -849,6 +853,30 @@ body{
 
 }
 
+.notif-circle {
+	position: absolute;
+	left: 10px;
+	font-size: 0.5rem;
+}
+
+.notif-unread {
+	background-color: var(--skyblue);
+}
+
+.notif-view:hover {
+	cursor: pointer;
+	text-decoration: underline;
+	background-color: var(--bs-btn-hover-color);
+}
+
+.tab-title {
+	color: var(--text);
+}
+
+.tab-title:hover {
+	color: var(--text);
+	background-color: var(--baby-pink-hover);
+}
 
 
 

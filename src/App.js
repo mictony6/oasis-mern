@@ -33,6 +33,11 @@ function App() {
     username: null,
     email: null,
     role: null,
+    bio: null,
+    registration_date: null,
+    fb_link: null,
+    twt_link: null,
+    has_notifications: null
 	});
 
   const [therapist, setTherapist] = useState({
@@ -71,7 +76,8 @@ function App() {
           registration_date: data[0].registration_date,
           fb_link: data[0].fb_link,
           twt_link: data[0].twt_link,
-          li_link: data[0].li_link
+          li_link: data[0].li_link,
+          has_notifications: data[0].has_notifications
 				});
 			} else {
 				setUser({
@@ -83,7 +89,8 @@ function App() {
           registration_date: null,
           fb_link: null,
           twt_link: null,
-          li_link: null
+          li_link: null,
+          has_notifications: null
 				})
 			}
 		})
@@ -128,7 +135,7 @@ function App() {
 			}
 		})
     }
-	}, [user.role])
+	}, [user.role, user.has_notifications])
 
     const router = createBrowserRouter(
         createRoutesFromElements(
@@ -159,8 +166,6 @@ function App() {
     </TherapistProvider>
     </UserProvider>
     </LocalizationProvider>
-
-    
   );
 }
 

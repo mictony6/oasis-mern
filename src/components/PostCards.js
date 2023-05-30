@@ -131,8 +131,6 @@ export default function PostCards({postProp, minimize}) {
         })
     }
 
-
-
     function reply(e) {
         e.preventDefault()
 

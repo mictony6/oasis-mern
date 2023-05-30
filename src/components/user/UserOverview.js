@@ -1,8 +1,5 @@
-import {Card, CardGroup, Container, ButtonGroup, Button, Row, ListGroup} from "react-bootstrap";
+import {Container, Button, ListGroup, Spinner} from "react-bootstrap";
 import React, {useState, useEffect} from "react";
-import PostCards from "../PostCards";
-import { useContext } from "react";
-import UserContext from "../../UserContext";
 import UserCommentItem from "./UserCommentItem";
 import UserPostItem from "./UserPostItem";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -14,6 +11,7 @@ export default function UserOverview() {
     const { user_id } = useParams();
 
     const [postComments, setPostComments] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     const location = useLocation()
     const history = useNavigate()
@@ -31,6 +29,7 @@ export default function UserOverview() {
         )
         .then(res => res.json())
         .then(data => {
+            setIsLoading(false)
             data.length !== 0 ?
             setPostComments(data.map(item => (
                 item.type === 'comment' ?
@@ -51,13 +50,18 @@ export default function UserOverview() {
     return(
         <Container >
             <Container className={"p-3 bg-body"}>
-                <Button className={view === 'Recent' ? 'me-3 bg-primary' : 'me-3'} onClick={() => {sortBy('Recent')}}>New</Button>
-                <Button  className={view === 'Likes' ? 'me-3 bg-primary' : 'me-3'} onClick={() => {sortBy('Likes')}}>Top</Button>
+                <Button className={view === 'Recent' ? 'me-3' : 'me-3 bg-secondary'} onClick={() => {sortBy('Recent')}}>New</Button>
+                <Button  className={view === 'Likes' ? 'me-3' : 'me-3 bg-secondary'} onClick={() => {sortBy('Likes')}}>Top</Button>
             </Container>
 
+            {isLoading ?
+            <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                <Spinner/>
+            </div>
+            :
             <ListGroup>
                 {postComments}
-            </ListGroup>
+            </ListGroup>}
         </Container>
     );
 }

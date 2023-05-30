@@ -1,4 +1,4 @@
-import { Collapse, Container,  ListGroup, } from 'react-bootstrap';
+import { Collapse, Container,  ListGroup, Spinner, } from 'react-bootstrap';
 import ContactItem from "./ContactItem";
 import BlogPreviewCard from "./BlogPreviewCard";
 import { useEffect } from 'react';
@@ -11,6 +11,8 @@ export default function RightSidebar() {
 
     const [contacts, setContacts] = useState([])
     const [showContacts, setShowContacts] = useState(false)
+
+    const [isLoading, setIsLoading] = useState(true)
     
     useEffect(() => {
         fetch(`http://localhost:4000/contact/viewAll`,
@@ -22,6 +24,7 @@ export default function RightSidebar() {
         )
         .then(res => res.json())
         .then(data => {
+            setIsLoading(false)
             setContacts(data.map(contact => {
                 return(
                 contact.status === 'ACTIVE' ? 
@@ -30,7 +33,7 @@ export default function RightSidebar() {
                 null       
             )
         }))
-    })
+        })
     }, [contacts])
 
     return (
@@ -48,9 +51,14 @@ export default function RightSidebar() {
 
                 <Collapse in={showContacts} >
                     <div id="contact-list">
+                    {isLoading ?
+                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                        <Spinner/>
+                    </div>
+                    :
                     <ListGroup className='d-flex flex-column contacts overflow-auto' >
                         {contacts}
-                    </ListGroup>
+                    </ListGroup>}
                     </div>
                 </Collapse>
                 <div className="mt-4"></div>

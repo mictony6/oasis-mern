@@ -22,6 +22,10 @@ export default function Counselling() {
     const [therapists, setTherapists] = useState([])
     const [upcomingBookings, setUpcomingBookings] = useState([])
     const [pastBookings, setPastBookings] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [upcomingLoading, setUpcomingLoading] = useState(true)
+    const [recentLoading, setRecentLoading] = useState(true)
+
 
     useEffect(() => {
         fetch(`http://127.0.0.1:4000/therapist/viewAll`,
@@ -33,6 +37,7 @@ export default function Counselling() {
         )
         .then(res => res.json())
         .then(data => {
+            setIsLoading(false)
             setTherapists(data.map(therapist => {
                 return(
                 <TherapistCard key={therapist.therapist_id} therapistProp= {therapist}/>            
@@ -49,6 +54,7 @@ export default function Counselling() {
         )
         .then(res => res.json())
         .then(data => {
+            setUpcomingLoading(false)
             data.length !== 0 ?
             setUpcomingBookings(data.map(booking => {
                 return(
@@ -69,6 +75,7 @@ export default function Counselling() {
         )
         .then(res => res.json())
         .then(data => {
+            setRecentLoading(false)
             data.length !== 0 ?
             setPastBookings(data.map(booking => {
                 return(
@@ -107,21 +114,33 @@ export default function Counselling() {
             </Row>
 
                     <ListGroup >
-                        <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
-                            <Spinner/>
-                        </div>
-                        {therapists}
+                        {isLoading ?
+                            <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                <Spinner/>
+                            </div>
+                            :
+                            therapists}
                     </ListGroup>
                 </Col>
                 <Col lg={3} >
                     <Container fluid className={'sticky-top'}>
                         <h5 className={'fg-primary pt-4'}>upcoming consultations</h5>
                         <ListGroup className={'my-2 overflow-auto'}>
-                            {upcomingBookings}
+                        {upcomingLoading ?
+                            <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                <Spinner/>
+                            </div>
+                            :
+                            upcomingBookings}
                         </ListGroup>
                         <h5 className={'fg-primary pt-4'}>recent consultations</h5>
                         <ListGroup className={'overflow-y'}>
-                            {pastBookings}
+                            {recentLoading ?
+                            <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                <Spinner/>
+                            </div>
+                            :
+                            pastBookings}
                         </ListGroup>
 
                     </Container>

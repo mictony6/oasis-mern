@@ -27,6 +27,7 @@ export default function Home() {
 
     const [show, setShow] = useState(false);
     const [view, setView] = useState(getUrl ? getUrl : 'Likes')
+    const [isLoading, setIsLoading] = useState(true)
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -48,6 +49,7 @@ export default function Home() {
         )
         .then(res => res.json())
         .then(data => {
+            setIsLoading(false)
             setPosts(data.map(post => (
                 post.status !== 'BLOCKED' ? <PostCards key={post.p_id} postProp={post} minimize={true} />
                 : post.blocked_by === user.id ?
@@ -86,10 +88,12 @@ export default function Home() {
                                 </Form.Control>
                             </Col>
                         </Row>
+                        {isLoading ?
                         <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                             <Spinner/>
                         </div>
-                        {posts}
+                        :
+                        posts}
                     </Col>
                     <Col lg={3} className='p-0 m-0 z-index-0 '>
                         <RightSidebar/>

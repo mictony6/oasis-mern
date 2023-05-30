@@ -4,8 +4,7 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, NavItem, Nav, ListGroup, Modal, FormControl, Form, FormLabel
-} from 'react-bootstrap';
+    Tab, Button, ListGroup, Modal, FormControl, Form, Spinner} from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
@@ -21,8 +20,9 @@ import ContactItem from '../components/ContactItem';
 import { useContext } from 'react';
 import UserContext from '../UserContext';
 import dayjs from 'dayjs'
-import { FormGroup, TextareaAutosize } from '@mui/material';
+import { TextareaAutosize } from '@mui/material';
 import Swal from 'sweetalert2';
+import { addContact, blockContact, removeContact } from '../functions/contactFunctions';
 
 
 export default function User() {
@@ -30,6 +30,15 @@ export default function User() {
     const { user } = useContext(UserContext)
 
     const { user_id } = useParams();
+
+    const [userLoading, setUserLoading] = useState(true)
+    const [postLoading, setPostLoading] = useState(true)
+    const [commentLoading, setCommentLoading] = useState(true)
+    const [contactLoading, setContactLoading] = useState(true)
+    const [likedLoading, setLikedLoading] = useState(true)
+
+    const [status, setStatus] = useState(null)
+    const [requested_by, setRequestedBy] = useState(null)
 
     const [posts, setPosts] = useState([])
     const [comments, setComments] = useState([])
@@ -61,6 +70,23 @@ export default function User() {
     const [socialActive, setSocialActive] = useState(false)
 
     useEffect(() => {
+        if(user_id !== user.id) {
+            fetch(`http://localhost:4000/contact/view/${user_id}`,
+            {method: 'GET',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+            }
+            )
+            .then(res => res.json())
+            .then(data => {
+                if(data.length !== 0) {
+                    setStatus(data[0].status)
+                    setRequestedBy(data[0].requested_by)
+                }
+            })
+        }
+
         fetch(`http://localhost:4000/post/viewByUser/${user_id}`,
         {method: 'GET',
         headers: {
@@ -70,6 +96,7 @@ export default function User() {
         )
         .then(res => res.json())
         .then(data => {
+            setPostLoading(false)
             setPosts(data.map(post => (
                 <UserPostItem key={post.p_id} postProp={post}/>
                 )))
@@ -84,6 +111,7 @@ export default function User() {
         )
         .then(res => res.json())
         .then(data => {
+            setCommentLoading(false)
             data.length !== 0 ?
             setComments(data.map(comment => (
                 <UserCommentItem key={comment.c_id} commentProp={comment}/>
@@ -100,6 +128,7 @@ export default function User() {
         )
         .then(res => res.json())
         .then(data => {
+            setContactLoading(false)
             setContacts(data.map(contact => {
                 return(
                 contact.status === 'ACTIVE' ? 
@@ -119,6 +148,7 @@ export default function User() {
         )
         .then(res => res.json())
         .then(data => {
+            setLikedLoading(false)
             data.length !== 0 ?
             setLiked(data.map(item => (
                 item.type === 'comment' ?
@@ -141,7 +171,7 @@ export default function User() {
             data ? setCount(data[0].count) : setCount(0)
         })
 
-    }, [new_username, user.id, user.username, user_id, usernameExists])
+    }, [new_username, user.id, user.username, user_id, usernameExists, status])
 
     useEffect(() => {
         fetch('http://localhost:4000/user/checkUsername', {
@@ -185,6 +215,8 @@ export default function User() {
             )
             .then(res => res.json())
             .then(data => {
+                setUserLoading(false)
+
                 setUsername(data[0].username)
                 setRole(data[0].role)
                 setRegistrationDate(dayjs(data[0].registration_date).format('MMMM DD, YYYY'))
@@ -349,8 +381,23 @@ export default function User() {
                 setOpenBio(false)
             }
         })
-
     }
+
+        // contact functions
+        function add(e){
+            e.preventDefault()
+            setStatus(addContact(user_id))
+            setRequestedBy(user.id)
+        }
+    
+        function remove(e){
+            e.preventDefault()
+            setStatus(removeContact(user_id))
+        }
+        
+        function block(e){
+            setStatus(blockContact(user_id))
+        }
 
     return(
         <Container fluid>
@@ -362,33 +409,60 @@ export default function User() {
                     <Row className={'w-100 my-4 rounded-4 bg-light'}>
                         <Tabs onSelect={e => viewTab(e)}
                         activeKey={tab}>
-                            <Tab title={"Overview"} eventKey={'overview'} value='overview'>
+                            <Tab title={"Overview"} eventKey={'overview'} value='overview' tabClassName='tab-title'>
                                 <UserOverview/>
                             </Tab>
-                            <Tab title={"Posts"} eventKey={'posts'} value='posts'>
+                            <Tab title={"Posts"} eventKey={'posts'} value='posts' tabClassName='tab-title'>
+                                {postLoading ?
+                                <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                    <Spinner />
+                                </div>
+                                :
                                 <ListGroup>
                                     {posts}
-                                </ListGroup>
+                                </ListGroup>}
                             </Tab>
-                            <Tab title={"Comments"} eventKey={'comments'} value='comments'>
+                            <Tab title={"Comments"} eventKey={'comments'} value='comments' tabClassName='tab-title'>
+                                {commentLoading ?
+                                <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                    <Spinner />
+                                </div>
+                                :
                                 <ListGroup>
                                     {comments}
-                                </ListGroup>
+                                </ListGroup>}
                             </Tab>
-                            <Tab title={"Contacts"} eventKey={"contacts"}>
+                            {user_id === user.id && 
+                            <Tab title={<span>Contacts <i className='bi bi-lock-fill'/></span>} eventKey={"contacts"} tabClassName='tab-title'>
+                                {contactLoading ?
+                                <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                    <Spinner />
+                                </div>
+                                :
                                 <ListGroup>
                                     {contacts}
-                                </ListGroup>
-                            </Tab>
-                            <Tab title={"Likes"} eventKey={"likes"}>
+                                </ListGroup>}
+                            </Tab>}
+                            <Tab title={"Likes"} eventKey={"likes"} tabClassName='tab-title'>
+                                {likedLoading ?
+                                <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                    <Spinner />
+                                </div>
+                                :
                                 <ListGroup>
                                     {liked}
-                                </ListGroup>
+                                </ListGroup>}
                             </Tab>
                         </Tabs>
                     </Row>
                 </Col>
-                <Col lg={3} >
+                {<Col lg={3} className='d-flex align-items-center justify-content-center'>
+                    {userLoading ?
+                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                        <Spinner />
+                    </div>
+                    :
+                    <div className='mt-4 align-self-start'>
                     {/*profile options*/}
                     <Container fluid className={"d-flex flex-column my-4 "}>
                         <div className={"bg-white border border-1 rounded-4 px-2 py-3 position-relative"}>
@@ -437,25 +511,53 @@ export default function User() {
                                             {user_twt_link && <Col><a href={user_twt_link.substring(0,5) === "https" ? user_twt_link : "https://"+user_twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}
                                             {user_li_link && <Col><a href={user_li_link.substring(0,5) === "https" ? user_li_link : "https://"+user_li_link} target="_blank" rel="noopener noreferrer"><Image src={lnk}/></a></Col>}
                                         </Row>
-                                        {user_id === user.id &&
+                                        {user_id === user.id ?
                                         <Row>
                                             <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2"} onClick={e => setOpenSocial(true)}>
                                                 <i className={"bi bi-plus"}></i>
                                                 Edit socials
                                             </Button>
+                                        </Row>
+                                        :
+                                        <div>
+                                        {status === "INACTIVE" && 
+                                        <Row>
+                                            <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2 bg-primary"} onClick={add}>
+                                                <i className={"bi bi-person-plus me-2"}></i>
+                                                Add contact
+                                            </Button>
                                         </Row>}
+                                        {(status === "PENDING" && requested_by === user.id) &&
+                                        <div className='pt-3 text-center'>
+                                        <small><em> You've already sent a contact request to this user.</em></small>
+                                        </div>
+                                        
+                                        }
+                                        {status === "ACTIVE" &&
+                                        <Row>
+                                            <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2 bg-primary"} onClick={remove}>
+                                                <i className={"bi bi-person-dash me-2"}></i>
+                                                Remove contact
+                                            </Button>
+                                        </Row>}
+                                        {status !== "BLOCKED" &&
+                                        <Row>
+                                            <Button as={"li"} className={"d-flex align-items-center justify-content-center mt-3 px-2 py-1 me-2 text-bg-danger bg-danger"} onClick={block}>
+                                                <i className={"bi bi-x-circle me-2"}></i>
+                                                Block user
+                                            </Button>
+                                        </Row>}
+                                        </div>
+                                        }
                                         {user_id === user.id &&
                                         <Button className={"w-100 mt-4"}
                                         onClick={openModal}
                                         >New Post</Button>}
                                     </div>
-
                                 </Container>
                             </Container>
                         </div>
                     </Container>
-
-
                     {/*bio*/}
                     <Container fluid className={"d-flex flex-column my-4"}>
                         <div className={"bg-light border border-1 rounded-4 px-2 py-3"}>
@@ -473,7 +575,8 @@ export default function User() {
                             <Button className={"w-100 mt-4"} onClick={e => setOpenBio(true)}>Edit Bio</Button>}
                         </div>
                     </Container>
-                </Col>
+                    </div>}
+                </Col>}
             </Row>
 
             <Modal show={openEdit} size="md" className="mt-auto" centered onHide={e => setOpenEdit(false)}>
