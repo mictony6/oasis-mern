@@ -130,9 +130,10 @@ export default function User() {
         .then(data => {
             setContactLoading(false)
             setContacts(data.map(contact => {
+                console.log(contact)
                 return(
-                contact.status === 'ACTIVE' ? 
-                <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false}/>
+                (contact.status !== 'INACTIVE' && contact.requested_by !== user.id) ? 
+                <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false} pageView={true}/>
                 :
                 null       
             )
