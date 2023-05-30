@@ -317,7 +317,7 @@ export default function PostCards({postProp, minimize}) {
                                             <DropdownItem className={"ps-4"} onClick={add}><i className={"bi bi-person-add pe-3"}></i>Add</DropdownItem>}
 
                                         {status === "ACTIVE" && <DropdownItem onClick={remove} className={"ps-4"}><i
-                                            className={"bi bi-person-remove pe-3"}></i>Remove</DropdownItem>}
+                                            className={"bi bi-person-dash pe-3"}></i>Remove</DropdownItem>}
 
                                         {status !== "BLOCKED" &&
                                             <DropdownItem onClick={block} className={"ps-4"}><i className="bi bi-x-circle pe-3"></i>Block</DropdownItem>}

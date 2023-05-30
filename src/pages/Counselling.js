@@ -1,5 +1,16 @@
 import '../index.css';
-import {Col, Container, Form, FormLabel, FormSelect, ListGroup, Row, Image, ListGroupItem} from 'react-bootstrap';
+import {
+    Col,
+    Container,
+    Form,
+    FormLabel,
+    FormSelect,
+    ListGroup,
+    Row,
+    Image,
+    ListGroupItem,
+    Spinner
+} from 'react-bootstrap';
 import AppNavbar from '../components/AppNavbar';
 import TherapistCard from "../components/TherapistCard";
 import ConsultationCard from "../components/ConsultationCard";
@@ -96,6 +107,9 @@ export default function Counselling() {
             </Row>
 
                     <ListGroup >
+                        <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                            <Spinner/>
+                        </div>
                         {therapists}
                     </ListGroup>
                 </Col>
