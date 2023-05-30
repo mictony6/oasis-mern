@@ -1,7 +1,7 @@
 import '../index.css';
 import AppNavbar from "../components/AppNavbar";
 import RightSidebar from "../components/RightSidebar";
-import {Col, Container, ListGroup, ListGroupItem, Row} from "react-bootstrap";
+import {Col, Container, ListGroup, ListGroupItem, Row, Spinner} from "react-bootstrap";
 import { useParams } from 'react-router-dom'
 import {useEffect, useState} from "react";
 import PostCards from "../components/PostCards";
@@ -50,6 +50,9 @@ export default function PostDetail() {
                     <AppNavbar />
                 </Col>
                 <Col>
+                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                        <Spinner/>
+                    </div>
                     {/* TODO: Replace expand with minimize*/}
                         {post}
                     {/*Comment section*/}
