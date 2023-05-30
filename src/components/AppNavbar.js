@@ -42,7 +42,7 @@ export default function AppNavbar() {
 					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
 					{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>}
 					{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>Appointments</NavLink>}
-					<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>
+					{/*<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>*/}
 					<NavLink to={'/about'} className='nav-links'>About Us</NavLink>
 				{!isDesktopOrLaptop && <Nav.Item className='nav-links '>
 					VAWC Hotlines
