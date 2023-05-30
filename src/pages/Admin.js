@@ -6,6 +6,9 @@ import {Link} from "react-router-dom";
 function UserManagementItem() {
 
     const [showRoles, setShowRoles] = useState(false);
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
+
     return <ListGroup.Item className={"rounded-2 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
             <Col lg={2} className={"fw-bold"}>@username</Col>
@@ -24,7 +27,15 @@ function UserManagementItem() {
                         <Button onClick={()=>{setShowRoles(false)}}>Cancel</Button>
                     </Modal.Body>
                 </Modal>
-                <Button className={"text-bg-danger me-2"}>Remove User</Button>
+                <Button onClick={()=>{setShowConfirmation(true)}} className={"text-bg-danger me-2"}>Remove User</Button>
+                <Modal show={showConfirmation} onHide={()=>{setShowConfirmation(false)}} >
+                    <Modal.Header>Remove User</Modal.Header>
+                    <Modal.Body>
+                        <p>This will remove the user completely from the system. Proceed?</p>
+                        <Button className={"me-2 text-bg-warning"}>Confirm</Button>
+                        <Button onClick={()=>{setShowConfirmation(false)}}>Cancel</Button>
+                    </Modal.Body>
+                </Modal>
 
             </Col>
         </Row>
@@ -33,6 +44,8 @@ function UserManagementItem() {
 }
 
 function PostManagementItem() {
+
+    const [showPostDelete, setShowPostDelete] = useState(false);
     return <ListGroup.Item className={"rounded-2 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
             <Col lg={3} className={"fw-bold"}>Title of Post</Col>
@@ -41,7 +54,15 @@ function PostManagementItem() {
             <Col lg={1}><span className={"px-2 rounded-pill text-bg-info"}>No</span></Col>
             <Col>
                 <Button className={"me-2"}>View</Button>
-                <Button className={"text-bg-danger"}>Delete</Button>
+                <Button onClick={()=>{setShowPostDelete(true)}} className={"text-bg-danger"}>Delete</Button>
+                <Modal show={showPostDelete} onHide={()=>{setShowPostDelete(false)}} >
+                    <Modal.Header>Delete Post</Modal.Header>
+                    <Modal.Body>
+                        <p>This will remove the post completely from the system. Proceed?</p>
+                        <Button className={"me-2 text-bg-warning"}>Confirm</Button>
+                        <Button onClick={()=>{setShowPostDelete(false)}}>Cancel</Button>
+                    </Modal.Body>
+                </Modal>
             </Col>
         </Row>
 
