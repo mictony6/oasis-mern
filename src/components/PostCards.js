@@ -322,8 +322,6 @@ export default function PostCards({postProp, minimize}) {
                                         {status !== "BLOCKED" &&
                                             <DropdownItem onClick={block} className={"ps-4"}><i className="bi bi-x-circle pe-3"></i>Block</DropdownItem>}
 
-                                        <Dropdown.Header>post</Dropdown.Header>
-                                        <DropdownItem onClick={""} className={"ps-4"}><i className="bi bi-flag pe-3"></i>Flag</DropdownItem>
                                     </DropdownMenu>
                                     :
                                     <DropdownMenu>
@@ -392,8 +390,12 @@ export default function PostCards({postProp, minimize}) {
                                     :
                                     <ul className="dropdown-menu">
                                         <DropdownItem onClick={""} className={"ps-4"}>
-                                            <i className="bi bi-flag pe-3"/>Report
+                                            <i className="bi bi-exclamation-lg pe-3"></i>Report
                                         </DropdownItem>
+                                        <DropdownItem onClick={""} className={"ps-4"}>
+                                            <i className="bi bi-flag pe-3"></i>Flag
+                                        </DropdownItem>
+
                                     </ul>
                                 }
                             </Dropdown>

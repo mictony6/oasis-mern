@@ -5,7 +5,7 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
-    RouterProvider, ScrollRestoration
+    RouterProvider
 } from "react-router-dom";
 import Welcome from './pages/Welcome';
 import Register from './pages/Register';
@@ -22,9 +22,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Therapist from './pages/Therapist';
 import { PostProvider } from './PostContext';
-import Settings from './pages/Settings';
 import About from './pages/About';
 import { TherapistProvider } from './TherapistContext'
+import Admin from "./pages/Admin";
 
 function App() {
 
@@ -144,7 +144,8 @@ function App() {
                 <Route exact path="/counselling" element={<Counselling/>}/>
                 <Route exact path="/logout" element={<Logout/>}/>
                 <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
-                <Route exact path="/settings" element={<Settings/>}/>
+                <Route exact path="/admin" element={<Admin/>}/>
+
             </Route>
         )
     );
