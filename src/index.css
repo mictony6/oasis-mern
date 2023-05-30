@@ -831,3 +831,25 @@ body{
 #chat-list {
 	max-height:600px;
 }
+
+.about-us-card{
+	aspect-ratio: 2/1;
+	width: 25%;
+	background: linear-gradient(100.91deg, #B2C0CF 4.3%, rgba(238, 207, 231, 0.47) 108.11%);
+}
+
+
+.about-us-label{
+	background: linear-gradient(91.02deg, #738AA3 0.49%, #FDC1AD 109.39%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	font-weight: 700;
+	font-size: 3rem;
+
+}
+
+
+
+
+

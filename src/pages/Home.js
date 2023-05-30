@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useContext, useState } from 'react';
-import {Row, Col, Container, Offcanvas, Form} from 'react-bootstrap';
+import {Row, Col, Container, Offcanvas, Form, Spinner} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
@@ -86,6 +86,9 @@ export default function Home() {
                                 </Form.Control>
                             </Col>
                         </Row>
+                        <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                            <Spinner/>
+                        </div>
                         {posts}
                     </Col>
                     <Col lg={3} className='p-0 m-0 z-index-0 '>

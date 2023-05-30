@@ -42,7 +42,7 @@ export default function AppNavbar() {
 					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
 					{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>}
 					{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>Appointments</NavLink>}
-					<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>
+					{/*<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>*/}
 					<NavLink to={'/about'} className='nav-links'>About Us</NavLink>
 				{!isDesktopOrLaptop && <Nav.Item className='nav-links '>
 					VAWC Hotlines
@@ -54,7 +54,7 @@ export default function AppNavbar() {
 				<Image src={telephone} className={"img-fluid ms-5"}></Image>
 				<h6 className={"fw-bold "}>24/7 Helpline</h6>
 				<p><small>Always to help you.</small></p>
-				<Button onClick={()=> setHotlinesShow(true)} className='contact-button'>Contact</Button>
+				<Button onClick={()=> setHotlinesShow(true)} className='contact-button'>Hotlines</Button>
 				<Modal show={hotlinesShow} onHide={() => setHotlinesShow(false)}>
 					<Modal.Header closeButton>
 						<h3>VAWC Hotlines</h3>

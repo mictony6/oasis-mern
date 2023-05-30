@@ -112,7 +112,6 @@ export default function CreatePost() {
 
                     <ul className="dropdown-menu dropdown-menu-end">
                         <Dropdown.Item as={Link} to={`/user/${user.id}`}>Profile</Dropdown.Item>
-                        <Dropdown.Item as ={Link} to={'/settings'}>Settings</Dropdown.Item>
                         <Dropdown.Item href="logout">Logout</Dropdown.Item>
                     </ul>
                 </Dropdown>
