@@ -100,19 +100,23 @@ const NotificationItem = ({notificationProp}) => {
                 </span>
             </div>
         </ListGroupItem>}
-        {new_type === 'contact_confirmed' &&
+        {new_type === 'contact_confirmed_user' &&
         <ListGroupItem className="p-3">
             <div className="d-flex flex-row flex-nowrap align-items-center ">
                 <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
-                {user_id === user.id ?
                 <span>
-                    <small className="text-muted"><em>{notificationText(new_type.concat("_user"))}</em></small>
+                    <small className="text-muted"><em>{notificationText(new_type)}</em></small>
                     <h6> Request confirmed. </h6>
-                </span>
-                :
+                </span>     
+            </div>
+        </ListGroupItem>}
+        {new_type === 'contact_confirmed_triggered_by' &&
+        <ListGroupItem className="p-3">
+            <div className="d-flex flex-row flex-nowrap align-items-center ">
+                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
-                    <h6> {notificationText(new_type.concat("_triggered_by"))} </h6>
-                </span>}
+                    <h6> {notificationText(new_type)} </h6>
+                </span>
             </div>
         </ListGroupItem>}
         {(new_type === 'contact_declined' && user_id === user.id) &&
