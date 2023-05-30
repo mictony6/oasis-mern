@@ -12,9 +12,9 @@ export function addContact(user_id) {
         .then(data => {
         if(data.status){
             Swal.fire({
-                title: "User Added!",
+                title: "Contact requested!",
                 icon: "success",
-                text: "You can now easily message them from your contact list.",
+                text: "Please wait on their confirmation to establish you as a contact",
                 iconColor: '#3A3530',
                 color: '#3A3530',
                 confirmButtonText: "OK",
@@ -38,7 +38,6 @@ export function addContact(user_id) {
                 }
             })}
     })
-    
 }
 
 export function removeContact(user_id) {
@@ -158,5 +157,91 @@ export function unblockContact(user_id) {
                     }
                 })
             }
+    })
+}
+
+export function confirmContact(contact_id, notification_id, contact_person_id) {
+    fetch(`http://localhost:4000/contact/confirmContact/${contact_id}`, {
+        method : 'PATCH',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+            notification_id: notification_id,
+            contact_person_id: contact_person_id
+        })
+        }).then(res => res.json())
+        .then(data => {
+        if(data.status){
+            Swal.fire({
+                title: "Contact established!",
+                icon: "success",
+                text: "You may now message each other.",
+                iconColor: '#3A3530',
+                color: '#3A3530',
+                confirmButtonText: "OK",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'button2'
+                }
+            })
+            return(data.status)
+        } else {
+            Swal.fire({
+                title: "Oh No!",
+                icon: "error",
+                text: "Something went wrong :( Please try again!",
+                iconColor: '#3A3530',
+                color: '#3A3530',
+                confirmButtonText: "OK",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'button2'
+                }
+            })}
+    })
+}
+
+export function declineContact(contact_id, notification_id) {
+    fetch(`http://localhost:4000/contact/declineContact/${contact_id}`, {
+        method : 'PATCH',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+            notification_id: notification_id
+        })
+        }).then(res => res.json())
+        .then(data => {
+        if(data.status){
+            Swal.fire({
+                title: "Contact declined.",
+                icon: "success",
+                text: "You may still add them whenever you change your mind.",
+                iconColor: '#3A3530',
+                color: '#3A3530',
+                confirmButtonText: "OK",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'button2'
+                }
+            })
+            console.log(data.status)
+            return(data.status)
+        } else {
+            Swal.fire({
+                title: "Oh No!",
+                icon: "error",
+                text: "Something went wrong :( Please try again!",
+                iconColor: '#3A3530',
+                color: '#3A3530',
+                confirmButtonText: "OK",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'button2'
+                }
+            })}
     })
 }

@@ -33,6 +33,8 @@ export default function TherapistCard({therapistProp}){
     const [timeslots, setTimeslots] = useState([])
     const [days, setDays] = useState([])
 
+    const [available, setAvailable] = useState(false)
+
     let [humanizedDate, setHumanizedDate] = useState('')
     let [humanizedTime, setHumanizedTime] = useState('')
 
@@ -164,6 +166,17 @@ export default function TherapistCard({therapistProp}){
                     }).then(res => res.json())
                     .then(data => {
                         setDays(data)})
+
+            fetch(`http://localhost:4000/therapist/checkSlots/${therapist_id}`, {
+                    method : 'GET',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                    }).then(res => res.json())
+                    .then(data => {
+                        data.length !== 0 ? setAvailable(true) : setAvailable(false)
+                    })
         }, [time, date, humanizedDate, humanizedTime, therapist_id])
 
         const enableSpecificDays = (day) => {
@@ -209,7 +222,11 @@ export default function TherapistCard({therapistProp}){
                         </Row> : ''}
                     </Col>
                     <Col className={'col-4 d-flex flex-row '}>
+                        {available ?
                         <Button className={'w-100'} onClick={handleShow}>Book Now</Button>
+                        :
+                        <em className="text-muted">No slots available</em>
+                        }
                         <Modal show={show} onHide={handleClose} centered size='md'>
                             <ModalTitle className="mx-3 mt-4"><h4>Book an appointment</h4></ModalTitle>
                             <ModalBody>

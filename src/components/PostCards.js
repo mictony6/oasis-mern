@@ -177,6 +177,7 @@ export default function PostCards({postProp, minimize}) {
         setComment("");
     }
 
+    // contact functions
     function add(e){
         e.preventDefault()
         setStatus(addContact(user_id))
@@ -313,7 +314,7 @@ export default function PostCards({postProp, minimize}) {
                                         <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><i
                                             className="bi bi-person-fill pe-3"></i>View Profile</DropdownItem>
                                         <Dropdown.Header>contact</Dropdown.Header>
-                                        {status === "INACTIVE" &&
+                                        {(status === "INACTIVE") &&
                                             <DropdownItem className={"ps-4"} onClick={add}><i className={"bi bi-person-add pe-3"}></i>Add</DropdownItem>}
 
                                         {status === "ACTIVE" && <DropdownItem onClick={remove} className={"ps-4"}><i
@@ -440,8 +441,8 @@ export default function PostCards({postProp, minimize}) {
                             Save
                         </Button>
                     </div>
-                </Container>
-            </Modal>
+                    </Container>
+                    </Modal>
             </Container>
     )
 }
