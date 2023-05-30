@@ -1,15 +1,29 @@
-import {Row, Col, Container, ListGroup, ButtonGroup, Button, Collapse, Form} from "react-bootstrap";
+import {Row, Col, Container, ListGroup, ButtonGroup, Button, Collapse, Form, Modal} from "react-bootstrap";
 import AppNavbar from "../components/AppNavbar";
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 
 function UserManagementItem() {
+
+    const [showRoles, setShowRoles] = useState(false);
     return <ListGroup.Item className={"rounded-2 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
             <Col lg={2} className={"fw-bold"}>@username</Col>
             <Col lg={2}><span className={"px-2 rounded-pill text-bg-primary"}>Admin</span></Col>
             <Col>
-                <Button className={"me-2"}>Modify Role</Button>
+                <Button onClick={()=>{setShowRoles(true)}} className={"me-2"}>Modify Role</Button>
+                <Modal show={showRoles} onHide={()=>{setShowRoles(false)}} >
+                    <Modal.Header>Choose a Role</Modal.Header>
+                    <Modal.Body>
+                        <Form.Control as="select" className={"mb-2"}>
+                            <option>Admin</option>
+                            <option>User</option>
+                            <option>Therapist</option>
+                        </Form.Control>
+                        <Button className={"me-2"}>Save</Button>
+                        <Button onClick={()=>{setShowRoles(false)}}>Cancel</Button>
+                    </Modal.Body>
+                </Modal>
                 <Button className={"text-bg-danger me-2"}>Remove User</Button>
 
             </Col>
