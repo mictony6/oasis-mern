@@ -72,15 +72,17 @@ const NotificationItem = ({notificationProp, modal}) => {
 
     function confirm(e){
         e.preventDefault()
+        e.stopPropagation()
         
-        confirmContact(contact_id, notification_id, triggered_by)
+        confirmContact(triggered_by)
         setNewType('contact_confirmed_user')
     }
 
     function decline(e){
         e.preventDefault()
+        e.stopPropagation()
         
-        declineContact(contact_id, notification_id)
+        declineContact(triggered_by)
         setNewType('contact_declined')
     }
 
@@ -170,7 +172,7 @@ const NotificationItem = ({notificationProp, modal}) => {
                     </div>
                 </span>
                 <span className="d-flex flex-grow-1 justify-content-end">
-                <Dropdown>
+                <Dropdown onClick={e => e.stopPropagation()}>
                     <Button className="border-0 post-options" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         <i className="bi bi-three-dots"></i> 
                     </Button>
@@ -189,7 +191,7 @@ const NotificationItem = ({notificationProp, modal}) => {
                     <h6> Request confirmed. </h6>
                 </span>
                 <span className="d-flex flex-grow-1 justify-content-end">
-                <Dropdown>
+                <Dropdown onClick={e => e.stopPropagation()}>
                     <Button className="border-0 post-options" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         <i className="bi bi-three-dots"></i> 
                     </Button>
@@ -207,11 +209,11 @@ const NotificationItem = ({notificationProp, modal}) => {
                     <h6> {notificationText(new_type)} </h6>
                 </span>
                 <span className="d-flex flex-grow-1 justify-content-end">
-                <Dropdown>
+                <Dropdown onClick={e => e.stopPropagation()}>
                     <Button className="border-0 post-options" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         <i className="bi bi-three-dots"></i> 
                     </Button>
-                        <ul className="dropdown-menu" >
+                        <ul className="dropdown-menu">
                         <Dropdown.Item onClick={e=> goToLink('user',triggered_by)}>View profile</Dropdown.Item>
                         <Dropdown.Item>Block user</Dropdown.Item>
                     </ul>
@@ -226,7 +228,7 @@ const NotificationItem = ({notificationProp, modal}) => {
                     <h6> Request declined. </h6>
                 </span>
                 <span className="d-flex flex-grow-1 justify-content-end">
-                <Dropdown>
+                <Dropdown onClick={e => e.stopPropagation()}>
                     <Button className="border-0 post-options" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         <i className="bi bi-three-dots"></i> 
                     </Button>
@@ -244,7 +246,7 @@ const NotificationItem = ({notificationProp, modal}) => {
                     <h6> {notificationText(new_type)} </h6>
                 </span>
                 <span className="d-flex flex-grow-1 justify-content-end">
-                <Dropdown>
+                <Dropdown onClick={e => e.stopPropagation()}>
                     <Button className="border-0 post-options" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         <i className="bi bi-three-dots"></i> 
                     </Button>
@@ -262,7 +264,7 @@ const NotificationItem = ({notificationProp, modal}) => {
                     <h6> {notificationText(new_type)} </h6>
                 </span>
                 <span className="d-flex flex-grow-1 justify-content-end">
-                <Dropdown>
+                <Dropdown onClick={e => e.stopPropagation()}>
                     <Button className="border-0 post-options" type="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         <i className="bi bi-three-dots"></i> 
                     </Button>
