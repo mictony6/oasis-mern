@@ -22,7 +22,7 @@ import UserContext from '../UserContext';
 import dayjs from 'dayjs'
 import { TextareaAutosize } from '@mui/material';
 import Swal from 'sweetalert2';
-import { addContact, blockContact, removeContact } from '../functions/contactFunctions';
+import { addContact, blockContact, cancelContact, confirmContact, declineContact, removeContact } from '../functions/contactFunctions';
 
 
 export default function User() {
@@ -383,21 +383,36 @@ export default function User() {
         })
     }
 
-        // contact functions
-        function add(e){
-            e.preventDefault()
-            setStatus(addContact(user_id))
-            setRequestedBy(user.id)
-        }
+    // contact functions
+    function add(e){
+        e.preventDefault()
+        setStatus(addContact(user_id))
+        setRequestedBy(user.id)
+    }
     
-        function remove(e){
-            e.preventDefault()
-            setStatus(removeContact(user_id))
-        }
+    function remove(e){
+        e.preventDefault()
+        setStatus(removeContact(user_id))
+    }
+    
+    function block(e){
+        setStatus(blockContact(user_id))
+    }
+    function cancel(e){
+        setStatus(cancelContact(user_id))
+    }
+
+    function confirm(e){
+        e.preventDefault()
         
-        function block(e){
-            setStatus(blockContact(user_id))
-        }
+        setStatus(confirmContact(user_id))
+    }
+
+    function decline(e){
+        e.preventDefault()
+        
+        setStatus(declineContact(user_id))
+    }
 
     return(
         <Container fluid>
@@ -520,33 +535,45 @@ export default function User() {
                                         </Row>
                                         :
                                         <div>
-                                        {status === "INACTIVE" && 
-                                        <Row>
-                                            <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2 bg-primary"} onClick={add}>
-                                                <i className={"bi bi-person-plus me-2"}></i>
-                                                Add contact
-                                            </Button>
-                                        </Row>}
-                                        {(status === "PENDING" && requested_by === user.id) &&
-                                        <div className='pt-3 text-center'>
-                                        <small><em> You've already sent a contact request to this user.</em></small>
-                                        </div>
-                                        
-                                        }
-                                        {status === "ACTIVE" &&
-                                        <Row>
-                                            <Button as={"li"} className={" d-flex align-items-center mt-3 px-2 py-1 me-2 bg-primary"} onClick={remove}>
-                                                <i className={"bi bi-person-dash me-2"}></i>
-                                                Remove contact
-                                            </Button>
-                                        </Row>}
-                                        {status !== "BLOCKED" &&
-                                        <Row>
-                                            <Button as={"li"} className={"d-flex align-items-center justify-content-center mt-3 px-2 py-1 me-2 text-bg-danger bg-danger"} onClick={block}>
-                                                <i className={"bi bi-x-circle me-2"}></i>
-                                                Block user
-                                            </Button>
-                                        </Row>}
+                                        <Row className='d-flex flex-row pt-3 align-items-center justify-content-center'>
+                                            {(status === "INACTIVE") && 
+                                                <Button as={"li"} className={"align-items-center mt-3 px-2 py-1 me-2 bg-primary text-center"} onClick={add}>
+                                                    <i className={"bi bi-person-plus me-2"}></i>
+                                                    Add contact
+                                                </Button>}
+
+                                            {(status === "PENDING" && requested_by === user.id) &&
+                                            <div className='d-flex flex-column pt-3 text-center align-items-center'>
+                                                <small><em> You've already sent a contact request to this user.</em></small>
+                                                <Button as={"li"} className={"align-items-center mt-3 px-2 py-1 me-2 bg-secondary"} onClick={cancel}>
+                                                        <i className={"bi bi-x-lg me-2"}></i>
+                                                        Cancel Request
+                                                    </Button>
+                                            </div>}
+
+                                            {(status === "PENDING" && requested_by !== user.id) &&
+                                            <div className='d-flex flex-column pt-3 text-center align-items-center'>
+                                                <small><em>I've sent you a contact request.</em></small>
+                                                <Button as={"li"} className={"align-items-center mt-3 px-2 py-1 me-2 bg-primary"} onClick={confirm}>
+                                                    <i className={"bi bi-person-add me-2"}></i>
+                                                    Confirm Request
+                                                </Button>
+                                                <Button as={"li"} className={"align-items-center mt-3 px-2 py-1 me-2 bg-secondary"} onClick={decline}>
+                                                    <i className={"bi bi-x-lg me-2"}></i>
+                                                    Decline
+                                                </Button>
+                                            </div>}
+                                            {status === "ACTIVE" &&
+                                                <Button as={"li"} className={"align-items-center mt-3 px-2 py-1 me-2 bg-primary text-center"} onClick={remove}>
+                                                    <i className={"bi bi-person-dash me-2"}></i>
+                                                    Remove contact
+                                                </Button>}
+                                            {status !== "BLOCKED" &&
+                                                <Button as={"li"} className={"align-items-center justify-content-center mt-3 px-2 py-1 me-2 text-bg-danger bg-danger"} onClick={block}>
+                                                    <i className={"bi bi-x-circle me-2"}></i>
+                                                    Block user
+                                                </Button>}
+                                        </Row>
                                         </div>
                                         }
                                         {user_id === user.id &&

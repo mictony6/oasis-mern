@@ -160,17 +160,13 @@ export function unblockContact(user_id) {
     })
 }
 
-export function confirmContact(contact_id, notification_id, contact_person_id) {
-    fetch(`http://localhost:4000/contact/confirmContact/${contact_id}`, {
+export function confirmContact(user_id) {
+    fetch(`http://localhost:4000/contact/confirmContact/${user_id}`, {
         method : 'PATCH',
         headers : {
             'Content-Type' : 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({
-            notification_id: notification_id,
-            contact_person_id: contact_person_id
-        })
         }).then(res => res.json())
         .then(data => {
         if(data.status){
@@ -203,16 +199,13 @@ export function confirmContact(contact_id, notification_id, contact_person_id) {
     })
 }
 
-export function declineContact(contact_id, notification_id) {
-    fetch(`http://localhost:4000/contact/declineContact/${contact_id}`, {
+export function declineContact(user_id) {
+    fetch(`http://localhost:4000/contact/declineContact/${user_id}`, {
         method : 'PATCH',
         headers : {
             'Content-Type' : 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({
-            notification_id: notification_id
-        })
         }).then(res => res.json())
         .then(data => {
         if(data.status){
