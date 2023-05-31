@@ -857,6 +857,10 @@ body{
 
 }
 
+.notif:hover {
+	cursor: pointer;
+}
+
 .notif-circle {
 	position: absolute;
 	left: 10px;

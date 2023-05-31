@@ -63,6 +63,9 @@ export default function CommentItem({commentProp}){
             'Content-Type' : 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`
         },
+        body: JSON.stringify({
+            comment_user_id: user_id
+        })
         }).then(res => res.json())
         .then(data => {
             data ? setLove(true) : setLove(false)

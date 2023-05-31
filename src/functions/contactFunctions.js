@@ -245,3 +245,42 @@ export function declineContact(contact_id, notification_id) {
             })}
     })
 }
+
+export function cancelContact(user_id) {
+    fetch(`http://localhost:4000/contact/cancelContact/${user_id}`, {
+        method : 'DELETE',
+        headers : {
+            'Content-Type' : 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }).then(res => res.json())
+        .then(data => {
+        if(data.status) {
+            Swal.fire({
+                title: "Contact Request Cancelled.",
+                icon: "success",
+                iconColor: '#3A3530',
+                color: '#3A3530',
+                confirmButtonText: "OK",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'button2'
+                }
+            })
+            return(data.status)
+        } else{
+            Swal.fire({
+                title: "Oh No!",
+                icon: "error",
+                text: "Something went wrong :( Please try again!",
+                iconColor: '#3A3530',
+                color: '#3A3530',
+                confirmButtonText: "OK",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'button2'
+                }
+            })
+        }
+    })
+}

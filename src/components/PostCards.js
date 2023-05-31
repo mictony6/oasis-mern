@@ -13,7 +13,7 @@ import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import person_add from "../static/images/person/person-add.svg";
 import UserContext from '../UserContext';
-import { addContact, blockContact, removeContact, unblockContact } from '../functions/contactFunctions';
+import { addContact, blockContact, cancelContact, removeContact, unblockContact } from '../functions/contactFunctions';
 import { PostContext } from '../PostContext';
 import dayjs from 'dayjs';
 import * as PropTypes from "prop-types";
@@ -110,6 +110,9 @@ export default function PostCards({postProp, minimize}) {
             'Content-Type' : 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`
         },
+        body: JSON.stringify({
+            post_user_id: user_id
+        })
         }).then(res => res.json())
         .then(data => {
             data ? setLove(true) : setLove(false)
@@ -141,7 +144,8 @@ export default function PostCards({postProp, minimize}) {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                content: comment
+                content: comment,
+                post_user_id: user_id
             })
             }).then(res => res.json())
             .then(data => {
@@ -188,6 +192,10 @@ export default function PostCards({postProp, minimize}) {
     
     function block(e){
         setStatus(blockContact(user_id))
+    }
+
+    function cancel(e){
+        setStatus(cancelContact(user_id))
     }
 
     function editPost(e) {
@@ -314,6 +322,9 @@ export default function PostCards({postProp, minimize}) {
                                         <Dropdown.Header>contact</Dropdown.Header>
                                         {(status === "INACTIVE") &&
                                             <DropdownItem className={"ps-4"} onClick={add}><i className={"bi bi-person-add pe-3"}></i>Add</DropdownItem>}
+
+                                        {(status === "PENDING") &&
+                                            <DropdownItem className={"ps-4"} onClick={cancel}><i className={"bi bi-x-lg pe-3"}></i>Cancel Request</DropdownItem>}
 
                                         {status === "ACTIVE" && <DropdownItem onClick={remove} className={"ps-4"}><i
                                             className={"bi bi-person-dash pe-3"}></i>Remove</DropdownItem>}
