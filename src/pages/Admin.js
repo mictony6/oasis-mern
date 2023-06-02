@@ -1,4 +1,4 @@
-import {Row, Col, Container, ListGroup, ButtonGroup, Button, Collapse, Form, Modal} from "react-bootstrap";
+import {Row, Col, Container, ListGroup, Button, Collapse, Form, Modal} from "react-bootstrap";
 import AppNavbar from "../components/AppNavbar";
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
@@ -9,7 +9,7 @@ function UserManagementItem() {
     const [showConfirmation, setShowConfirmation] = useState(false);
 
 
-    return <ListGroup.Item className={"rounded-2 mb-2 align-items-center "}>
+    return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
             <Col lg={2} className={"fw-bold"}>@username</Col>
             <Col lg={2}><span className={"px-2 rounded-pill text-bg-primary"}>Admin</span></Col>
@@ -46,7 +46,7 @@ function UserManagementItem() {
 function PostManagementItem() {
 
     const [showPostDelete, setShowPostDelete] = useState(false);
-    return <ListGroup.Item className={"rounded-2 mb-2 align-items-center "}>
+    return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
             <Col lg={3} className={"fw-bold"}>Title of Post</Col>
             <Col lg={2}><small>@username</small></Col>
@@ -83,7 +83,7 @@ export default function Admin() {
 
 
                     <Col lg={10}>
-                        <Container className={"text-bg-light rounded-4 px-3 py-2 my-4"}>
+                        <Container className={"text-bg-light rounded-2 px-2 py-3 my-4"}>
                             <Link to={""} onClick={()=>{setShowUsers(!showUsers)}}>
                                 <h5 >
                                     User Management
@@ -104,7 +104,7 @@ export default function Admin() {
                                 </ListGroup>
                             </Collapse>
                         </Container>
-                        <Container className={"text-bg-light rounded-4 px-3 py-2 my-4"}>
+                        <Container className={"text-bg-light rounded-2 px-2 py-3 my-4"}>
 
 
                             <div className={"d-flex flex-row flex-nowrap justify-content-between"}>

@@ -1,16 +1,21 @@
-import { Col, Image, ListGroupItem, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Dropdown, Image, ListGroupItem, Row} from "react-bootstrap";
 import { Link} from "react-router-dom";
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
 import message_icon from "../static/images/message.svg";
-import { useContext } from "react";
+import {useContext, useState} from "react";
 import UserContext from "../UserContext";
+import DropdownToggle from "react-bootstrap/DropdownToggle";
+import DropdownMenu from "react-bootstrap/DropdownMenu";
+import DropdownItem from "react-bootstrap/DropdownItem";
+import person_add from "../static/images/person/person-add.svg";
 
-export default function ContactItem({contactProp, active, pageView}) {
+export default function ContactItem({contactProp, active, pageView, options=false}) {
 
     const { user } = useContext(UserContext)
     const {username, contact_id, contact_person_id, status, requested_by, blocked_by } = contactProp
     const active_user = active
+    const showOptions = options
 
     const colors = [
         {
@@ -32,22 +37,34 @@ export default function ContactItem({contactProp, active, pageView}) {
         return contactStatus.color
     }
 
+    const [hover, setHover] = useState(false)
+
+    const classes = "p-2 border border-1 mt-1 rounded-2  d-flex flex-row flex-nowrap justify-content-between ";
     return(
-        <ListGroupItem className={active_user === username ? "highlight-chat":""}>
-            <Row className={'d-flex flex-row align-items-center '}>
-                <Col className={' px-1 col-2'}>
-                    <Link to={`/user/${contact_person_id}`}><Image src={placeholder} className={'img-fluid'}></Image></Link>
-                </Col>
-                <Col className={'fw-bold px-3 '}>
-                    @{username}
-                </Col>
-                <Col><span className={`px-3 rounded-pill ${getColor(status)}`}>{status}</span></Col>
-                <Col  className={'col-2'}>
-                    {status === 'ACTIVE' && 
-                    <Link to={`/chats/${contact_id}`}> <Image src={message_icon} className={'img-fluid  '}></Image></Link>}
-                </Col>
-            </Row>
-        </ListGroupItem>
+        <Link to={"/user/"+contact_person_id} className={"text-decoration-none"}>
+            <div  role="link"
+                  onMouseOver={()=>{setHover(true)}}
+                  onMouseOut={()=>{setHover(false)}}
+                  className={classes + (hover ? "bg-white border-primary align-items-center" : "bg-light align-items-center") + (active_user === username ? "highlight-chat":"")}>
+                <Image src={placeholder} style={{width:32   , height:"auto"}}/>
+                <div >@{username}</div>
+                <div className={"mx-2"}></div>
+                <div className={` px-3 rounded-pill ${getColor(status)}`}> {status}</div>
+                {status === 'ACTIVE' &&
+                <Link to={`/chats/${contact_id}`}> <Image src={message_icon} className={'img-fluid  '}></Image></Link>}
+                {showOptions ?
+                    <>
+                        <ButtonGroup>
+                            <Button>Remove</Button>
+                            <Button>Block</Button>
+                        </ButtonGroup>
+                    </>
+                    :
+                    <></>
+                }
+            </div>
+
+        </Link>
     );
 
 }

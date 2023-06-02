@@ -298,10 +298,14 @@ export default function PostCards({postProp, minimize}) {
     const goBack = () => {  
         navigate(-1);
     };
+    const [hover, setHover] = useState(false)
 
     return (
             <Container className={"mt-3"}>
-                <div className={"bg-light rounded-4 border border-1 "}>
+                <div
+                    onMouseOver={()=>{setHover(true)}}
+                    onMouseOut={()=>{setHover(false)}}
+                    className={" rounded-4 border border-1 " + (hover ? "bg-white" : "bg-light")}>
                     <Container className={"d-flex py-4 px-3"}>
                         <div className={"d-flex flex-column align-items-center justify-content-between col-2  pe-0"}>
                             {user.id !== user_id ?

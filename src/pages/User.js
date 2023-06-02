@@ -4,7 +4,8 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, ListGroup, Modal, FormControl, Form, Spinner} from 'react-bootstrap';
+    Tab, Button, ListGroup, Modal, FormControl, Form, Spinner, ButtonGroup
+} from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
 import placeholder from '../static/images/profile_pic_placeholder.svg';
@@ -15,7 +16,7 @@ import twt from '../static/images/twitter.svg';
 import lnk from '../static/images/linkedin.svg';
 import UserPostItem from "../components/user/UserPostItem";
 import UserCommentItem from '../components/user/UserCommentItem';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ContactItem from '../components/ContactItem';
 import { useContext } from 'react';
 import UserContext from '../UserContext';
@@ -132,7 +133,7 @@ export default function User() {
             setContacts(data.map(contact => {
                 return(
                 (contact.status !== 'INACTIVE' && contact.requested_by !== user.id) ? 
-                <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false} pageView={true}/>
+                    <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false} pageView={true} options={true}/>
                 :
                 null       
             )
@@ -433,7 +434,7 @@ export default function User() {
                                     <Spinner />
                                 </div>
                                 :
-                                <ListGroup>
+                                <ListGroup className={"mb-3"}>
                                     {posts}
                                 </ListGroup>}
                             </Tab>
@@ -443,18 +444,22 @@ export default function User() {
                                     <Spinner />
                                 </div>
                                 :
-                                <ListGroup>
+                                <ListGroup className={"mb-3"}>
                                     {comments}
                                 </ListGroup>}
                             </Tab>
                             {user_id === user.id && 
                             <Tab title={<span>Contacts <i className='bi bi-lock-fill'/></span>} eventKey={"contacts"} tabClassName='tab-title'>
+                                <Form className={"d-flex flex-row flex-nowrap p-2 mb-2"} >
+                                    <Form.Control placeholder={"search by username"}/>
+                                    <Button className={"mx-1"}>Search</Button>
+                                </Form>
                                 {contactLoading ?
                                 <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                                     <Spinner />
                                 </div>
                                 :
-                                <ListGroup>
+                                <ListGroup className={"mb-3"}>
                                     {contacts}
                                 </ListGroup>}
                             </Tab>}
@@ -464,7 +469,7 @@ export default function User() {
                                     <Spinner />
                                 </div>
                                 :
-                                <ListGroup>
+                                <ListGroup className={"mb-3"}>
                                     {liked}
                                 </ListGroup>}
                             </Tab>

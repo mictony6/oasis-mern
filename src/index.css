@@ -684,7 +684,7 @@ body{
 }
 
 .username{
-	font-weight: 600;
+	font-weight: 400 !important;
 	--bs-btn-color: #738AA3;
 	--bs-btn-bg: none !important;
 	--bs-btn-border-color: none !important;
