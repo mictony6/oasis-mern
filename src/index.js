@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import 'rsuite/dist/rsuite.min.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
-
+import i18n from './i18n';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';

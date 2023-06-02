@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Notifications from './Notifications';
+import {useTranslation} from "react-i18next";
+import ChangeLanguage from "./ChangeLanguage";
 
 
 export default function RightSidebar() {
@@ -36,6 +38,8 @@ export default function RightSidebar() {
         })
     }, [contacts])
 
+    const {t, i18n} = useTranslation();
+
     return (
             <Container fluid className='sticky-top vh-100 overflow-auto'>
                 <div className="mt-4"></div>
@@ -46,7 +50,7 @@ export default function RightSidebar() {
                     aria-controls="contact-list"
                     aria-expanded={showContacts}
                 >
-                <h6 >contacts {showContacts ? <i className="bi bi-caret-up-fill"></i> : <i className="bi bi-caret-right-fill"></i>}</h6>
+                <h6 >{t('contact.name').toLowerCase()} {showContacts ? <i className="bi bi-caret-up-fill"></i> : <i className="bi bi-caret-right-fill"></i>}</h6>
                 </Link>
 
                 <Collapse in={showContacts} >
@@ -66,6 +70,8 @@ export default function RightSidebar() {
                 <ListGroup  >
                     <BlogPreviewCard/>
                 </ListGroup>
+                <div className={"mt-4"}></div>
+                <ChangeLanguage/>
 
             </Container>
     )

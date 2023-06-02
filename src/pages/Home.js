@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate} from 'react-router-dom';
 import UserContext from '../UserContext';
 import { unblockContact } from '../functions/contactFunctions';
+import ChangeLanguage from "../components/ChangeLanguage";
 
 export default function Home() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -61,6 +62,7 @@ export default function Home() {
         })
     }, [setView, view, posts, user.id])
 
+
     return (
         isDesktopOrLaptop ?
             <Container fluid>
@@ -98,7 +100,9 @@ export default function Home() {
 
                     <Col lg={3} className='p-0 m-0 z-index-0 ms-4 '>
                         <RightSidebar/>
+
                     </Col>
+
                 </Row>
 
             </Container>

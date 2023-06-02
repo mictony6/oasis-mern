@@ -9,6 +9,8 @@ import Swal from 'sweetalert2'
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import UserContext from '../UserContext';
+import {useTranslation} from "react-i18next";
+
 
 export default function CreatePost() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -92,11 +94,13 @@ export default function CreatePost() {
         setContent("");
     }
 
+    const {t, i18n} = useTranslation();
+
     return (
         <Container fluid>
             <Container fluid className="d-flex flex-row my-4 justify-content-between">
                 <ButtonGroup className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
-                    <FormControl placeholder="Whats on your mind?" className='border-0 w-100 shadow-none'
+                    <FormControl placeholder={t('post.placeholder')} className='border-0 w-100 shadow-none'
                     onClick={openModal}
                     ></FormControl>
                     <Button className=" px-4 bg-primary border-0 "
@@ -119,10 +123,10 @@ export default function CreatePost() {
 
             <Modal show={open} size="lg" className="mt-auto" centered onHide={closeModal}>
                 <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
-                    <h3 className='py-3'>Create A New Post</h3>
+                    <h3 className='py-3'>{t('post.create')}</h3>
                     <div className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
                         <FormControl 
-                            placeholder="Title"
+                            placeholder={t('post.title')}
                             className='border-0 w-100 shadow-none'
                             onChange = {e => setSubject(e.target.value)}
                             value={subject}
@@ -131,7 +135,7 @@ export default function CreatePost() {
                     <div className='w-100'>
                         <TextareaAutosize
                             className='content-box'
-                            placeholder='What are your thoughts?'
+                            placeholder={t('post.placeholder')}
                             minRows={10}
                             maxRows={15}
                             onChange = {e => setContent(e.target.value)}
@@ -144,7 +148,7 @@ export default function CreatePost() {
                         onClick={createPost}
                         disabled={!active}
                         >
-                            Post
+                            {t('post.button')}
                         </Button>
                     </div>
                 </Container>

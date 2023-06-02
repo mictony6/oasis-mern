@@ -17,6 +17,7 @@ import { addContact, blockContact, cancelContact, removeContact, unblockContact 
 import { PostContext } from '../PostContext';
 import dayjs from 'dayjs';
 import * as PropTypes from "prop-types";
+import {useTranslation} from "react-i18next";
 
 export default function PostCards({postProp, minimize}) {
 
@@ -298,8 +299,8 @@ export default function PostCards({postProp, minimize}) {
     const goBack = () => {  
         navigate(-1);
     };
-    const [hover, setHover] = useState(false)
-
+    const [hover, setHover] = useState(false);
+    const {t, i18n} = useTranslation();
     return (
             <Container className={"mt-3"}>
                 <div
@@ -322,19 +323,19 @@ export default function PostCards({postProp, minimize}) {
                                     <DropdownMenu>
                                         {/*TODO: get user_id from prop*/}
                                         <DropdownItem as={Link} to={`/user/${user_id}`} className={"ps-4"}><i
-                                            className="bi bi-person-fill pe-3"></i>View Profile</DropdownItem>
+                                            className="bi bi-person-fill pe-3"></i>{t('contact.view')}</DropdownItem>
                                         <Dropdown.Header>contact</Dropdown.Header>
                                         {(status === "INACTIVE") &&
-                                            <DropdownItem className={"ps-4"} onClick={add}><i className={"bi bi-person-add pe-3"}></i>Add</DropdownItem>}
+                                            <DropdownItem className={"ps-4"} onClick={add}><i className={"bi bi-person-add pe-3"}></i>{t('contact.add')}</DropdownItem>}
 
                                         {(status === "PENDING") &&
-                                            <DropdownItem className={"ps-4"} onClick={cancel}><i className={"bi bi-x-lg pe-3"}></i>Cancel Request</DropdownItem>}
+                                            <DropdownItem className={"ps-4"} onClick={cancel}><i className={"bi bi-x-lg pe-3"}></i>{t('contact.cancel')}</DropdownItem>}
 
                                         {status === "ACTIVE" && <DropdownItem onClick={remove} className={"ps-4"}><i
-                                            className={"bi bi-person-dash pe-3"}></i>Remove</DropdownItem>}
+                                            className={"bi bi-person-dash pe-3"}></i>{t('contact.remove')}</DropdownItem>}
 
                                         {status !== "BLOCKED" &&
-                                            <DropdownItem onClick={block} className={"ps-4"}><i className="bi bi-x-circle pe-3"></i>Block</DropdownItem>}
+                                            <DropdownItem onClick={block} className={"ps-4"}><i className="bi bi-x-circle pe-3"></i>{t('contact.block')}</DropdownItem>}
 
                                     </DropdownMenu>
                                     :
@@ -395,16 +396,19 @@ export default function PostCards({postProp, minimize}) {
                                 {user.id === user_id ?
                                     <ul className="dropdown-menu">
                                         <DropdownItem onClick={openModal} className={"ps-4"}>
-                                            <i className="bi bi-pencil-square pe-3"></i>Edit
+                                            <i className="bi bi-pencil-square pe-3"></i>
+                                            {t('common.edit')}
                                         </DropdownItem>
                                         <DropdownItem onClick={deletePost} className={"ps-4"}>
-                                            <i className="bi bi-trash-fill pe-3"></i>Delete
+                                            <i className="bi bi-trash-fill pe-3"></i>
+                                            {t('common.delete')}
                                         </DropdownItem>
                                     </ul>
                                     :
                                     <ul className="dropdown-menu">
                                         <DropdownItem onClick={""} className={"ps-4"}>
-                                            <i className="bi bi-exclamation-lg pe-3"></i>Report
+                                            <i className="bi bi-exclamation-lg pe-3"></i>
+                                            {t('common.report')}
                                         </DropdownItem>
                                         <DropdownItem onClick={""} className={"ps-4"}>
                                             <i className="bi bi-flag pe-3"></i>Flag
@@ -419,7 +423,7 @@ export default function PostCards({postProp, minimize}) {
                             <Button className=' d-flex flex-row flex-nowrap p-2 rounded-5 comment-button'
                                     onClick={reply} disabled={!active}>
                                 <i className={"bi bi-reply me-2"}></i>
-                                Reply
+                                {t('post.reply')}
                             </Button>
                         </div>
                     </Container>

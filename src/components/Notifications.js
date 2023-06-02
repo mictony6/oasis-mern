@@ -4,6 +4,7 @@ import NotificationItem from "./NotificationItem";
 import { useEffect } from "react";
 import { useContext } from "react";
 import UserContext from "../UserContext";
+import {useTranslation} from "react-i18next";
 
 export default function Notifications() {
 
@@ -46,7 +47,7 @@ export default function Notifications() {
             } else {
             setNotifications(
             <div className="d-flex text-muted py-3 justify-content-center">
-                <small><em> You have no new notifications. </em></small>
+                <small><em> {t('notification.empty')}</em></small>
             </div>)
             }
         })
@@ -82,6 +83,8 @@ export default function Notifications() {
         openModal()
     }
 
+    const {t, i182} = useTranslation();
+
     return (
         <>
         <Dropdown className="w-100 " onClick={retrieveUnread}>                
@@ -92,7 +95,7 @@ export default function Notifications() {
                     {!user.has_notifications ? <i className="bi bi-bell"></i> : <i className="bi bi-bell-fill position-relative"> <i className="bi bi-circle-fill text-danger notif-circle"></i></i>}
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="w-100 m-0 p-2">
-                        <Dropdown.Header><h6>notifications</h6></Dropdown.Header>
+                        <Dropdown.Header><h6>{t('notification.name').toLowerCase()}</h6></Dropdown.Header>
                         <Dropdown.Divider />
                         {isLoading ?
                             <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
@@ -104,7 +107,7 @@ export default function Notifications() {
                             </ListGroup> }
                         <Dropdown.Divider />
                         <span className="d-flex justify-content-center p-2 notif-view" onClick={retrieveNotifications}>
-                            <p className="p-0 m-0">View All Notifications</p>
+                            <p className="p-0 m-0">{t('notification.all')}</p>
                         </span>
                     </Dropdown.Menu>
                 </div>

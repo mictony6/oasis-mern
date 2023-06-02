@@ -7,6 +7,7 @@ import {useState} from "react";
 import HotlineItem from "./HotlineItem";
 import { useContext } from 'react';
 import UserContext from '../UserContext';
+import {useTranslation} from "react-i18next";
 
 export default function AppNavbar() {
 	const { user } = useContext(UserContext)
@@ -16,6 +17,8 @@ export default function AppNavbar() {
 	const isDesktopOrLaptop = useMediaQuery({
 		query: '(min-width: 1224px)'
 	})
+
+	const {t, i18n} = useTranslation()
 
 	return (
 		<Navbar className="m-0 d-flex flex-column sticky-top vh-100 overflow-auto   ">
@@ -38,23 +41,35 @@ export default function AppNavbar() {
 					</Row>
 				</Navbar.Brand>
 			</Row>}
-			<Row className='d-flex flex-column nav bg-light rounded-4 border border-1 p-2'>
-					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
-					{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>}
-					{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>Appointments</NavLink>}
-					{/*<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>*/}
-					<NavLink to={'/about'} className='nav-links'>About Us</NavLink>
+			{/*<Row className='d-flex flex-column nav bg-light rounded-4 border border-1 p-2'>*/}
+			{/*		<NavLink to={'/home'} className='nav-links' >{t('nav.community')}</NavLink>*/}
+			{/*		{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>{t('nav.counselling')}</NavLink>}*/}
+			{/*		{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>{t('nav.appointments')}</NavLink>}*/}
+			{/*		/!*<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>*!/*/}
+			{/*		<NavLink to={'/about'} className='nav-links'>{t('nav.about')}</NavLink>*/}
+			{/*	{!isDesktopOrLaptop && <Nav.Item className='nav-links '>*/}
+			{/*		VAWC Hotlines*/}
+			{/*	</Nav.Item>*/}
+			{/*	}*/}
+			{/*</Row>*/}
+
+			<Nav className={"d-flex flex-column bg-light p-2 rounded-4 "}>
+				<NavLink to={'/home'} className='nav-links' >{t('nav.community')}</NavLink>
+				{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>{t('nav.counselling')}</NavLink>}
+				{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>{t('nav.appointments')}</NavLink>}
+				{/*<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>*/}
+				<NavLink to={'/about'} className='nav-links'>{t('nav.about')}</NavLink>
 				{!isDesktopOrLaptop && <Nav.Item className='nav-links '>
 					VAWC Hotlines
 				</Nav.Item>
 				}
-			</Row>
+			</Nav>
 			<div className='mt-2'></div>
 			<Col className={"d-flex flex-column bg-light rounded-4 p-4 align-items-center gradient "}>
 				<Image src={telephone} className={"img-fluid ms-5"}></Image>
-				<h6 className={"fw-bold "}>24/7 Helpline</h6>
-				<p><small>Always to help you.</small></p>
-				<Button onClick={()=> setHotlinesShow(true)} className='contact-button'>Hotlines</Button>
+				<h6 className={"fw-bold "}>{t('helpline.title')}</h6>
+				<p><small>{t('helpline.text')}</small></p>
+				<Button onClick={()=> setHotlinesShow(true)} className='contact-button'>{t('helpline.button')}</Button>
 				<Modal show={hotlinesShow} onHide={() => setHotlinesShow(false)}>
 					<Modal.Header closeButton>
 						<h3>VAWC Hotlines</h3>
