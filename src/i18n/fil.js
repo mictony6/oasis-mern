@@ -9,12 +9,15 @@ export const fil = {
             remove: "Alisin",
             back: "Bumalik",
             report: "I-report",
+            recent: "Bago",
+            top: "Tuktok",
+
         },
 
         nav: {
             community: "Komunidad",
             appointments: "Appointments",
-            counselling: "Hanapin ang Suporta",
+            counselling: "Humanap ng Suporta",
             about: "Tungkol sa Amin",
         },
 
@@ -47,5 +50,30 @@ export const fil = {
             empty: "Walang bagong abiso.",
             all: "Tingnan lahat ng mga abiso",
         },
+
+        user: {
+            overview: "Overview",
+            posts: "Posts",
+            comments: "Comments",
+            contacts: "Contacts",
+            likes: "Likes",
+            profile: {
+                edit: "I-edit ang Profile",
+                socials: "I-edit ang Socials",
+                bio: "I-edit ang Bio",
+                new: "Bagong Post"
+            },
+            post: {
+                source: "I-post ni "
+            },
+            comment: {
+                source: "nagkomento sa "
+            }
+        },
+
+        search:{
+            byusername:"hanapin gamit ang username",
+            name:"Hanapin"
+        }
     }
 }

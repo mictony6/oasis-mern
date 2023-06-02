@@ -16,6 +16,7 @@ export default function ChangeLanguage(){
                 Change Language
             </Form.Label>
             <Form.Control as="select" value={language} onChange={(e) => {switchLanguage(e.target.value)}} >
+                <option value={language}>--select--</option>
                 <option value={"en"}>English</option>
                 <option value={"fil"}>Filipino</option>
             </Form.Control>

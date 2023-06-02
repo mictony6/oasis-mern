@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Button, Container, ListGroup } from "react-bootstrap";
 import dayjs from "dayjs";
+import {useTranslation} from "react-i18next";
 
 const UserCommentItem = ({commentProp}) => {
 
@@ -83,6 +84,8 @@ const UserCommentItem = ({commentProp}) => {
         })
     }
 
+    const {t, i182} = useTranslation()
+
     return ( 
         <>
             <ListGroup.Item className={"p-3 pb-0"}>
@@ -90,7 +93,7 @@ const UserCommentItem = ({commentProp}) => {
                         <Container className="py-0 my-0">
                             <div className="d-flex flex-wrap">
                                 <i className="bi bi-chat pe-3"></i>
-                                <div className={""}><p>@{username} <span className="text-muted"> commented on <a href = {`/post/${p_id}`}>{title}</a></span></p></div>
+                                <div className={""}><p>@{username} <span className="text-muted"> {t('user.comment.source')} <a href = {`/post/${p_id}`}>{title}</a></span></p></div>
                                 <Container className={"d-flex w-100 p-2 mb-1"}>
                                 {love ?
                                 <div className={"pe-3 ps-2 text-center"} onClick={unlikeComment}>

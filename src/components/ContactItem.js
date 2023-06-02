@@ -9,6 +9,7 @@ import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import person_add from "../static/images/person/person-add.svg";
+import {useTranslation} from "react-i18next";
 
 export default function ContactItem({contactProp, active, pageView, options=false}) {
 
@@ -40,6 +41,10 @@ export default function ContactItem({contactProp, active, pageView, options=fals
     const [hover, setHover] = useState(false)
 
     const classes = "p-2 border border-1 mt-1 rounded-2  d-flex flex-row flex-nowrap justify-content-between ";
+
+    const {t, i182} = useTranslation();
+
+
     return(
         <Link to={"/user/"+contact_person_id} className={"text-decoration-none"}>
             <div  role="link"
@@ -55,8 +60,8 @@ export default function ContactItem({contactProp, active, pageView, options=fals
                 {showOptions ?
                     <>
                         <ButtonGroup>
-                            <Button>Remove</Button>
-                            <Button>Block</Button>
+                            <Button>{t('contact.remove')}</Button>
+                            <Button>{t('contact.block')}</Button>
                         </ButtonGroup>
                     </>
                     :

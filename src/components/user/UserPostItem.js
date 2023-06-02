@@ -6,6 +6,7 @@ import UserContext from "../../UserContext";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
 import { TextareaAutosize } from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 export default function UserPostItem({postProp}){
 
@@ -216,6 +217,8 @@ export default function UserPostItem({postProp}){
         navigate(link)
     }
 
+    const {t, i182} = useTranslation();
+
     return(
         <>
         <ListGroup.Item className={"p-3 pb-0"}>
@@ -236,12 +239,12 @@ export default function UserPostItem({postProp}){
                 </div>
                 <Container className={"d-flex flex-column"}>
                     <h6>{subject}</h6>
-                    <p className={"text-muted"}><small>Posted by @{username} <i className={"bi bi-dot"}></i>{time}</small></p>
+                    <p className={"text-muted"}><small>{t('user.post.source')}@{username} <i className={"bi bi-dot"}></i>{time}</small></p>
                     <Container fluid >
                         <div className={"d-flex flex-grow-1 py-2 align-items-baseline"}>
                             <Button className={"me-2 bg-light"} onClick={e => {nav(`/post/${p_id}`)}}><i className={"bi bi-arrows-angle-expand "}></i></Button>
-                            <Button className={"me-2 bg-light"} onClick={openModal}><i className={"bi bi-pencil "}></i> Edit</Button>
-                            <Button className={"me-2 bg-light"} onClick={deletePost}><i className={"bi bi-trash "}></i> Delete</Button>
+                            <Button className={"me-2 bg-light"} onClick={openModal}><i className={"bi bi-pencil "}></i> {t('common.edit')}</Button>
+                            <Button className={"me-2 bg-light"} onClick={deletePost}><i className={"bi bi-trash "}></i> {t('common.delete')}</Button>
 
                             <div className={"flex-grow-1"}></div>
                         </div>

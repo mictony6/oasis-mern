@@ -9,6 +9,8 @@ export const en = {
             remove:"Remove",
             back:"Back",
             report:"Report",
+            recent:"Recent",
+            top:"Top",
 
         },
 
@@ -49,6 +51,31 @@ export const en = {
             empty:"You have no new notifications.",
             all:"View all notifications",
 
+        },
+
+        user: {
+            overview: "Overview",
+            posts: "Posts",
+            comments:"Comments",
+            contacts:"Contacts",
+            likes:"Likes",
+            profile:{
+                edit:"Edit Profile",
+                socials:"Edit Socials",
+                bio:"Edit Bio",
+                new:"New Post"
+            },
+            post:{
+                source:"Posted by "
+            },
+            comment:{
+                source:"commented on "
+            }
+        },
+
+        search:{
+            byusername:"seach by username",
+            name:"Search"
         }
 
     }

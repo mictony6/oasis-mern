@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 import UserCommentItem from "./UserCommentItem";
 import UserPostItem from "./UserPostItem";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 
 
@@ -18,6 +19,8 @@ export default function UserOverview() {
 
     const getUrl = new URLSearchParams(location.search).get('sort');
     const [view, setView] = useState(getUrl ? getUrl : 'Recent')
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         fetch(`http://localhost:4000/post/viewAllCommentsPostsBy${view}/${user_id}`,
@@ -50,8 +53,8 @@ export default function UserOverview() {
     return(
         <Container >
             <Container className={"p-3 bg-body"}>
-                <Button className={view === 'Recent' ? 'me-3' : 'me-3 bg-secondary'} onClick={() => {sortBy('Recent')}}>New</Button>
-                <Button  className={view === 'Likes' ? 'me-3' : 'me-3 bg-secondary'} onClick={() => {sortBy('Likes')}}>Top</Button>
+                <Button className={view === 'Recent' ? 'me-3' : 'me-3 bg-secondary'} onClick={() => {sortBy('Recent')}}>{t('common.recent')}</Button>
+                <Button  className={view === 'Likes' ? 'me-3' : 'me-3 bg-secondary'} onClick={() => {sortBy('Likes')}}>{t('common.top')}</Button>
             </Container>
 
             {isLoading ?
@@ -59,7 +62,7 @@ export default function UserOverview() {
                 <Spinner/>
             </div>
             :
-            <ListGroup>
+            <ListGroup className={"mb-3"}>
                 {postComments}
             </ListGroup>}
         </Container>

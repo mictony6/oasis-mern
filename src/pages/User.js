@@ -24,6 +24,7 @@ import dayjs from 'dayjs'
 import { TextareaAutosize } from '@mui/material';
 import Swal from 'sweetalert2';
 import { addContact, blockContact, cancelContact, confirmContact, declineContact, removeContact } from '../functions/contactFunctions';
+import {useTranslation} from "react-i18next";
 
 
 export default function User() {
@@ -69,6 +70,8 @@ export default function User() {
 
     const [editActive, setEditActive] = useState(false)
     const [socialActive, setSocialActive] = useState(false)
+
+    const {t, i18n} = useTranslation()
 
     useEffect(() => {
         if(user_id !== user.id) {
@@ -425,10 +428,10 @@ export default function User() {
                     <Row className={'w-100 my-4 rounded-4 bg-light'}>
                         <Tabs onSelect={e => viewTab(e)}
                         activeKey={tab}>
-                            <Tab title={"Overview"} eventKey={'overview'} value='overview' tabClassName='tab-title'>
+                            <Tab title={t('user.overview')} eventKey={'overview'} value='overview' tabClassName='tab-title'>
                                 <UserOverview/>
                             </Tab>
-                            <Tab title={"Posts"} eventKey={'posts'} value='posts' tabClassName='tab-title'>
+                            <Tab title={t('user.posts')} eventKey={'posts'} value='posts' tabClassName='tab-title'>
                                 {postLoading ?
                                 <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                                     <Spinner />
@@ -438,7 +441,7 @@ export default function User() {
                                     {posts}
                                 </ListGroup>}
                             </Tab>
-                            <Tab title={"Comments"} eventKey={'comments'} value='comments' tabClassName='tab-title'>
+                            <Tab title={t('user.comments')} eventKey={'comments'} value='comments' tabClassName='tab-title'>
                                 {commentLoading ?
                                 <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                                     <Spinner />
@@ -449,10 +452,10 @@ export default function User() {
                                 </ListGroup>}
                             </Tab>
                             {user_id === user.id && 
-                            <Tab title={<span>Contacts <i className='bi bi-lock-fill'/></span>} eventKey={"contacts"} tabClassName='tab-title'>
+                            <Tab title={<span>{t('user.contacts')} <i className='bi bi-lock-fill'/></span>} eventKey={"contacts"} tabClassName='tab-title'>
                                 <Form className={"d-flex flex-row flex-nowrap p-2 mb-2"} >
-                                    <Form.Control placeholder={"search by username"}/>
-                                    <Button className={"mx-1"}>Search</Button>
+                                    <Form.Control placeholder={t('search.byusername')}/>
+                                    <Button className={"mx-1"}>{t('search.name')}</Button>
                                 </Form>
                                 {contactLoading ?
                                 <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
@@ -463,7 +466,7 @@ export default function User() {
                                     {contacts}
                                 </ListGroup>}
                             </Tab>}
-                            <Tab title={"Likes"} eventKey={"likes"} tabClassName='tab-title'>
+                            <Tab title={t('user.likes')} eventKey={"likes"} tabClassName='tab-title'>
                                 {likedLoading ?
                                 <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                                     <Spinner />
