@@ -38,17 +38,17 @@ export default function AppNavbar() {
 					</Row>
 				</Navbar.Brand>
 			</Row>}
-			<Row className='d-flex flex-column nav bg-light rounded-4 border border-1 p-2'>
-					<NavLink to={'/home'} className='nav-links' >Community</NavLink>
-					{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>}
-					{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>Appointments</NavLink>}
-					{/*<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>*/}
-					<NavLink to={'/about'} className='nav-links'>About Us</NavLink>
+			<Nav className={"d-flex flex-column bg-light p-2 rounded-4 "}>
+				<NavLink to={'/home'} className='nav-links' >Community</NavLink>
+				{user.role === 'User' && <NavLink to={'/counselling'} className='nav-links'>Look for Support</NavLink>}
+				{user.role === 'Therapist' && <NavLink to={'/therapist'} className='nav-links'>Appointments</NavLink>}
+				{/*<NavLink to={'/blogs'} className='nav-links'>Blog</NavLink>*/}
+				<NavLink to={'/about'} className='nav-links'>About Us</NavLink>
 				{!isDesktopOrLaptop && <Nav.Item className='nav-links '>
 					VAWC Hotlines
 				</Nav.Item>
 				}
-			</Row>
+			</Nav>
 			<div className='mt-2'></div>
 			<Col className={"d-flex flex-column bg-light rounded-4 p-4 align-items-center gradient "}>
 				<Image src={telephone} className={"img-fluid ms-5"}></Image>

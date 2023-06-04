@@ -65,11 +65,11 @@ export default function Home() {
         isDesktopOrLaptop ?
             <Container fluid>
                 <Row className='d-flex flex-row '>
-                    <Col lg={2} >
+                    <Col lg={2} className={"me-4"}>
                         <AppNavbar/>
                     </Col>
                     <Col className='d-flex flex-column  '>
-                        <CreatePost/>
+                        <CreatePost />
                         <Row className='d-flex flex-row align-items-center px-4'>
                             <Col xs={2} className=''>
                                 <label htmlFor='sort-type'>Sort by:</label>
@@ -95,7 +95,8 @@ export default function Home() {
                         :
                         posts}
                     </Col>
-                    <Col lg={3} className='p-0 m-0 z-index-0 '>
+
+                    <Col lg={3} className='p-0 m-0 z-index-0 ms-4 '>
                         <RightSidebar/>
                     </Col>
                 </Row>
