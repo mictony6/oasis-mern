@@ -14,7 +14,7 @@ import { FormGroup, FormControl, InputLabel, MenuItem, Select } from "@mui/mater
 
 export default function TherapistCard({therapistProp}){
 
-    const {therapist_id, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link} = therapistProp
+    const {therapist_id, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link, user_therapist_id} = therapistProp
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -83,6 +83,7 @@ export default function TherapistCard({therapistProp}){
                 body: JSON.stringify({
                     therapist_id: therapist_id,
                     consultation_date: datetime,
+                    user_therapist_id: user_therapist_id,
                     consultation_type: mode
                 })
                 }).then(res => res.json())

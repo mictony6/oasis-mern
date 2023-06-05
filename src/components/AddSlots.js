@@ -96,6 +96,8 @@ export default function AddSlots() {
     function addSlot(e) {
         e.preventDefault()
 
+        let arr = []
+
         const datesArray = eachDayOfInterval({ start: dates[0], end: dates[1]})
         const timesArray = eachHourOfInterval({ start: times[0], end: times[1] })
 
@@ -114,35 +116,72 @@ export default function AddSlots() {
                     })
                     }).then(res => res.json())
                     .then(data => {
-                        data ?
-                        Swal.fire({
-                            title: "Slots Added!",
-                            icon: "success",
-                            iconColor: '#3A3530',
-                            color: '#3A3530',
-                            confirmButtonText: "OK",
-                            buttonsStyling: false,
-                            customClass: {
-                                confirmButton: 'button2'
-                            }
-                        })
-                        :
-                        Swal.fire({
-                            title: "Oh No!",
-                            icon: "error",
-                            text: "Something went wrong :( Please try again!",
-                            iconColor: '#3A3530',
-                            color: '#3A3530',
-                            confirmButtonText: "OK",
-                            buttonsStyling: false,
-                            customClass: {
-                                confirmButton: 'button2'
-                            }
-                        })
+                        if(data) arr.push(data)
                 })
             }
         }
+
+        console.log(arr)
+
+        if(checkAllTrue(arr)){
+            fetch(`http://localhost:4000/therapist/notification`, {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+                }).then(res => res.json())
+                .then(data => {
+                    data ? 
+                    Swal.fire({
+                        title: "Slots Added!",
+                        icon: "success",
+                        iconColor: '#3A3530',
+                        color: '#3A3530',
+                        confirmButtonText: "OK",
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: 'button2'
+                        }
+                    }) 
+                    : 
+                    Swal.fire({
+                        title: "Oh No!",
+                        icon: "error",
+                        text: "Something went wrong :( Please try again!",
+                        iconColor: '#3A3530',
+                        color: '#3A3530',
+                        confirmButtonText: "OK",
+                        buttonsStyling: false,
+                        customClass: {
+                            confirmButton: 'button2'
+                        }
+                    })
+            })
+        } else {
+            Swal.fire({
+                title: "Oh No!",
+                icon: "error",
+                text: "Something went wrong :( Please try again!",
+                iconColor: '#3A3530',
+                color: '#3A3530',
+                confirmButtonText: "OK",
+                buttonsStyling: false,
+                customClass: {
+                    confirmButton: 'button2'
+                }
+            })
     }
+    }
+
+    function checkAllTrue(array) {
+        for (let i = 0; i < array.length; i++) {
+          if (!array[i]) {
+            return false; 
+          }
+        }
+        return true;
+      }
 
     return(
         <Container className={""}>

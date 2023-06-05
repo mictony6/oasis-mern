@@ -12,7 +12,7 @@ const NotificationItem = ({notificationProp, modal}) => {
 
     const { user, setUser } = useContext(UserContext)
 
-    const { user_id, triggered_by, notification_id, triggered_by_username, type, marked_read, contact_id, post_id, like_count, user_username, comment_id, comment_count } = notificationProp
+    const { user_id, triggered_by, notification_id, triggered_by_username, type, marked_read, contact_id, post_id, like_count, user_username, comment_id, comment_count, prefix, last_name } = notificationProp
 
     const [new_type, setNewType] = useState(type)
     const [readStatus, setReadStatus] = useState(marked_read)
@@ -56,12 +56,16 @@ const NotificationItem = ({notificationProp, modal}) => {
             text: `@${triggered_by_username} has booked a session with you.`
         },
         {
-            type: 'confirmation',
-            text: `@${triggered_by_username} has requested to add you as a contact`
+            type: 'confirm_booking',
+            text: `${prefix} ${last_name} has confirmed your appointment! You may now reach out to them.`
+        },
+        {
+            type: 'decline_booking',
+            text: `Sorry, ${prefix} ${last_name} has declined your set appointment. Check our counselling page for more available slots.`
         },
         {
             type: 'slots',
-            text: `@${triggered_by_username} has requested to add you as a contact`
+            text: `${prefix} ${last_name} has added new appointment slots. Check them out now!`
         },
     ]
 
@@ -273,6 +277,27 @@ const NotificationItem = ({notificationProp, modal}) => {
                         <Dropdown.Item>Block user</Dropdown.Item>
                     </ul>
                 </Dropdown>
+                </span>
+            </div>}
+            {(new_type === 'slots' || new_type === 'decline_booking') &&
+            <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('counselling','')}>
+                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span>
+                    <h6> {notificationText(new_type)} </h6>
+                </span>
+            </div>}
+            {(new_type === 'booking') &&
+            <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('therapist','')}>
+                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span>
+                    <h6> {notificationText(new_type)} </h6>
+                </span>
+            </div>}
+            {(new_type === 'confirm_booking') &&
+            <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('chats', contact_id)}>
+                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span>
+                    <h6> {notificationText(new_type)} </h6>
                 </span>
             </div>}
         </ListGroupItem>

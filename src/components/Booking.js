@@ -55,7 +55,10 @@ export default function Booking({bookingProp}){
             headers : {
                 'Content-Type' : 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+            },
+            body: JSON.stringify({
+                contact_person_id: user_id
+            })
             }).then(res => res.json())
             .then(data => {
                 data ?
@@ -95,7 +98,10 @@ export default function Booking({bookingProp}){
             headers : {
                 'Content-Type' : 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+            },
+            body: JSON.stringify({
+                contact_person_id: user_id
+            })
             }).then(res => res.json())
             .then(data => {
                 data ?
