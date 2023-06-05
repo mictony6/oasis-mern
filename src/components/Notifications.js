@@ -38,9 +38,10 @@ export default function Notifications() {
         .then(data => {
             setIsLoading(false)
             if(data.length !== 0){
-            setNotifications(data.map(notification => 
+            setNotifications(data.map(notification =>
                 {
-                return <NotificationItem key = {notification.notification_id} notificationProp={notification} modal={false}/>
+                if(notification.type !== 'slot'){
+                    return <NotificationItem key = {notification.notification_id} notificationProp={notification} modal={false}/>}
                 }
             ))
             } else {
@@ -69,7 +70,8 @@ export default function Notifications() {
             setNotificationsLoading(false)
             setAllNotifications(data.map(notification => 
                 {
-                return <NotificationItem key = {notification.notification_id} notificationProp={notification} modal={true}/>
+                if(notification.type !== 'slot'){
+                    return <NotificationItem key = {notification.notification_id} notificationProp={notification} modal={false}/>}
                 }
             ))
             } else {

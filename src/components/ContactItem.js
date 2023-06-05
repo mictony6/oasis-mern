@@ -13,7 +13,7 @@ import person_add from "../static/images/person/person-add.svg";
 export default function ContactItem({contactProp, active, pageView}) {
 
     const { user } = useContext(UserContext)
-    const {username, contact_id, contact_person_id, status, requested_by, blocked_by } = contactProp
+    const {username, role, contact_id, contact_person_id, status, requested_by, blocked_by, prefix, last_name, suffix} = contactProp
     const active_user = active
 
     const colors = [
@@ -52,21 +52,22 @@ export default function ContactItem({contactProp, active, pageView}) {
                     <Image src={placeholder} style={{width:32   , height:"auto"}}/>
                 </Link>
             </Col>
-            <Col xs={5}>
-                @{username}
+            <Col xs={pageView ? 4 : 5}>
+                {role !== 'Therapist' ? `@${username}` : `${prefix} ${last_name}`}
             </Col>
-            {pageView && <Col>
-                <div className={` px-3 rounded-pill ${getColor(status)}`}> {status}</div>
+            {pageView && <Col xs={2}>
+                <div className={`px-3 text-center rounded-pill ${getColor(status)}`}> {status}</div>
             </Col>}
             {status === 'ACTIVE' &&
             <Col as={Link} to={`/chats/${contact_id}`} className='text-end'> 
                 <Image src={message_icon} className={'img-fluid'}></Image>
             </Col>}
-            {pageView &&
+            {pageView && <Col className='text-end'>
                 <ButtonGroup>
-                    <Button>Remove</Button>
+                    <Button className = 'bg-secondary'>Remove</Button>
                     <Button>Block</Button>
                 </ButtonGroup>
+            </Col>
             }
         </Row>
         </Container>
