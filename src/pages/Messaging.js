@@ -30,7 +30,11 @@ export default function Messaging() {
     const [activeContact, setActiveContact] = useState("")
     const [status, setStatus] = useState("INACTIVE")
     const [blocked_by, setBlockedBy] = useState(null)
-
+    const [role, setRole] = useState('')
+    const [prefix, setPrefix] = useState('')
+    const [last_name, setLastName] = useState('')
+    const [suffix, setSuffix] = useState('')
+    
     useEffect(() => {
         fetch(`http://localhost:4000/contact/viewAll`,
         {method: 'GET',
@@ -42,9 +46,9 @@ export default function Messaging() {
         .then(res => res.json())
         .then(data => {
             setContacts(data.map(contact => {
-                return(
+                return contact.status === 'ACTIVE' ?
                 <ContactItem key={contact.contact_id} contactProp= {contact} active = {activeContact.username}/>            
-            )
+                : null
             }))
         })
 
@@ -61,6 +65,10 @@ export default function Messaging() {
                 setActiveContact(data[0])
                 setStatus(data[0].status)
                 setBlockedBy(data[0].blocked_by)
+                setRole(data[0].role)
+                setPrefix(data[0].prefix)
+                setLastName(data[0].last_name)
+                setSuffix(data[0].suffix)
             }
         })
     }, [contacts, contact_id, activeContact])
@@ -104,17 +112,18 @@ export default function Messaging() {
                             <div className={"border-bottom shadow-sm d-flex align-items-center justify-content-center bg-secondary py-4 fw-bold  "}>
                                 <Dropdown>
                                     <DropdownToggle className={"username  "}>
-                                        @{activeContact.username}
+                                        {role !== 'Therapist' ? `@${activeContact.username}` : `${prefix ? prefix : ''} ${last_name} ${suffix ? suffix : ''}`}
                                     </DropdownToggle>
                                     <DropdownMenu  >
-                                    <DropdownItem onClick={""}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>
+                                    {role === 'User' && 
+                                    <DropdownItem onClick={""}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>View Profile</DropdownItem>}
                                     <Dropdown.Header>contact</Dropdown.Header>
-                                    {status === 'INACTIVE' &&
+                                    {(status === 'INACTIVE' && role === 'User') &&
                                         <DropdownItem onClick={add}  className={"ps-4"}><Image src={person_add} className={"pe-3"}></Image>Add</DropdownItem>}
 
                                     {status === 'ACTIVE' && <DropdownItem onClick={remove} className={"ps-4"}><Image src={person_remove} className={"pe-3"}></Image>Remove</DropdownItem>}
                                     
-                                    {status !== 'BLOCKED' && <DropdownItem onClick={block} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>}
+                                    {(status !== 'BLOCKED' && role === 'User')&& <DropdownItem onClick={block} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Block</DropdownItem>}
 
                                     {(status === 'BLOCKED' && blocked_by === user.id) && <DropdownItem onClick={unblock} className={"ps-4"}><Image src={x_circle} className={"pe-3"}></Image>Unblock</DropdownItem>}
                                     </DropdownMenu>

@@ -1,5 +1,6 @@
 import { ListGroupItem, Image, Button, Dropdown } from "react-bootstrap";
-import placeholder from "../static/images/profile_pic_placeholder.svg";
+import user_placeholder from "../static/images/profile_pic_placeholder.svg";
+import placeholder from '../static/images/profile1.svg';
 import { Link, useNavigate } from "react-router-dom";
 import { confirmContact } from "../functions/contactFunctions";
 import { declineContact } from "../functions/contactFunctions";
@@ -165,7 +166,7 @@ const NotificationItem = ({notificationProp, modal}) => {
         <ListGroupItem className={readStatus ? "notif p-3" : "p-3 notif-unread"} onMouseEnter={!modal ? markRead : null}>
         {new_type === 'contact_request' &&
             <div className="d-flex flex-row flex-nowrap align-items-center " onClick={e=> goToLink('user',triggered_by)}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <div className="d-flex flex-row w-100 align-items-center">
                         <h6>{notificationText(new_type)}</h6>
@@ -189,7 +190,7 @@ const NotificationItem = ({notificationProp, modal}) => {
             </div>}
         {new_type === 'contact_confirmed_user' &&
             <div className="d-flex flex-row flex-nowrap align-items-center " onClick={e=> goToLink('user',triggered_by)}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <small className="text-muted"><em>{notificationText(new_type)}</em></small>
                     <h6> Request confirmed. </h6>
@@ -208,7 +209,7 @@ const NotificationItem = ({notificationProp, modal}) => {
             </div>}
         {new_type === 'contact_confirmed_triggered_by' &&
             <div className="d-flex flex-row flex-nowrap align-items-center " onClick={e=> goToLink('user',triggered_by)}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <h6> {notificationText(new_type)} </h6>
                 </span>
@@ -226,7 +227,7 @@ const NotificationItem = ({notificationProp, modal}) => {
             </div>}
         {(new_type === 'contact_declined' && user_id === user.id) &&
             <div className="d-flex flex-row flex-nowrap align-items-center " onClick={e=> goToLink('user',triggered_by)}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <small className="text-muted"><em>{notificationText("contact_request")}</em></small>
                     <h6> Request declined. </h6>
@@ -245,7 +246,7 @@ const NotificationItem = ({notificationProp, modal}) => {
             </div>}
             {(new_type === 'like_post' || new_type === "comment") &&
             <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('post',post_id)}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <h6> {notificationText(new_type)} </h6>
                 </span>
@@ -263,7 +264,7 @@ const NotificationItem = ({notificationProp, modal}) => {
             </div>}
             {(new_type === 'like_comment') &&
             <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('post',post_id)}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <h6> {notificationText(new_type)} </h6>
                 </span>
@@ -281,21 +282,21 @@ const NotificationItem = ({notificationProp, modal}) => {
             </div>}
             {(new_type === 'slots' || new_type === 'decline_booking') &&
             <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('counselling','')}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <h6> {notificationText(new_type)} </h6>
                 </span>
             </div>}
             {(new_type === 'booking') &&
             <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('therapist','')}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <h6> {notificationText(new_type)} </h6>
                 </span>
             </div>}
             {(new_type === 'confirm_booking') &&
             <div className="d-flex flex-row flex-nowrap align-items-center notif-view" onClick={e=> goToLink('chats', contact_id)}>
-                <span><Image src={placeholder} className={"img-fluid pe-3"}/></span>
+                <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <h6> {notificationText(new_type)} </h6>
                 </span>

@@ -16,7 +16,6 @@ import UserContext from '../UserContext';
 import { addContact, blockContact, cancelContact, removeContact, unblockContact } from '../functions/contactFunctions';
 import { PostContext } from '../PostContext';
 import dayjs from 'dayjs';
-import * as PropTypes from "prop-types";
 
 export default function PostCards({postProp, minimize}) {
 

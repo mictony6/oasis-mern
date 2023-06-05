@@ -147,12 +147,11 @@ function App() {
                 <Route exact path="/home" element={<Home/>}/>
                 <Route exact path="/user/:user_id" element={<User/>}/>
                 {user.role === 'Therapist' && <Route exact path="/therapist" element={<Therapist/>}/>}
+                {user.role === 'Admin' && <Route exact path="/admin" element={<Admin />}/>}
                 <Route exact path="/post/:post_id" element={<PostDetail/>}/>
                 <Route exact path="/counselling" element={<Counselling/>}/>
                 <Route exact path="/logout" element={<Logout/>}/>
                 <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
-                <Route exact path="/admin" element={<Admin/>}/>
-
             </Route>
         )
     );
