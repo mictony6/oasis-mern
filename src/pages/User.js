@@ -44,6 +44,7 @@ export default function User() {
     const [posts, setPosts] = useState([])
     const [comments, setComments] = useState([])
     const [contacts, setContacts] = useState([])
+    const [blocked, setBlocked] = useState([])
     const [liked, setLiked] = useState([])
     const [count, setCount] = useState(0)
 
@@ -132,7 +133,27 @@ export default function User() {
             setContactLoading(false)
             setContacts(data.map(contact => {
                 return(
-                (contact.status !== 'INACTIVE' && contact.requested_by !== user.id) ? 
+                ((contact.status !== 'INACTIVE' && contact.status !== 'BLOCKED') && contact.requested_by !== user.id) ? 
+                    <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false} pageView={true} options={true}/>
+                :
+                null       
+            )
+        }))
+        })
+
+        fetch(`http://localhost:4000/contact/viewAll`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            setContactLoading(false)
+            setBlocked(data.map(contact => {
+                return(
+                (contact.status === 'BLOCKED' && contact.blocked_by === user.id) ? 
                     <ContactItem key={contact.contact_id} contactProp= {contact} highlight={false} pageView={true} options={true}/>
                 :
                 null       
@@ -172,7 +193,7 @@ export default function User() {
             data ? setCount(data[0].count) : setCount(0)
         })
 
-    }, [new_username, user.id, user.username, user_id, usernameExists, status])
+    }, [new_username, user.id, user.username, user_id, usernameExists, status, contacts])
 
     useEffect(() => {
         fetch('http://localhost:4000/user/checkUsername', {
@@ -424,7 +445,9 @@ export default function User() {
                 <Col className={'my-4 '}>
                     <Row className={'w-100 my-4 rounded-4 bg-light'}>
                         <Tabs onSelect={e => viewTab(e)}
-                        activeKey={tab}>
+                        activeKey={tab}
+                        defaultActiveKey={'overview'}
+                        >
                             <Tab title={"Overview"} eventKey={'overview'} value='overview' tabClassName='tab-title'>
                                 <UserOverview/>
                             </Tab>
@@ -461,6 +484,21 @@ export default function User() {
                                 :
                                 <ListGroup className={"mb-3"}>
                                     {contacts}
+                                </ListGroup>}
+                            </Tab>}
+                            {user_id === user.id && 
+                            <Tab title={<span>Blocked <i className='bi bi-lock-fill'/></span>} eventKey={"blocked"} tabClassName='tab-title'>
+                                <Form className={"d-flex flex-row flex-nowrap p-2 mb-2"} >
+                                    <Form.Control placeholder={"search by username"}/>
+                                    <Button className={"mx-1"}>Search</Button>
+                                </Form>
+                                {contactLoading ?
+                                <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                    <Spinner />
+                                </div>
+                                :
+                                <ListGroup className={"mb-3"}>
+                                    {blocked}
                                 </ListGroup>}
                             </Tab>}
                             <Tab title={"Likes"} eventKey={"likes"} tabClassName='tab-title'>
