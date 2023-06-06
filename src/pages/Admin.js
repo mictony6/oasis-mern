@@ -1,10 +1,11 @@
-import {Row, Col, Container, ListGroup, Button, Collapse, Form, Modal} from "react-bootstrap";
+import {Row, Col, Container, ListGroup, Button, Collapse, Form, Modal, Nav, Pagination} from "react-bootstrap";
 import AppNavbar from "../components/AppNavbar";
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import PaginatedListGroup from "../components/PaginatedListGroup";
 
 function UserManagementItem({userProp}) {
 
@@ -521,6 +522,9 @@ export default function Admin() {
     const [showUsers, setShowUsers] = useState(false)
     const [showPosts, setShowPosts] = useState(false)
 
+
+
+
     useEffect(() => {
         fetch(`http://localhost:4000/admin/${keywordUser === '' ? `getUsers` : `getUsersSearch/${keywordUser}`}`,
         {method: 'GET',
@@ -549,8 +553,25 @@ export default function Admin() {
                 return <PostManagementItem key={post.post_id} postProp= {post} />            
             }))
         })
+
+
     
     }, [keywordUser, keywordPost, posts])
+
+
+    const items = [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4',
+        'Item 5',
+        'Item 6',
+        'Item 7',
+        'Item 8',
+        'Item 9',
+        'Item 10',
+        // ... more items
+    ];
 
     return (
         <>
@@ -562,7 +583,8 @@ export default function Admin() {
 
 
                     <Col lg={10}>
-                        <Container className={"text-bg-light rounded-2 px-2 py-3 my-4"}>
+
+                        <Container className={"text-bg-light rounded-2 px-2 pt-3 my-4"}>
                             <div className={"d-flex flex-row flex-nowrap justify-content-between"}>
                                 <Link to={""} onClick={()=>{setShowUsers(!showUsers)}}>
                                     <h5 >
@@ -578,17 +600,19 @@ export default function Admin() {
                                 </Form>
                             </div>
                             <Collapse in={showUsers}>
-                                <ListGroup>
+                                <div>
                                     <Row className={"px-3"}>
                                         <Col lg={2}>Username</Col>
                                         <Col lg={2}>Role</Col>
                                         <Col>Actions</Col>
                                     </Row>
-                                    {users}
-                                </ListGroup>
+                                    <PaginatedListGroup data={users} itemsPerPage={5}/>
+
+                                </div>
                             </Collapse>
+
                         </Container>
-                        <Container className={"text-bg-light rounded-2 px-2 py-3 my-4"}>
+                        <Container className={"text-bg-light rounded-2 px-2 pt-3 my-4"}>
 
 
                             <div className={"d-flex flex-row flex-nowrap justify-content-between"}>
@@ -608,7 +632,7 @@ export default function Admin() {
 
 
                             <Collapse in={showPosts}>
-                                <ListGroup>
+                                <div>
                                     <Row className={"px-3"}>
                                         <Col lg={3}>Post</Col>
                                         <Col lg={2}>Posted by</Col>
@@ -616,8 +640,9 @@ export default function Admin() {
                                         <Col lg={1}>Reported</Col>
                                         <Col>Actions</Col>
                                     </Row>
-                                    {posts}
-                                </ListGroup>
+                                    <PaginatedListGroup data={posts} itemsPerPage={5}/>
+
+                                </div>
                             </Collapse>
                         </Container>
 

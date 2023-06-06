@@ -885,7 +885,7 @@ body{
 	color: var(--text);
 	background-color: var(--baby-pink-hover);
 }
+.error_page{
+	background-image: url("../src/static/images/bg1.png");
 
-
-
-
+}

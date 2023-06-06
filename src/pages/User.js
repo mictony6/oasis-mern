@@ -4,7 +4,7 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, ListGroup, Modal, FormControl, Form, Spinner, ButtonGroup
+    Tab, Button, ListGroup, Modal, FormControl, Form, Spinner
 } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
