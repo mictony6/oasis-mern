@@ -39,7 +39,7 @@ const About = () => {
                             </Row>
                         </Container>
 
-                        <Container className="d-flex flex-column p-4 align-items-center text-center  ">
+                        <Container className="d-flex flex-column p-4 align-items-center text-center  text-bg-light">
                             <p>oasis will provide an avenue for women to</p>
                             <Row className={"flex-nowrap overflow-auto w-100 text-white "}>
                                 <AboutUsCard className={about_card} title={"feel safe"} text={"when sharing stories"}/>
