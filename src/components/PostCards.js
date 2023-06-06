@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useState, useEffect, useContext } from 'react';
-import {Container, Col, Row, Dropdown, Image, Button, Modal, FormControl} from 'react-bootstrap';
+import {Container, Col, Row, Dropdown, Image, Button, Modal, FormControl, Form} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import user_placeholder from '../static/images/profile_pic_placeholder.svg'
 import placeholder from '../static/images/profile1.svg';
@@ -34,6 +34,9 @@ export default function PostCards({postProp, minimize}) {
     const [status, setStatus] = useState("INACTIVE")
     const [blocked_by, setBlockedBy] = useState(null)
 
+    const [showReport, setShowReport] = useState(false)
+    const [activeReport, setActiveReport] = useState(false)
+
     const [open, setOpen] = useState(false);
     const openModal = (e) => {
         setOpen(true);
@@ -47,7 +50,10 @@ export default function PostCards({postProp, minimize}) {
     const { user } = useContext(UserContext)
 
     const [new_subject, setNewSubject] = useState(subject)
-    const [new_content, setNewContent] = useState(content);
+    const [new_content, setNewContent] = useState(content)
+
+    const [report, setReport] = useState('')
+    const [reportDetail, setReportDetail] = useState('')
     
     const relativeTime = require('dayjs/plugin/relativeTime')
     dayjs.extend(relativeTime)
@@ -98,7 +104,9 @@ export default function PostCards({postProp, minimize}) {
         new_content !== '' && new_content !== '' && (new_subject !== subject || new_content !== content) ? setEditActive(true) : setEditActive(false)
         updatePost(p_id, { love, comment, count, user_id, blocked_by });
 
-    }, [p_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost, subject, content, new_content, new_subject])
+        report !== '' ? setActiveReport(true) : setActiveReport(false)
+
+    }, [p_id, comment, count, love, user_id, user.id, blocked_by, status, updatePost, subject, content, new_content, new_subject, report])
 
     function likePost(e) {
         e.preventDefault()
@@ -176,6 +184,50 @@ export default function PostCards({postProp, minimize}) {
                 })
         })
         setComment("");
+    }
+
+    function reportPost(e){
+        e.preventDefault()
+
+        fetch(`http://localhost:4000/post/report/${p_id}`, {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                type: report,
+                details: reportDetail
+            })
+            }).then(res => res.json())
+            .then(data => {
+                data ?
+                Swal.fire({
+                    title: "Post reported!",
+                    icon: "success",
+                    text: "Thank you for helping us making this space safer for everyone.",
+                    iconColor: '#3A3530',
+                    color: '#3A3530',
+                    confirmButtonText: "OK",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
+                })
+                :
+                Swal.fire({
+                    title: "Oh No!",
+                    icon: "error",
+                    text: "Something went wrong :( Please try again!",
+                    iconColor: '#3A3530',
+                    color: '#3A3530',
+                    confirmButtonText: "OK",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
+                })
+        })
     }
 
     // contact functions
@@ -402,13 +454,9 @@ export default function PostCards({postProp, minimize}) {
                                     </ul>
                                     :
                                     <ul className="dropdown-menu">
-                                        <DropdownItem onClick={""} className={"ps-4"}>
+                                        <DropdownItem onClick={e => setShowReport(true)} className={"ps-4"}>
                                             <i className="bi bi-exclamation-lg pe-3"></i>Report
                                         </DropdownItem>
-                                        <DropdownItem onClick={""} className={"ps-4"}>
-                                            <i className="bi bi-flag pe-3"></i>Flag
-                                        </DropdownItem>
-
                                     </ul>
                                 }
                             </Dropdown>
@@ -455,6 +503,37 @@ export default function PostCards({postProp, minimize}) {
                     </div>
                     </Container>
                     </Modal>
+                    <Modal show={showReport} onHide={()=>{setShowReport(false)}} centered size={'md'}>
+                    <Modal.Header>Report Post</Modal.Header>
+                    <Modal.Body className="">
+                        <Form.Label htmlFor='report'>Report Type</Form.Label>
+                        <Form.Control id='report' as="select" className={"mb-2"} 
+                        onChange={e => setReport(e.target.value)}
+                        value={report}>
+                            <option value=''>-- Select Report Type --</option>
+                            <option value='Inappropriate'>Inappropriate Content</option>
+                            <option value='Abusive'>Abusive or Hateful Content</option>
+                            <option value='Spam'>Spam or Unrelated Content</option>
+                            <option value='Others'>Others</option>
+                        </Form.Control>
+
+                        <Form.Label htmlFor='li-link'>Additional Details (Optional)</Form.Label>
+                            <Form.Control
+                                id='description'
+                                as='textarea'
+                                placeholder='Additional details of the report...'
+                                onChange = {e => setReportDetail(e.target.value)}
+                                value={reportDetail}
+                                rows={6}
+                                className='mb-2'
+                            />
+                        
+                    <div className="text-center mt-3">
+                        <Button className={"me-2 bg-primary"} onClick={reportPost} disabled={!activeReport}>Submit Report</Button>
+                        <Button className={"bg-secondary"} onClick={()=>{setShowReport(false)}}>Cancel</Button>
+                    </div> 
+                    </Modal.Body>
+                </Modal>
             </Container>
     )
 }

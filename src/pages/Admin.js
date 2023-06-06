@@ -1,10 +1,11 @@
-import {Row, Col, Container, ListGroup, Button, Collapse, Form, Modal} from "react-bootstrap";
+import {Row, Col, Container, ListGroup, Button, Collapse, Form, Modal, ModalHeader, ModalBody, Spinner} from "react-bootstrap";
 import AppNavbar from "../components/AppNavbar";
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import ReportItem from "../components/ReportItem";
 
 function UserManagementItem({userProp}) {
 
@@ -285,11 +286,11 @@ function UserManagementItem({userProp}) {
 
     return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
-            <Col lg={2} className={"fw-bold"}>@{username}</Col>
+            <Col sm={2} className={"fw-bold"}>@{username}</Col>
             {!banned ?
-            <Col lg={2}><span className={`px-3 text-center rounded-pill ${getColor(new_role)}`}>{new_role}</span></Col>
+            <Col sm={2}><span className={`px-3 text-center rounded-pill ${getColor(new_role)}`}>{new_role}</span></Col>
             :
-            <Col lg={2}><span className={`px-3 text-center rounded-pill text-bg-danger`}>BANNED</span></Col>}
+            <Col sm={2}><span className={`px-3 text-center rounded-pill text-bg-danger`}>BANNED</span></Col>}
             {!banned ? 
             <Col>
                 <Button onClick={()=>{setShowRoles(true)}} className={"me-2"}>Modify Role</Button>
@@ -464,6 +465,17 @@ function PostManagementItem({postProp}) {
 
     const humanizedDate = dayjs(new Date(date_posted)).format('MMMM DD, YYYY')
 
+    const [open, setOpen] = useState(false)
+    const [reports, setReports] = useState([])
+    const [reportsLoading, setReportsLoading] = useState(false)
+
+    const openModal = (e) => {
+        setOpen(true);
+    }
+    const closeModal = e => {
+        setOpen(false);
+    }
+
     function deletePost(e) {
         e.preventDefault()
 
@@ -496,17 +508,67 @@ function PostManagementItem({postProp}) {
         })
     }
 
+    function retrieveReports(e){
+        openModal()
+        setReportsLoading(true)
+
+        fetch(`http://127.0.0.1:4000/admin/viewReports/${p_id}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            setReportsLoading(false)
+            setReports(data.map(report => 
+                {
+                    return <ReportItem reportProp = {report}/>
+                }
+            ))
+                
+        })  
+    
+    }
+
     return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
-            <Col lg={3} className={"fw-bold"}>{subject}</Col>
-            <Col lg={2}><small>@{username}</small></Col>
-            <Col lg={2}><span className={"px-2 rounded-pill bg-secondary"}>{humanizedDate}</span></Col>
-            <Col lg={1}><span className={"px-2 rounded-pill text-bg-info"}>{reported ? 'Yes' : 'No'}</span></Col>
-            <Col>
+            <Col sm={3} className={"fw-bold"}>{subject}</Col>
+            <Col sm={2}><small>@{username}</small></Col>
+            <Col sm={2}><span className={"px-2 rounded-pill bg-secondary"}>{humanizedDate}</span></Col>
+            <Col sm={1}><span className={`px-3 text-center rounded-pill ${reported ? 'text-bg-danger' : 'bg-secondary'}`}>{reported ? 'Yes' : 'No'}</span>
+            </Col>
+            {reported ? 
+            <Col className='text-center'>
+                <span className="d-flex justify-content-center notif-view" onClick={retrieveReports}><small>View reports</small></span>
+            </Col> : null}
+            <Col className='text-end'>
                 <Button className={"me-2"} as={Link} to={`/post/${p_id}`}>View</Button>
                 <Button onClick={deletePost} className={"text-bg-danger"}>Delete</Button>
             </Col>
         </Row>
+
+        <Modal show={open} size="lg" className="mt-auto" centered onHide={closeModal}>
+            <ModalHeader><h5>Reports</h5></ModalHeader>
+                <ModalBody>
+                    {reportsLoading ?
+                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                        <Spinner/>
+                    </div>
+                    :
+                    <ListGroup>
+                        <Row className={"px-3"}>
+                            <Col sm={3}>Report Id</Col>
+                            <Col sm={2}>Type</Col>
+                            <Col sm={2}>Reported By</Col>
+                            <Col className='text-end me-5'>Details</Col>
+                        </Row>
+                            {reports}
+                    </ListGroup>
+} 
+                </ModalBody>
+        </Modal>
 
     </ListGroup.Item>;
 }
@@ -556,12 +618,12 @@ export default function Admin() {
         <>
             <Container fluid>
                 <Row className='d-flex flex-row'>
-                    <Col lg={2} className=''>
+                    <Col sm={2} className=''>
                         <AppNavbar/>
                     </Col>
 
 
-                    <Col lg={10}>
+                    <Col sm={10}>
                         <Container className={"text-bg-light rounded-2 px-2 py-3 my-4"}>
                             <div className={"d-flex flex-row flex-nowrap justify-content-between"}>
                                 <Link to={""} onClick={()=>{setShowUsers(!showUsers)}}>
@@ -580,8 +642,8 @@ export default function Admin() {
                             <Collapse in={showUsers}>
                                 <ListGroup>
                                     <Row className={"px-3"}>
-                                        <Col lg={2}>Username</Col>
-                                        <Col lg={2}>Role</Col>
+                                        <Col sm={2}>Username</Col>
+                                        <Col sm={2}>Role</Col>
                                         <Col>Actions</Col>
                                     </Row>
                                     {users}
@@ -610,11 +672,11 @@ export default function Admin() {
                             <Collapse in={showPosts}>
                                 <ListGroup>
                                     <Row className={"px-3"}>
-                                        <Col lg={3}>Post</Col>
-                                        <Col lg={2}>Posted by</Col>
-                                        <Col lg={2}>Date Posted</Col>
-                                        <Col lg={1}>Reported</Col>
-                                        <Col>Actions</Col>
+                                        <Col sm={3}>Post</Col>
+                                        <Col sm={2}>Posted by</Col>
+                                        <Col sm={2}>Date Posted</Col>
+                                        <Col sm={1}>Reported</Col>
+                                        <Col className='text-end me-5'>Actions</Col>
                                     </Row>
                                     {posts}
                                 </ListGroup>
