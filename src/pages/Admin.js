@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import dayjs from "dayjs";
 
 function UserManagementItem({userProp}) {
 
@@ -321,15 +322,19 @@ function UserManagementItem({userProp}) {
     </ListGroup.Item>;
 }
 
-function PostManagementItem() {
+function PostManagementItem({postProp}) {
+
+    const {p_id, username, subject, date_posted, reported} = postProp
+
+    const humanizedDate = dayjs(new Date(date_posted)).format('MMMM DD, YYYY')
 
     const [showPostDelete, setShowPostDelete] = useState(false);
     return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
-            <Col lg={3} className={"fw-bold"}>Title of Post</Col>
-            <Col lg={2}><small>@username</small></Col>
-            <Col lg={2}><span className={"px-2 rounded-pill text-bg-primary"}>March 10</span></Col>
-            <Col lg={1}><span className={"px-2 rounded-pill text-bg-info"}>No</span></Col>
+            <Col lg={3} className={"fw-bold"}>{subject}</Col>
+            <Col lg={2}><small>@{username}</small></Col>
+            <Col lg={2}><span className={"px-2 rounded-pill text-bg-primary"}>{humanizedDate}</span></Col>
+            <Col lg={1}><span className={"px-2 rounded-pill text-bg-info"}>{reported ? 'Yes' : 'No'}</span></Col>
             <Col>
                 <Button className={"me-2"}>View</Button>
                 <Button onClick={()=>{setShowPostDelete(true)}} className={"text-bg-danger"}>Delete</Button>
@@ -350,14 +355,15 @@ function PostManagementItem() {
 export default function Admin() {
 
     const [users, setUsers] = useState([])
-    const [keyword, setKeyword] = useState('')
+    const [posts, setPosts] = useState([])
+    const [keywordUser, setKeywordUser] = useState('')
+    const [keywordPost, setKeywordPost] = useState('')
     
     const [showUsers, setShowUsers] = useState(false)
     const [showPosts, setShowPosts] = useState(false)
 
     useEffect(() => {
-        console.log(keyword)
-        fetch(`http://localhost:4000/admin/getUsers/${keyword !== '' ? keyword : 'empty'}`,
+        fetch(`http://localhost:4000/admin/${keywordUser === '' ? `getUsers` : `getUsersSearch/${keywordUser}`}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -369,8 +375,23 @@ export default function Admin() {
             setUsers(data.map(user => {
                 return <UserManagementItem key={user.user_id} userProp= {user} />            
             }))
-    })
-    }, [keyword])
+        })
+
+        fetch(`http://localhost:4000/admin/${keywordPost === '' ? `getPosts` : `getPostsSearch/${keywordPost}`}`,
+        {method: 'GET',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {
+            setPosts(data.map(post => {
+                return <PostManagementItem key={post.post_id} postProp= {post} />            
+            }))
+        })
+    
+    }, [keywordUser, keywordPost])
 
     return (
         <>
@@ -393,7 +414,7 @@ export default function Admin() {
                                 <Form className={"d-flex flex-row flex-nowrap mb-4"} >
                                     <Form.Control 
                                     placeholder={"search by username"}
-                                    onChange={e => setKeyword(e.target.value)}
+                                    onChange={e => setKeywordUser(e.target.value)}
                                     />
                                 </Form>
                             </div>
@@ -419,8 +440,10 @@ export default function Admin() {
                                     </h5>
                                 </Link>
                                 <Form className={"d-flex flex-row flex-nowrap mb-4"} >
-                                    <Form.Control placeholder={"search by username"}/>
-                                    <Button className={"mx-1"}>Search</Button>
+                                    <Form.Control 
+                                    placeholder={"search by username"}
+                                    onChange={e => setKeywordPost(e.target.value)}
+                                    />
                                 </Form>
                             </div>
 
@@ -434,11 +457,7 @@ export default function Admin() {
                                         <Col lg={1}>Reported</Col>
                                         <Col>Actions</Col>
                                     </Row>
-                                    <PostManagementItem/>
-                                    <PostManagementItem/>
-                                    <PostManagementItem/>
-                                    <PostManagementItem/>
-
+                                    {posts}
                                 </ListGroup>
                             </Collapse>
                         </Container>
