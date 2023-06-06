@@ -1,23 +1,28 @@
 import {Card} from "react-bootstrap";
-import blog_header from "../static/images/blog_thumbnail.png";
 import {Link} from "react-router-dom";
 
 export default function BlogPreviewCard() {
-    return(
-        <Card>
-            <Card.Header>
-            <h6>featured blogs</h6>
+    const article_title="END ONLINE ABUSE";
+    const article_summary="We’re campaigning for the reforms of laws relating to online abuse and robust regulation of the tech platforms perpetrators use, so those responsible are held accountable.";
+    const blog_image = "https://www.endviolenceagainstwomen.org.uk/wp-content/uploads/2022/11/EVAW-and-Glitch-04b.png";
+    const article_link = "https://asiapacific.unwomen.org/en/countries/pakistan/ending-violence-against-women-evaw";
 
-                <Card.Img src={blog_header}></Card.Img>
+
+    return(
+        <Card className={"text-bg-white"}>
+            <Card.Header >
+            <h6>featured article</h6>
+
+                <Card.Img className="img-fluid" src={blog_image}></Card.Img>
             </Card.Header>
-            <Card.Body>
-                <Card.Title>Understanding the Impact of Trauma</Card.Title>
+            <Card.Body >
+                <Card.Title>{article_title}</Card.Title>
                 <Card.Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultrices ut mi nec cursus. 
+                    {article_summary}
                 </Card.Text>
             </Card.Body>
-            <Card.Footer>
-                <Link to={'#somewhere'} className={'nav-link'}>Read More</Link>
+            <Card.Footer >
+                <Link to={article_link} className={'nav-link'}>Read More</Link>
             </Card.Footer>
 
         </Card>
