@@ -96,6 +96,16 @@ export default function MessageBox({status, blocked_by}) {
             }))
         })
 
+        fetch(`http://localhost:4000/contact/markRead/${params.contact_id}`,
+        {method: 'PATCH',
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+        }
+        )
+        .then(res => res.json())
+        .then(data => {})
+
         message !== '' ? setActive(true) : setActive(false)        
     }, [chatHistory, params, message])
 

@@ -14,9 +14,10 @@ import { addContact, blockContact, cancelContact, confirmContact, declineContact
 export default function ContactItem({contactProp, active, pageView}) {
 
     const { user } = useContext(UserContext)
-    const {username, role, contact_id, user_id, status, requested_by, blocked_by, prefix, last_name, suffix} = contactProp
+    const {username, role, contact_id, user_id, status, requested_by, blocked_by, prefix, last_name, suffix, message_count} = contactProp
     
     const [new_status, setNewStatus] = useState(status)
+    // const [message_count, setMessageCount] = useState(0)
 
     // contact functions
     function add(e){
@@ -80,8 +81,7 @@ export default function ContactItem({contactProp, active, pageView}) {
     ${hover ? "bg-white border-primary align-items-center" : "align-items-center"}`;
 
     useEffect(() => {
-
-    }, [new_status, setNewStatus])
+    }, [contact_id, new_status, setNewStatus, message_count])
 
     return(
         <Container>
@@ -98,6 +98,11 @@ export default function ContactItem({contactProp, active, pageView}) {
             <Col xs={pageView ? 4 : 5}>
                 {role !== 'Therapist' ? `@${username}` : `${prefix} ${last_name}`}
             </Col>
+            {(!pageView && message_count !== 0) &&
+                <Col xs={2} className='text-center'>
+                    <div className={`px-2 rounded-pill text-bg-danger`}> {message_count}</div>
+                </Col>  
+            }
             {pageView && <Col xs={2}>
                 <div className={`px-3 text-center rounded-pill ${getColor(status)}`}> {status}</div>
             </Col>}

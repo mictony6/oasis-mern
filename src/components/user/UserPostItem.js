@@ -1,5 +1,6 @@
 import {Button, Container, FormControl, Image, ListGroup, Modal} from "react-bootstrap";
 import placeholder from "../../static/images/profile_pic_placeholder.svg";
+import user_placeholder from "../../static/images/profile1.svg";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../UserContext";
@@ -11,7 +12,7 @@ export default function UserPostItem({postProp}){
 
     const { user } = useContext(UserContext)
 
-    const { p_id, subject, content, date_time, user_id, username } = postProp
+    const { p_id, subject, content, date_time, user_id, username, role, prefix, last_name, suffix } = postProp
 
     const [love, setLove] = useState(false)
     const [count, setCount] = useState("")
@@ -232,11 +233,11 @@ export default function UserPostItem({postProp}){
                 </div>
                 }
                 <div >
-                    <Image src={placeholder}></Image>
+                    <Image src={user.id === user_id ? placeholder : user_placeholder}></Image>
                 </div>
                 <Container className={"d-flex flex-column"}>
                     <h6>{subject}</h6>
-                    <p className={"text-muted"}><small>Posted by @{username} <i className={"bi bi-dot"}></i>{time}</small></p>
+                    <p className={"text-muted"}><small>Posted by {role !== 'Therapist' ? `@${username}` : `${prefix ? prefix : ''} ${last_name} ${suffix ? suffix : ''}`} <i className={"bi bi-dot"}></i>{time}</small></p>
                     <Container fluid >
                         <div className={"d-flex flex-grow-1 py-2 align-items-baseline"}>
                             <Button className={"me-2 bg-light"} onClick={e => {nav(`/post/${p_id}`)}}><i className={"bi bi-arrows-angle-expand "}></i></Button>

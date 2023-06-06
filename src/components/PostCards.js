@@ -46,7 +46,7 @@ export default function PostCards({postProp, minimize}) {
     }
     const [editActive, setEditActive] = useState(false)
 
-    const { p_id, subject, content, username, date_posted, user_id, edited } = postProp
+    const { p_id, subject, content, username, date_posted, user_id, edited, role, prefix, last_name, suffix } = postProp
     const { user } = useContext(UserContext)
 
     const [new_subject, setNewSubject] = useState(subject)
@@ -366,7 +366,7 @@ export default function PostCards({postProp, minimize}) {
                             }
                             <Dropdown>
                                 <DropdownToggle className={"username mt-1"}>
-                                    @{username}
+                                    {role !== 'Therapist' ? `@${username}` : `${prefix ? prefix : ''} ${last_name} ${suffix ? suffix : ''}`}
                                 </DropdownToggle>
 
                                 {user.id !== user_id ?

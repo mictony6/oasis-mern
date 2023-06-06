@@ -1,5 +1,6 @@
 import {Col, Container, Image, ListGroupItem, Row} from "react-bootstrap";
 import placeholder from "../static/images/profile_pic_placeholder.svg";
+import user_placeholder from "../static/images/profile1.svg";
 import ContactItem from "./ContactItem";
 import {useState} from "react";
 import { useContext } from "react";
@@ -38,7 +39,7 @@ export default function Chat({chatProp}){
 
             </Row>}
             {!isUser && <Row className={" d-flex align-items-center   "}>
-                <Col md={2} className={"text-center"}><Image src={placeholder} className={"img-fluid"}></Image></Col>
+                <Col md={2} className={"text-center"}><Image src={user_placeholder} className={"img-fluid"}></Image></Col>
                 <Col md={8} className={"text-end d-flex flex-column align-items-start justify-content-end"}>
                     <Row className="d-flex">
                         <p className="p-2 border border-1 rounded-5 fit-content m-0"> {content} </p>

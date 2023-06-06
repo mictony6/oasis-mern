@@ -22,7 +22,7 @@ import TherapistContext from "../TherapistContext";
 export default function AppointmentList(){
     const {therapist}  = useContext(TherapistContext)
     const [key, setKey] = useState('Day');
-
+    const [loading, setLoading] = useState(true);
 
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState(new Date())
@@ -50,6 +50,7 @@ export default function AppointmentList(){
         )
         .then(res => res.json())
         .then(data => {
+            setLoading(false)
             data.length !== 0 ?
             setSlots(data.map(slot => {
                 return(
@@ -104,26 +105,32 @@ export default function AppointmentList(){
           >
               <Tab eventKey="Day" title="Day">
                   <ListGroup className={"appointment-list overflow-auto"}>
-                      <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                    {loading ? 
+                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                           <Spinner/>
-                      </div>
-                    {slots}
+                    </div>
+                    :
+                    slots}
                   </ListGroup>
               </Tab>
               <Tab eventKey="Week" title="Week">
                   <ListGroup className={"appointment-list overflow-auto"}>
-                      <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                    {loading ? 
+                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                           <Spinner/>
-                      </div>
-                    {slots}
+                    </div>
+                    :
+                    slots}
                   </ListGroup>
               </Tab>
               <Tab eventKey="Month" title="Month" >
                   <ListGroup className={"appointment-list overflow-auto"}>
-                      <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                    {loading ? 
+                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
                           <Spinner/>
-                      </div>
-                    {slots}
+                    </div>
+                    :
+                    slots}
                   </ListGroup>
               </Tab>
           </Tabs>

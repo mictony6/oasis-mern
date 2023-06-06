@@ -1,5 +1,5 @@
 import {Button, ButtonGroup, Col, Container, Dropdown, Image, ListGroupItem, Row} from "react-bootstrap";
-import placeholder from "../static/images/profile_pic_placeholder.svg";
+import placeholder from "../static/images/profile1.svg";
 import ContactItem from "./ContactItem";
 import {useState} from "react";
 import { useContext } from "react";
@@ -22,6 +22,7 @@ export default function Booking({bookingProp}){
     const { username, availability, booking_id, user_id, date, time} = bookingProp
 
     const [confirmation, setConfirmation] = useState(false)
+    const [contactId, setContactId] = useState(null)
     const [denied, setDenied] = useState(false)
 
 
@@ -41,7 +42,12 @@ export default function Booking({bookingProp}){
         })
         .then(res => res.json())
         .then(data => {
-            data[0].confirmation ? setConfirmation(true) : setConfirmation(false)
+            if(data[0].confirmation){
+                setContactId(data[0].contact_id)
+                setConfirmation(true)
+            } else {
+                setConfirmation(false)
+            }
             data[0].denied ? setDenied(true) : setDenied(false)
         })
 
@@ -61,7 +67,8 @@ export default function Booking({bookingProp}){
             })
             }).then(res => res.json())
             .then(data => {
-                data ?
+                if(data) {
+                setContactId(data.contact_id)
                 Swal.fire({
                     title: "Appointment confirmed!",
                     icon: "success",
@@ -74,7 +81,7 @@ export default function Booking({bookingProp}){
                         confirmButton: 'button2'
                     }
                 }).then(setConfirmation(true))
-                :
+                } else {
                 Swal.fire({
                     title: "Oh No!",
                     icon: "error",
@@ -86,7 +93,7 @@ export default function Booking({bookingProp}){
                     customClass: {
                         confirmButton: 'button2'
                     }
-                })
+                })}
         })
     }
 
@@ -179,10 +186,10 @@ export default function Booking({bookingProp}){
                     }
 
                 </Col>
+                {!denied &&
                 <Col sm={2} className={"d-flex align-items-center justify-content-end"}>
-                    <Link as={"button"} to={"/chats/"+user_id} className={"btn ms-3 border"}><i className={"bi bi-chat-dots-fill text-white"}></i></Link>
-
-                </Col>
+                    <Link as={"button"} to={"/chats/"+contactId} className={"btn ms-3 border"}><i className={"bi bi-chat-dots-fill text-white"}></i></Link>
+                </Col>}
             </Row>
             :
             <Row>

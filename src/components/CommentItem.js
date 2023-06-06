@@ -16,7 +16,7 @@ import { addContact, blockContact, removeContact } from "../functions/contactFun
 export default function CommentItem({commentProp}){
 
     const { user } = useContext(UserContext)
-    const {comment_id, username, user_id, content, date_commented } = commentProp
+    const {comment_id, username, user_id, content, date_commented, role, prefix, last_name, suffix } = commentProp
 
     const relativeTime = require('dayjs/plugin/relativeTime')
     dayjs.extend(relativeTime)
@@ -112,7 +112,7 @@ export default function CommentItem({commentProp}){
 
                         <Dropdown>
                             <DropdownToggle className={"username mt-1"}>
-                                @{username}
+                                    {role !== 'Therapist' ? `@${username}` : `${prefix ? prefix : ''} ${last_name} ${suffix ? suffix : ''}`}
                             </DropdownToggle>
 
                             {user.id !== user_id ?
