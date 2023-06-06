@@ -350,12 +350,14 @@ function PostManagementItem() {
 export default function Admin() {
 
     const [users, setUsers] = useState([])
+    const [keyword, setKeyword] = useState('')
     
     const [showUsers, setShowUsers] = useState(false)
     const [showPosts, setShowPosts] = useState(false)
 
     useEffect(() => {
-        fetch(`http://localhost:4000/admin/getUsers`,
+        console.log(keyword)
+        fetch(`http://localhost:4000/admin/getUsers/${keyword !== '' ? keyword : 'empty'}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -368,7 +370,7 @@ export default function Admin() {
                 return <UserManagementItem key={user.user_id} userProp= {user} />            
             }))
     })
-    })
+    }, [keyword])
 
     return (
         <>
@@ -381,12 +383,20 @@ export default function Admin() {
 
                     <Col lg={10}>
                         <Container className={"text-bg-light rounded-2 px-2 py-3 my-4"}>
-                            <Link to={""} onClick={()=>{setShowUsers(!showUsers)}}>
-                                <h5 >
-                                    User Management
-                                    {showUsers ? <i className="bi bi-caret-up-fill"></i> : <i className="bi bi-caret-right-fill"></i>}
-                                </h5>
-                            </Link>
+                            <div className={"d-flex flex-row flex-nowrap justify-content-between"}>
+                                <Link to={""} onClick={()=>{setShowUsers(!showUsers)}}>
+                                    <h5 >
+                                        User Management
+                                        {showUsers ? <i className="bi bi-caret-up-fill"></i> : <i className="bi bi-caret-right-fill"></i>}
+                                    </h5>
+                                </Link>
+                                <Form className={"d-flex flex-row flex-nowrap mb-4"} >
+                                    <Form.Control 
+                                    placeholder={"search by username"}
+                                    onChange={e => setKeyword(e.target.value)}
+                                    />
+                                </Form>
+                            </div>
                             <Collapse in={showUsers}>
                                 <ListGroup>
                                     <Row className={"px-3"}>
