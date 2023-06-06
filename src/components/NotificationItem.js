@@ -225,8 +225,8 @@ const NotificationItem = ({notificationProp, modal}) => {
                 </Dropdown>
                 </span>
             </div>}
-        {(new_type === 'contact_declined' && user_id === user.id) &&
-            <div className="d-flex flex-row flex-nowrap align-items-center " onClick={e=> goToLink('user',triggered_by)}>
+        {(new_type === 'contact_declined') &&
+            <div className="d-flex flex-row flex-nowrap align-items-center " onClick={e=> goToLink('user', triggered_by)}>
                 <span><Image src={user.id === triggered_by ? user_placeholder : placeholder} className={"img-fluid pe-3"}/></span>
                 <span>
                     <small className="text-muted"><em>{notificationText("contact_request")}</em></small>

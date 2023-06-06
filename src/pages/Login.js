@@ -57,6 +57,7 @@ export default function Login() {
                 location("/home");
 
             } else {
+                data.error === 'incorrect' ?
                 Swal.fire({
                     title: "We couldn't log you in :(",
                     icon: "error",
@@ -67,7 +68,19 @@ export default function Login() {
                     customClass: {
                         confirmButton: 'button2'
                     }
-                }) 
+                })
+                :
+                Swal.fire({
+                    title: "You've been banned.",
+                    icon: "error",
+                    text: "If you believe this is a mistake, please contact the administrator.",
+                    color: '#3A3530',
+                    confirmButtonText: "Okay",
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'button2'
+                    }
+                })  
             }
         
         })

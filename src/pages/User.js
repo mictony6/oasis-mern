@@ -193,7 +193,7 @@ export default function User() {
             data ? setCount(data[0].count) : setCount(0)
         })
 
-    }, [new_username, user.id, user.username, user_id, usernameExists, status])
+    }, [new_username, user.id, user.username, user_id, usernameExists, status, contacts])
 
     useEffect(() => {
         fetch('http://localhost:4000/user/checkUsername', {

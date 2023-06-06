@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 
 function UserManagementItem({userProp}) {
 
-    const {username, user_id, role, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link} = userProp
+    const {username, user_id, role, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link, banned} = userProp
 
     const [new_first_name, setNewFirstName] = useState(first_name)
     const [new_last_name, setNewLastName] = useState(last_name)
@@ -124,6 +124,122 @@ function UserManagementItem({userProp}) {
         }
     }
 
+    function banUser(e) {
+        e.preventDefault()
+
+        Swal.fire({
+            title: "Ban User?",
+            text: "This will disable them from logging into the app.",
+            iconColor: '#3A3530',
+            color: '#3A3530',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+            actions: 'my-actions',
+            cancelButton: 'order-1 right-gap',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:4000/admin/banUser/${user_id}`, {
+                    method : 'PATCH',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                    }).then(res => res.json())
+                    .then(data => {
+                        data ?
+                        Swal.fire({
+                            title: "User Banned.",
+                            text: `@${username} will no longer be able to access the website unless you unban them.`,
+                            icon: "success",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                        :
+                        Swal.fire({
+                            title: "Oh No!",
+                            icon: "error",
+                            text: "Something went wrong :( Please try again!",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                })
+
+            }
+        })
+    }
+
+    function unbanUser(e) {
+        e.preventDefault()
+
+        Swal.fire({
+            title: "Unban User?",
+            text: "This will allow them to access the website.",
+            iconColor: '#3A3530',
+            color: '#3A3530',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+            actions: 'my-actions',
+            cancelButton: 'order-1 right-gap',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:4000/admin/unbanUser/${user_id}`, {
+                    method : 'PATCH',
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                    }).then(res => res.json())
+                    .then(data => {
+                        data ?
+                        Swal.fire({
+                            title: "User Unbanned!",
+                            text: `@${username} can now access the website.`,
+                            icon: "success",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                        :
+                        Swal.fire({
+                            title: "Oh No!",
+                            icon: "error",
+                            text: "Something went wrong :( Please try again!",
+                            iconColor: '#3A3530',
+                            color: '#3A3530',
+                            confirmButtonText: "OK",
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'button2'
+                            }
+                        })
+                })
+
+            }
+        })
+    }
+
     useEffect(() => {
         const fb_valid = /^(https?:\/\/)?(www\.)?facebook\.com\/[a-zA-Z0-9(.?)?]/
         const twt_valid = /^(https?:\/\/)?(www\.)?twitter\.com\/[a-zA-Z0-9_]{1,15}$/
@@ -146,11 +262,35 @@ function UserManagementItem({userProp}) {
 
     }, [value, new_role, new_fb_link, new_twt_link, new_li_link, isValidFB, isValidTwt, isValidLi, first_name, new_first_name, last_name, new_last_name, prefix, new_prefix, suffix, new_suffix, field, new_field, description, new_description, online, new_online, in_person, new_in_person, fb_link, twt_link, li_link])
 
+    const colors = [
+        {
+            role: 'User',
+            color: 'bg-secondary'
+        },
+        {
+            role: 'Therapist',
+            color: 'bg-primary'
+        },
+        {
+            role: 'Admin',
+            color: 'bg-warning'
+        },
+    ]
+
+    function getColor(role){
+        const contactStatus = colors.find(item => item.role === role)
+        return contactStatus.color
+    }
+
 
     return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
             <Col lg={2} className={"fw-bold"}>@{username}</Col>
-            <Col lg={2}><span className={"px-2 rounded-pill text-bg-primary"}>{new_role}</span></Col>
+            {!banned ?
+            <Col lg={2}><span className={`px-3 text-center rounded-pill ${getColor(new_role)}`}>{new_role}</span></Col>
+            :
+            <Col lg={2}><span className={`px-3 text-center rounded-pill text-bg-danger`}>BANNED</span></Col>}
+            {!banned ? 
             <Col>
                 <Button onClick={()=>{setShowRoles(true)}} className={"me-2"}>Modify Role</Button>
                 <Modal show={showRoles} onHide={()=>{setShowRoles(false)}} centered size={value === 'Therapist' ? 'lg' : 'md'}>
@@ -306,17 +446,13 @@ function UserManagementItem({userProp}) {
                     </div> 
                     </Modal.Body>
                 </Modal>
-                <Button onClick={()=>{setShowConfirmation(true)}} className={"text-bg-danger me-2"}>Remove User</Button>
-                <Modal show={showConfirmation} onHide={()=>{setShowConfirmation(false)}} >
-                    <Modal.Header>Remove User</Modal.Header>
-                    <Modal.Body>
-                        <p>This will remove the user completely from the system. Proceed?</p>
-                        <Button className={"me-2 text-bg-warning"}>Confirm</Button>
-                        <Button onClick={()=>{setShowConfirmation(false)}}>Cancel</Button>
-                    </Modal.Body>
-                </Modal>
-
+                <Button onClick={banUser} className={"text-bg-danger me-2"}>Ban User</Button>
             </Col>
+            :
+            <Col>
+                <Button onClick={unbanUser} className={"me-2 bg-secondary"}>Unban User</Button>
+            </Col>
+            }
         </Row>
 
     </ListGroup.Item>;
@@ -328,24 +464,47 @@ function PostManagementItem({postProp}) {
 
     const humanizedDate = dayjs(new Date(date_posted)).format('MMMM DD, YYYY')
 
-    const [showPostDelete, setShowPostDelete] = useState(false);
+    function deletePost(e) {
+        e.preventDefault()
+
+        Swal.fire({
+            text: "Are you sure you want to delete this post?",
+            iconColor: '#3A3530',
+            color: '#3A3530',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+            actions: 'my-actions',
+            cancelButton: 'order-1 right-gap',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://127.0.0.1:4000/admin/deletePost/${p_id}`, {
+                method : 'DELETE',
+                headers : {
+                    'Content-Type' : 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                }).then(res => res.json())
+                .then(data => {
+                    data ? Swal.fire('Post Deleted!', '', 'success')
+                    : Swal.fire('Oh no! Something went wrong :(', '', 'error')
+                })
+            }
+        })
+    }
+
     return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
         <Row className={"mt-3 text-bg-white "}>
             <Col lg={3} className={"fw-bold"}>{subject}</Col>
             <Col lg={2}><small>@{username}</small></Col>
-            <Col lg={2}><span className={"px-2 rounded-pill text-bg-primary"}>{humanizedDate}</span></Col>
+            <Col lg={2}><span className={"px-2 rounded-pill bg-secondary"}>{humanizedDate}</span></Col>
             <Col lg={1}><span className={"px-2 rounded-pill text-bg-info"}>{reported ? 'Yes' : 'No'}</span></Col>
             <Col>
-                <Button className={"me-2"}>View</Button>
-                <Button onClick={()=>{setShowPostDelete(true)}} className={"text-bg-danger"}>Delete</Button>
-                <Modal show={showPostDelete} onHide={()=>{setShowPostDelete(false)}} >
-                    <Modal.Header>Delete Post</Modal.Header>
-                    <Modal.Body>
-                        <p>This will remove the post completely from the system. Proceed?</p>
-                        <Button className={"me-2 text-bg-warning"}>Confirm</Button>
-                        <Button onClick={()=>{setShowPostDelete(false)}}>Cancel</Button>
-                    </Modal.Body>
-                </Modal>
+                <Button className={"me-2"} as={Link} to={`/post/${p_id}`}>View</Button>
+                <Button onClick={deletePost} className={"text-bg-danger"}>Delete</Button>
             </Col>
         </Row>
 
@@ -391,7 +550,7 @@ export default function Admin() {
             }))
         })
     
-    }, [keywordUser, keywordPost])
+    }, [keywordUser, keywordPost, posts])
 
     return (
         <>
