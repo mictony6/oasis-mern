@@ -8,7 +8,13 @@ import {
 } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
-import placeholder from '../static/images/profile_pic_placeholder.svg';
+import placeholder_f from "../static/images/user_placeholder_f.svg";
+import placeholder_m from "../static/images/user_placeholder_m.svg";
+import Therapist_f from "../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../static/images/dr_placeholder_m.svg";
+import Admin_f from "../static/images/admin_placeholder_f.svg";
+import Admin_m from "../static/images/admin_placeholder_m.svg";
+import Others from "../static/images/other_placeholder.svg";
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
 import fb from '../static/images/facebook.svg';
@@ -531,7 +537,7 @@ export default function User() {
                                     </label>
                                 </div>
                                 <Container fluid className={"position-relative text-center"}>
-                                    <Image src={placeholder} className={"profile-pic"}/>
+                                    <Image src={user.gender === 'male' ? placeholder_m : user.gender === 'female' ? placeholder_f : Others} className={"profile-pic"}/>
                                 </Container>
                                 <h5 className={"text-center py-1"}>@{user_username}</h5>
                                 <p className={"text-center "}><small >{user_role}</small></p>

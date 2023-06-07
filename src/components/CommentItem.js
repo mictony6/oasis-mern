@@ -1,6 +1,14 @@
 import {Col, Container, ListGroupItem, Row, Image, Button, Dropdown} from "react-bootstrap";
-import user_placeholder from '../static/images/profile_pic_placeholder.svg'
-import placeholder from '../static/images/profile1.svg';
+import User_f from "../static/images/nonuser_f.svg";
+import User_m from "../static/images/nonuser_m.svg";
+import placeholder_f from "../static/images/user_placeholder_f.svg";
+import placeholder_m from "../static/images/user_placeholder_m.svg";
+import Therapist_f from "../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../static/images/dr_placeholder_m.svg";
+import Admin_f from "../static/images/admin_placeholder_f.svg";
+import Admin_m from "../static/images/admin_placeholder_m.svg";
+import Others from "../static/images/other_placeholder.svg";
+import ContactItem from "./ContactItem";
 import heart from '../static/images/love.svg'
 import activeHeart from '../static/images/love-active.svg'
 import { useState, useEffect, useContext } from "react";
@@ -16,7 +24,7 @@ import { addContact, blockContact, removeContact } from "../functions/contactFun
 export default function CommentItem({commentProp}){
 
     const { user } = useContext(UserContext)
-    const {comment_id, username, user_id, content, date_commented, role, prefix, last_name, suffix } = commentProp
+    const {comment_id, username, user_id, content, date_commented, gender, role, prefix, last_name, suffix } = commentProp
 
     const relativeTime = require('dayjs/plugin/relativeTime')
     dayjs.extend(relativeTime)
@@ -102,13 +110,36 @@ export default function CommentItem({commentProp}){
         setStatus(blockContact(user_id))
     }
 
+        // Create a mapping object for role and gender combinations
+        const imageMap = {
+            "User_male": User_m,
+            "User_female": User_f,
+            "Therapist_male": Therapist_m,
+            "Therapist_female": Therapist_f,
+            "Admin_male": Admin_m,
+            "Admin_female": Admin_f,
+            "User_non-binary": Others,
+            "Therapist_non-binary": Others,
+            "Admin_non-binary": Others,
+            "User_others": Others,
+            "Admin_others": Others,
+            "Therapist_others": Others
+        };
+        
+        // Assuming `role` and `gender` are defined variables
+        const imageName = `${role}_${gender}`;
+    
+
     return(
         <>
         <ListGroupItem className={"bg-transparent border-0"}>
             <div className={"bg-light rounded-4 border border-1 "}>
                 <Container className={"d-flex py-4 px-3"}>
                     <div className={"d-flex flex-column align-items-center justify-content-between col-2 pe-0"}>
-                        <Image src={user.id === user_id ? user_placeholder : placeholder} className={"img-fluid"}></Image>
+                        <Image src={user.id === user_id ? 
+                        user.role === 'User' ? user.gender === 'male' ? placeholder_m : user.gender === 'female' ? placeholder_f : Others :
+                        imageMap[imageName]
+                        : imageMap[imageName]} className={"img-fluid profile-avatar"}></Image>
 
                         <Dropdown>
                             <DropdownToggle className={"username mt-1"}>

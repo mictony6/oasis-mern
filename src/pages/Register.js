@@ -32,7 +32,7 @@ export default function Register() {
 
     useEffect(()=> {
         // Regex for validity
-            const valid_username= /^[a-z0-9_.-]{3,15}$/
+            const valid_username= /^[a-zA-Z0-9_.-]{3,15}$/;
             const valid_email = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
             const valid_password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$/;
 

@@ -61,7 +61,7 @@ export default function AppointmentList(){
             setSlots(<p className="mx-auto">You have no slots for this date. You can add slots from the dropdown below.</p>)
         })
 
-    }, [date, key, therapist.therapist_id])
+    }, [date, key, therapist.therapist_id, slots])
 
     function nextDay(){
         setDate(dayjs(date).add(1, 'day'))

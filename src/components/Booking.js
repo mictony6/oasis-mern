@@ -1,5 +1,13 @@
 import {Button, ButtonGroup, Col, Container, Dropdown, Image, ListGroupItem, Row} from "react-bootstrap";
-import placeholder from "../static/images/profile1.svg";
+import User_f from "../static/images/nonuser_f.svg";
+import User_m from "../static/images/nonuser_m.svg";
+import placeholder_f from "../static/images/user_placeholder_f.svg";
+import placeholder_m from "../static/images/user_placeholder_m.svg";
+import Therapist_f from "../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../static/images/dr_placeholder_m.svg";
+import Admin_f from "../static/images/admin_placeholder_f.svg";
+import Admin_m from "../static/images/admin_placeholder_m.svg";
+import Others from "../static/images/other_placeholder.svg";
 import ContactItem from "./ContactItem";
 import {useState} from "react";
 import { useContext } from "react";
@@ -10,21 +18,15 @@ import Swal from "sweetalert2";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import DropdownItem from "react-bootstrap/DropdownItem";
-import person_add from "../static/images/person/person-add.svg";
-import person_remove from "../static/images/person/person-dash.svg";
-import x_circle from "../static/images/x-circle.svg";
 import {Link} from "react-router-dom";
 
 export default function Booking({bookingProp}){
 
 
     const { user } = useContext(UserContext)
-    const { username, availability, booking_id, user_id, date, time} = bookingProp
+    const { username, gender, role, availability, booking_id, user_id, date, time, confirmation, denied} = bookingProp
 
-    const [confirmation, setConfirmation] = useState(false)
     const [contactId, setContactId] = useState(null)
-    const [denied, setDenied] = useState(false)
-
 
     let [humanizedDate, setHumanizedDate] = useState('')
     let [humanizedTime, setHumanizedTime] = useState('')
@@ -41,15 +43,7 @@ export default function Booking({bookingProp}){
         }
         })
         .then(res => res.json())
-        .then(data => {
-            if(data[0].confirmation){
-                setContactId(data[0].contact_id)
-                setConfirmation(true)
-            } else {
-                setConfirmation(false)
-            }
-            data[0].denied ? setDenied(true) : setDenied(false)
-        })
+        .then(data => {})
 
     }, [booking_id, date, time])
 
@@ -80,7 +74,7 @@ export default function Booking({bookingProp}){
                     customClass: {
                         confirmButton: 'button2'
                     }
-                }).then(setConfirmation(true))
+                })
                 } else {
                 Swal.fire({
                     title: "Oh No!",
@@ -123,7 +117,7 @@ export default function Booking({bookingProp}){
                     customClass: {
                         confirmButton: 'button2'
                     }
-                }).then(setDenied(true))
+                })
                 :
                 Swal.fire({
                     title: "Oh No!",
@@ -140,6 +134,25 @@ export default function Booking({bookingProp}){
         })
     }
 
+    // Create a mapping object for role and gender combinations
+    const imageMap = {
+        "User_male": User_m,
+        "User_female": User_f,
+        "Therapist_male": Therapist_m,
+        "Therapist_female": Therapist_f,
+        "Admin_male": Admin_m,
+        "Admin_female": Admin_f,
+        "User_non-binary": Others,
+        "Therapist_non-binary": Others,
+        "Admin_non-binary": Others,
+        "User_others": Others,
+        "Admin_others": Others,
+        "Therapist_others": Others
+    };
+    
+    // Assuming `role` and `gender` are defined variables
+    const imageName = `${role}_${gender}`;
+
 
     return(
         <ListGroupItem className={"border-0 my-1"}>
@@ -148,8 +161,8 @@ export default function Booking({bookingProp}){
             <Row>
                 <Col sm={6} className="d-flex align-items-center">
                     <Col sm={1} className="d-flex align-items-center">
-
-                        <Image src={placeholder} className={"img-fluid slot-img"}></Image>
+                        <Image src={imageMap[imageName]}
+                        className={"img-fluid slot-img"}></Image>
                     </Col>
                     <Col className="px-4">
 

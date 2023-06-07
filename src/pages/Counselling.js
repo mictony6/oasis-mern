@@ -16,6 +16,8 @@ import TherapistCard from "../components/TherapistCard";
 import ConsultationCard from "../components/ConsultationCard";
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useLocation, useNavigate} from 'react-router-dom';
+
 
 export default function Counselling() {
 
@@ -26,9 +28,45 @@ export default function Counselling() {
     const [upcomingLoading, setUpcomingLoading] = useState(true)
     const [recentLoading, setRecentLoading] = useState(true)
 
+    const location = useLocation()
+    const history = useNavigate()
 
+    const getConsultation = new URLSearchParams(location.search).get('consultation')
+
+    const [consultation, setConsultation] = useState(getConsultation ? getConsultation : '')
+
+    function sortConsultation(val){
+        setConsultation(val)        
+        val !== '' ? 
+        history(`${location.pathname}?consultation=${val}`)
+        : history(`${location.pathname}`)
+    }
+
+    const getAvailability = new URLSearchParams(location.search).get('availability')
+
+    const [availability, setAvailability] = useState(getAvailability ? getAvailability : '')
+
+    function sortAvailability(val){
+        setAvailability(val)        
+        val !== '' ? 
+        history(`${location.pathname}?availability=${val}`)
+        : history(`${location.pathname}`)
+    }
+
+    const [view, setView] = useState('')
+    
     useEffect(() => {
-        fetch(`http://127.0.0.1:4000/therapist/viewAll`,
+        if(consultation !== '' && availability !== '') {
+            setView(`viewAllByConsultationAvailability/${consultation}/${availability}`)
+        } else if(consultation !== '') {
+            setView(`viewAllByConsultation/${consultation}`)
+        } else if(availability !== '') {
+            setView(`viewAllByAvailability/${availability}`)
+        } else {
+            setView(`viewAll`)
+        }
+
+        fetch(`http://127.0.0.1:4000/therapist/${view}`,
         {method: 'GET',
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -86,7 +124,7 @@ export default function Counselling() {
             setPastBookings(<small><em> You have no recent consultations.</em></small>)         
 
         })
-    }, [therapists])
+    }, [availability, consultation, therapists, view])
 
     return (
         <Container fluid>
@@ -99,16 +137,25 @@ export default function Counselling() {
                     <Row className={'w-100 my-4'}>
                         <Col className={'d-flex flex-row align-items-center'}>
                             <FormLabel htmlFor={'sort-type'} className={'col-2'} >sort by</FormLabel>
-                            <FormSelect aria-label={'sort-type'}>
-                                <option >online consultations</option>
-                                <option > other option</option>
+                            <FormSelect id='sort-type'
+                            onChange={e => {
+                                    sortConsultation(e.target.value)
+                            }}>
+                                <option value = ''>-- choose consultation type --</option>
+                                <option value = 'online'>online</option>
+                                <option value = 'in_person'> in-person</option>
                             </FormSelect>
                         </Col>
                         <Col className={'d-flex flex-row align-items-center'}>
-                            <FormLabel htmlFor={'sort-type'} className={'col-4'}>available dates</FormLabel>
-                            <FormSelect aria-label={'sort-type'}>
-                                <option >this week</option>
-                                <option >this month</option>
+                            <FormLabel htmlFor={'availability'} className={'col-4'}>available dates</FormLabel>
+                            <FormSelect id='availability'
+                            onChange={e => {
+                                    sortAvailability(e.target.value)
+                            }}>
+                                <option value = ''>-- no selected dates --</option>
+                                <option value = 'day'> today </option>
+                                <option value = 'week'> this week </option>
+                                <option value = 'month'> this month </option>
                             </FormSelect>
                         </Col>
             </Row>

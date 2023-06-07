@@ -561,8 +561,13 @@ body{
 }
 
 .profile-avatar {
-	cursor: pointer;
-	position: relative;
+	height: 4.5rem;
+	width: auto;
+}
+
+.notification-avatar {
+	height: 3rem;
+	width: auto;
 }
 
 .profile-dropdown {

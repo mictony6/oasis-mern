@@ -1,6 +1,13 @@
 import {Button, Container, FormControl, Image, ListGroup, Modal} from "react-bootstrap";
-import placeholder from "../../static/images/profile_pic_placeholder.svg";
-import user_placeholder from "../../static/images/profile1.svg";
+import User_f from "../../static/images/nonuser_f.svg";
+import User_m from "../../static/images/nonuser_m.svg";
+import placeholder_f from "../../static/images/user_placeholder_f.svg";
+import placeholder_m from "../../static/images/user_placeholder_m.svg";
+import Therapist_f from "../../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../../static/images/dr_placeholder_m.svg";
+import Admin_f from "../../static/images/admin_placeholder_f.svg";
+import Admin_m from "../../static/images/admin_placeholder_m.svg";
+import Others from "../../static/images/other_placeholder.svg";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../UserContext";
@@ -12,7 +19,7 @@ export default function UserPostItem({postProp}){
 
     const { user } = useContext(UserContext)
 
-    const { p_id, subject, content, date_time, user_id, username, role, prefix, last_name, suffix } = postProp
+    const { p_id, subject, content, date_time, user_id, username, role, gender, prefix, last_name, suffix } = postProp
 
     const [love, setLove] = useState(false)
     const [count, setCount] = useState("")
@@ -217,6 +224,24 @@ export default function UserPostItem({postProp}){
         navigate(link)
     }
 
+    const imageMap = {
+        "User_male": User_m,
+        "User_female": User_f,
+        "Therapist_male": Therapist_m,
+        "Therapist_female": Therapist_f,
+        "Admin_male": Admin_m,
+        "Admin_female": Admin_f,
+        "User_non-binary": Others,
+        "Therapist_non-binary": Others,
+        "Admin_non-binary": Others,
+        "User_others": Others,
+        "Admin_others": Others,
+        "Therapist_others": Others
+    };
+    
+    // Assuming `role` and `gender` are defined variables
+    const imageName = `${role}_${gender}`;
+
     return(
         <>
         <ListGroup.Item className={"p-3 pb-0"}>
@@ -233,7 +258,7 @@ export default function UserPostItem({postProp}){
                 </div>
                 }
                 <div >
-                    <Image src={user.id === user_id ? placeholder : user_placeholder}></Image>
+                    <Image className='profile-avatar' src={imageMap[imageName]} />
                 </div>
                 <Container className={"d-flex flex-column"}>
                     <h6>{subject}</h6>

@@ -4,7 +4,15 @@ import { useContext, useState } from 'react';
 import {Container, Dropdown, FormControl, Button, Image, Modal, ButtonGroup} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import TextareaAutosize from 'react-textarea-autosize';
-import user_placeholder from '../static/images/profile_pic_placeholder.svg'
+import User_f from "../static/images/nonuser_f.svg";
+import User_m from "../static/images/nonuser_m.svg";
+import placeholder_f from "../static/images/user_placeholder_f.svg";
+import placeholder_m from "../static/images/user_placeholder_m.svg";
+import Therapist_f from "../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../static/images/dr_placeholder_m.svg";
+import Admin_f from "../static/images/admin_placeholder_f.svg";
+import Admin_m from "../static/images/admin_placeholder_m.svg";
+import Others from "../static/images/other_placeholder.svg";
 import Swal from 'sweetalert2'
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -92,6 +100,24 @@ export default function CreatePost() {
         setContent("");
     }
 
+    const imageMap = {
+        "User_male": User_m,
+        "User_female": User_f,
+        "Therapist_male": Therapist_m,
+        "Therapist_female": Therapist_f,
+        "Admin_male": Admin_m,
+        "Admin_female": Admin_f,
+        "User_non-binary": Others,
+        "Therapist_non-binary": Others,
+        "Admin_non-binary": Others,
+        "User_others": Others,
+        "Admin_others": Others,
+        "Therapist_others": Others
+    };
+    
+    // Assuming `role` and `gender` are defined variables
+    const imageName = `${user.role}_${user.gender}`;
+
     return (
         <Container fluid>
             <Container fluid className="d-flex flex-row my-4 justify-content-between">
@@ -107,7 +133,8 @@ export default function CreatePost() {
                 <Dropdown>
                     <Button type="button" data-bs-toggle="dropdown" aria-expanded="false" className="border-0"
                     style={{background: 'transparent'}}>
-                    <Image src={user_placeholder} className="mx-2 w-auto"/>
+                    <Image src={user.role === 'User' ? user.gender === 'male' ? placeholder_m : user.gender === 'female' ? placeholder_f : Others :
+                    imageMap[imageName] } className="mx-2 profile-avatar"/>
                     </Button>
 
                     <ul className="dropdown-menu dropdown-menu-end">
