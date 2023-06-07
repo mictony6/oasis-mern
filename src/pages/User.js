@@ -8,7 +8,15 @@ import {
 } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
-import placeholder from '../static/images/profile_pic_placeholder.svg';
+import User_f from "../static/images/nonuser_f.svg";
+import User_m from "../static/images/nonuser_m.svg";
+import placeholder_f from "../static/images/user_placeholder_f.svg";
+import placeholder_m from "../static/images/user_placeholder_m.svg";
+import Therapist_f from "../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../static/images/dr_placeholder_m.svg";
+import Admin_f from "../static/images/admin_placeholder_f.svg";
+import Admin_m from "../static/images/admin_placeholder_m.svg";
+import Others from "../static/images/other_placeholder.svg";
 import UserOverview from "../components/user/UserOverview";
 import profile_banner from "../static/images/bg.png"
 import fb from '../static/images/facebook.svg';
@@ -55,6 +63,7 @@ export default function User() {
     const [user_twt_link, setTwtLink] = useState('')
     const [user_li_link, setLiLink] = useState('')
     const [user_bio, setBio] = useState('')
+    const [gender, setGender] = useState('')
 
     const [new_username, setNewUsername] = useState(user.username)
     const [new_fb_link, setNewFBLink] = useState(user.fb_link)
@@ -246,6 +255,7 @@ export default function User() {
                 setTwtLink(data[0].twt_link)
                 setLiLink(data[0].li_link)
                 setBio(data[0].bio)
+                setGender(data[0].gender)
 
                 setNewUsername(data[0].username)
                 setNewFBLink(data[0].fb_link)
@@ -436,6 +446,25 @@ export default function User() {
         setStatus(declineContact(user_id))
     }
 
+            // Create a mapping object for role and gender combinations
+            const imageMap = {
+                "User_male": User_m,
+                "User_female": User_f,
+                "Therapist_male": Therapist_m,
+                "Therapist_female": Therapist_f,
+                "Admin_male": Admin_m,
+                "Admin_female": Admin_f,
+                "User_non-binary": Others,
+                "Therapist_non-binary": Others,
+                "Admin_non-binary": Others,
+                "User_others": Others,
+                "Admin_others": Others,
+                "Therapist_others": Others
+            };
+            
+            // Assuming `role` and `gender` are defined variables
+            const imageName = `${user_role}_${gender}`;
+
     return(
         <Container fluid>
             <Row className='d-flex flex-row'>
@@ -531,7 +560,10 @@ export default function User() {
                                     </label>
                                 </div>
                                 <Container fluid className={"position-relative text-center"}>
-                                    <Image src={placeholder} className={"profile-pic"}/>
+                                    <Image src={user.id === user_id ? 
+                        user.role === 'User' ? user.gender === 'male' ? placeholder_m : user.gender === 'female' ? placeholder_f : Others :
+                        imageMap[imageName]
+                        : imageMap[imageName]} className={"profile-pic"}/>
                                 </Container>
                                 <h5 className={"text-center py-1"}>@{user_username}</h5>
                                 <p className={"text-center "}><small >{user_role}</small></p>

@@ -1,5 +1,11 @@
-import {Button, Col, Image, ListGroupItem, Modal, ModalBody, ModalTitle, Row, Form } from "react-bootstrap";
-import placeholder from '../static/images/profile_pic_placeholder.svg';
+import {Button, Col, Image, ListGroupItem, Modal, ModalBody, ModalHeader, ModalTitle, Row, Form } from "react-bootstrap";
+import placeholder_f from "../static/images/user_placeholder_f.svg";
+import placeholder_m from "../static/images/user_placeholder_m.svg";
+import Therapist_f from "../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../static/images/dr_placeholder_m.svg";
+import Admin_f from "../static/images/admin_placeholder_f.svg";
+import Admin_m from "../static/images/admin_placeholder_m.svg";
+import Others from "../static/images/other_placeholder.svg";
 import thumbs_up from '../static/images/thumbs_up.svg';
 import fb from '../static/images/facebook.svg';
 import twt from '../static/images/twitter.svg';
@@ -14,7 +20,7 @@ import { FormGroup, FormControl, InputLabel, MenuItem, Select } from "@mui/mater
 
 export default function TherapistCard({therapistProp}){
 
-    const {therapist_id, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link, user_therapist_id} = therapistProp
+    const {therapist_id, prefix, first_name, last_name, suffix, field, description, online, in_person, fb_link, twt_link, li_link, user_therapist_id, gender} = therapistProp
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -25,7 +31,7 @@ export default function TherapistCard({therapistProp}){
     const [currentStep, setCurrentStep] = useState(1);
     const [mode, setMode] = useState('')
     const [date, setDate] = useState(null)
-    const [time, setTime] = useState('')
+    const [time, setTime] = useState(null)
     const [openCalendar, setOpenCalendar] = useState(false)
     const [datetime, setDateTime] = useState('')
     const [slot_id, setSlotID] = useState(null)
@@ -37,9 +43,6 @@ export default function TherapistCard({therapistProp}){
 
     let [humanizedDate, setHumanizedDate] = useState('')
     let [humanizedTime, setHumanizedTime] = useState('')
-
-    const eightAM = dayjs().set('hour', 8).startOf('hour');
-    const fivePM = dayjs().set('hour', 16).startOf('hour');
 
     const tomorrow = dayjs().add(1, 'day')
 
@@ -197,7 +200,8 @@ export default function TherapistCard({therapistProp}){
         <ListGroupItem className={'border-0 bg-light rounded-4 border border-1 my-2'}>
         <Row className={'p-4'}>
             <Col className={'col-3 d-flex flex-column align-items-center justify-content-center'}>
-                <Image src={placeholder} className={'p-2 '}></Image>
+                <Image src={gender === 'male' ? Therapist_m : gender === 'female' ? Therapist_f : Others}
+                className={'p-2 therapist-avatar'}></Image>
                 <Row>
                     {fb_link && <Col><a href={"https://"+fb_link} target="_blank" rel="noopener noreferrer"><Image src={fb}/></a></Col>}
                     {twt_link && <Col><a href={"https://"+twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}

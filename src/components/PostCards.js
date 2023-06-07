@@ -3,8 +3,15 @@ import '../index.css';
 import { useState, useEffect, useContext } from 'react';
 import {Container, Col, Row, Dropdown, Image, Button, Modal, FormControl, Form} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
-import user_placeholder from '../static/images/profile_pic_placeholder.svg'
-import placeholder from '../static/images/profile1.svg';
+import User_f from "../static/images/nonuser_f.svg";
+import User_m from "../static/images/nonuser_m.svg";
+import placeholder_f from "../static/images/user_placeholder_f.svg";
+import placeholder_m from "../static/images/user_placeholder_m.svg";
+import Therapist_f from "../static/images/dr_placeholder_f.svg";
+import Therapist_m from "../static/images/dr_placeholder_m.svg";
+import Admin_f from "../static/images/admin_placeholder_f.svg";
+import Admin_m from "../static/images/admin_placeholder_m.svg";
+import Others from "../static/images/other_placeholder.svg";
 import TextareaAutosize from 'react-textarea-autosize';
 import {Link, ScrollRestoration, useNavigate} from "react-router-dom";
 import Swal from 'sweetalert2'
@@ -46,7 +53,7 @@ export default function PostCards({postProp, minimize}) {
     }
     const [editActive, setEditActive] = useState(false)
 
-    const { p_id, subject, content, username, date_posted, user_id, edited } = postProp
+    const { p_id, subject, content, username, date_posted, user_id, edited, role, gender, prefix, last_name, suffix } = postProp
     const { user } = useContext(UserContext)
 
     const [new_subject, setNewSubject] = useState(subject)
@@ -345,6 +352,25 @@ export default function PostCards({postProp, minimize}) {
         })
     }
 
+    // Create a mapping object for role and gender combinations
+    const imageMap = {
+        "User_male": User_m,
+        "User_female": User_f,
+        "Therapist_male": Therapist_m,
+        "Therapist_female": Therapist_f,
+        "Admin_male": Admin_m,
+        "Admin_female": Admin_f,
+        "User_non-binary": Others,
+        "Therapist_non-binary": Others,
+        "Admin_non-binary": Others,
+        "User_others": Others,
+        "Admin_others": Others,
+        "Therapist_others": Others
+    };
+    
+    // Assuming `role` and `gender` are defined variables
+    const imageName = `${role}_${gender}`;
+
     const navigate = useNavigate()
     const goBack = () => {  
         navigate(-1);
@@ -359,14 +385,16 @@ export default function PostCards({postProp, minimize}) {
                     className={" rounded-4 border border-1 " + (hover ? "bg-white" : "bg-light")}>
                     <Container className={"d-flex py-4 px-3"}>
                         <div className={"d-flex flex-column align-items-center justify-content-between col-2  pe-0"}>
-                            {user.id !== user_id ?
-                                <Image src={placeholder} className={"img-fluid"}></Image>
-                                :
-                                <Image src={user_placeholder} className={"img-fluid"}></Image>
-                            }
+                            <Image 
+                            src={user.id === user_id ? 
+                            user.role === 'User' ? user.gender === 'male' ? placeholder_m : user.gender === 'female' ? placeholder_f : Others :
+                            imageMap[imageName]
+                            : imageMap[imageName]}
+                            className={"img-fluid profile-avatar"}
+                            />
                             <Dropdown>
                                 <DropdownToggle className={"username mt-1"}>
-                                    @{username}
+                                    {role !== 'Therapist' ? `@${username}` : `${prefix ? prefix : ''} ${last_name} ${suffix ? suffix : ''}`}
                                 </DropdownToggle>
 
                                 {user.id !== user_id ?

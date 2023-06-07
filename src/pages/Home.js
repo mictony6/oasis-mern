@@ -1,7 +1,7 @@
 
 import '../index.css';
 import { useContext, useState } from 'react';
-import {Row, Col, Container, Offcanvas, Form, Spinner} from 'react-bootstrap';
+import {Row, Col, Container, Offcanvas, Form, Spinner, FormSelect} from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive'
 import AppNavbar from '../components/AppNavbar';
 import toggle from '../static/images/hamburger-menu.svg'
@@ -75,7 +75,8 @@ export default function Home() {
                                 <label htmlFor='sort-type'>Sort by:</label>
                             </Col>
                             <Col xs={10} className='d-flex flex-row'>
-                                <Form.Control aria-label="sort-type" name='' id='sort-type' className="border rounded-3"
+                                <FormSelect
+                                 id='sort-type' className="border rounded-3"
                                     as="select"
                                     value={view}
                                     onChange={e => {
@@ -85,7 +86,7 @@ export default function Home() {
                                 >
                                     <option value="Recent">Recent</option>
                                     <option value="Likes">Top</option>
-                                </Form.Control>
+                                </FormSelect>
                             </Col>
                         </Row>
                         {isLoading ?
