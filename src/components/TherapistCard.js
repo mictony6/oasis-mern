@@ -201,7 +201,7 @@ export default function TherapistCard({therapistProp}){
         <Row className={'p-4'}>
             <Col className={'col-3 d-flex flex-column align-items-center justify-content-center'}>
                 <Image src={gender === 'male' ? Therapist_m : gender === 'female' ? Therapist_f : Others}
-                className={'p-2 '}></Image>
+                className={'p-2 therapist-avatar'}></Image>
                 <Row>
                     {fb_link && <Col><a href={"https://"+fb_link} target="_blank" rel="noopener noreferrer"><Image src={fb}/></a></Col>}
                     {twt_link && <Col><a href={"https://"+twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}

@@ -565,6 +565,11 @@ body{
 	width: auto;
 }
 
+.therapist-avatar {
+	height: 155px;
+	width: auto;
+}
+
 .notification-avatar {
 	height: 3rem;
 	width: auto;

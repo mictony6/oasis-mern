@@ -21,7 +21,7 @@ export default function ConsultationCard({bookingProp}){
         <ListGroupItem className={' p-4'} >
             <Row >
                 <Col className={'col-4 d-flex flex-row align-items-center justify-content-center'}>
-                    <Image src={gender === 'male' ? Therapist_m : gender === 'female' ? Therapist_f : Others}></Image>
+                    <Image src={gender === 'male' ? Therapist_m : gender === 'female' ? Therapist_f : Others} className='profile-avatar'></Image>
                 </Col>
                 <Col className={' '}>
                     <div className={'fw-bold'}>{prefix ? prefix : null} {last_name}</div>

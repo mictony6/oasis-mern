@@ -386,7 +386,10 @@ export default function PostCards({postProp, minimize}) {
                     <Container className={"d-flex py-4 px-3"}>
                         <div className={"d-flex flex-column align-items-center justify-content-between col-2  pe-0"}>
                             <Image 
-                            src={imageMap[imageName]}
+                            src={user.id === user_id ? 
+                            user.role === 'User' ? user.gender === 'male' ? placeholder_m : user.gender === 'female' ? placeholder_f : Others :
+                            imageMap[imageName]
+                            : imageMap[imageName]}
                             className={"img-fluid profile-avatar"}
                             />
                             <Dropdown>
