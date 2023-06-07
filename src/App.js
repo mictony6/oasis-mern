@@ -25,6 +25,7 @@ import { PostProvider } from './PostContext';
 import About from './pages/About';
 import { TherapistProvider } from './TherapistContext'
 import Admin from "./pages/Admin";
+import Error from "./pages/Error";
 
 function App() {
 
@@ -155,6 +156,7 @@ function App() {
                 <Route exact path="/counselling" element={<Counselling/>}/>
                 <Route exact path="/logout" element={<Logout/>}/>
                 <Route exact path="/chats/:contact_id" element={<Messaging/>}/>
+                <Route exact path="/error" element={<Error/>}/>
             </Route>
         )
     );

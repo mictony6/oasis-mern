@@ -4,7 +4,7 @@ import {
     Row,
     Image,
     Tabs,
-    Tab, Button, ListGroup, Modal, FormControl, Form, Spinner, ButtonGroup
+    Tab, Button, ListGroup, Modal, FormControl, Form, Spinner
 } from 'react-bootstrap';
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import AppNavbar from '../components/AppNavbar';
@@ -595,7 +595,7 @@ export default function User() {
                                         </Row>
                                         
                                     </div>
-                                    <div className={"d-flex flex-column my-2 flex-grow-1 align-items-center"}>
+                                    <div className={"d-flex flex-column my-2 flex-grow-1 align-items-center w-100 "}>
                                         <Row>
                                             {user_fb_link && <Col><a href={user_fb_link.substring(0,5) === "https" ? user_fb_link : "https://"+user_fb_link} target="_blank" rel="noopener noreferrer"><Image src={fb}/></a></Col>}
                                             {user_twt_link && <Col><a href={user_twt_link.substring(0,5) === "https" ? user_twt_link : "https://"+user_twt_link} target="_blank" rel="noopener noreferrer"><Image src={twt}/></a></Col>}

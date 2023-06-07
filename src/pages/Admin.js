@@ -1,10 +1,11 @@
-import {Row, Col, Container, ListGroup, Button, Collapse, Form, Modal, ModalHeader, ModalBody, Spinner} from "react-bootstrap";
+import {Row, Col, Container, ListGroup, Button, Collapse, Form, Modal, Nav, Pagination, ModalHeader, ModalBody, Spinner} from "react-bootstrap";
 import AppNavbar from "../components/AppNavbar";
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import PaginatedListGroup from "../components/PaginatedListGroup";
 import ReportItem from "../components/ReportItem";
 
 function UserManagementItem({userProp}) {
@@ -522,14 +523,14 @@ function PostManagementItem({postProp}) {
         .then(res => res.json())
         .then(data => {
             setReportsLoading(false)
-            setReports(data.map(report => 
+            setReports(data.map(report =>
                 {
                     return <ReportItem reportProp = {report}/>
                 }
             ))
-                
-        })  
-    
+
+        })
+
     }
 
     return <ListGroup.Item className={"rounded-1 mb-2 align-items-center "}>
@@ -539,7 +540,7 @@ function PostManagementItem({postProp}) {
             <Col sm={2}><span className={"px-2 rounded-pill bg-secondary"}>{humanizedDate}</span></Col>
             <Col sm={1}><span className={`px-3 text-center rounded-pill ${reported ? 'text-bg-danger' : 'bg-secondary'}`}>{reported ? 'Yes' : 'No'}</span>
             </Col>
-            {reported ? 
+            {reported ?
             <Col className='text-center'>
                 <span className="d-flex justify-content-center notif-view" onClick={retrieveReports}><small>View reports</small></span>
             </Col> : null}
@@ -566,7 +567,7 @@ function PostManagementItem({postProp}) {
                         </Row>
                             {reports}
                     </ListGroup>
-} 
+}
                 </ModalBody>
         </Modal>
 
@@ -582,6 +583,9 @@ export default function Admin() {
     
     const [showUsers, setShowUsers] = useState(false)
     const [showPosts, setShowPosts] = useState(false)
+
+
+
 
     useEffect(() => {
         fetch(`http://localhost:4000/admin/${keywordUser === '' ? `getUsers` : `getUsersSearch/${keywordUser}`}`,
@@ -611,7 +615,9 @@ export default function Admin() {
                 return <PostManagementItem key={post.post_id} postProp= {post} />            
             }))
         })
-    
+
+
+
     }, [keywordUser, keywordPost, posts])
 
     return (
@@ -640,17 +646,19 @@ export default function Admin() {
                                 </Form>
                             </div>
                             <Collapse in={showUsers}>
-                                <ListGroup>
+                                <div>
                                     <Row className={"px-3"}>
                                         <Col sm={2}>Username</Col>
                                         <Col sm={2}>Role</Col>
                                         <Col>Actions</Col>
                                     </Row>
-                                    {users}
-                                </ListGroup>
+                                    <PaginatedListGroup data={users} itemsPerPage={5}/>
+
+                                </div>
                             </Collapse>
+
                         </Container>
-                        <Container className={"text-bg-light rounded-2 px-2 py-3 my-4"}>
+                        <Container className={"text-bg-light rounded-2 px-2 pt-3 my-4"}>
 
 
                             <div className={"d-flex flex-row flex-nowrap justify-content-between"}>
@@ -670,7 +678,7 @@ export default function Admin() {
 
 
                             <Collapse in={showPosts}>
-                                <ListGroup>
+                                <div>
                                     <Row className={"px-3"}>
                                         <Col sm={3}>Post</Col>
                                         <Col sm={2}>Posted by</Col>
@@ -678,8 +686,9 @@ export default function Admin() {
                                         <Col sm={1}>Reported</Col>
                                         <Col className='text-end me-5'>Actions</Col>
                                     </Row>
-                                    {posts}
-                                </ListGroup>
+                                    <PaginatedListGroup data={posts} itemsPerPage={5}/>
+
+                                </div>
                             </Collapse>
                         </Container>
 

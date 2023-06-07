@@ -145,8 +145,8 @@ export default function CreatePost() {
             </Container>
 
             <Modal show={open} size="lg" className="mt-auto" centered onHide={closeModal}>
-                <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center">
-                    <h3 className='py-3'>Create A New Post</h3>
+                <Modal.Header closeButton className='py-3 text-bg-secondary text-center h3'>Create A New Post</Modal.Header>
+                <Container fluid className="d-flex flex-column px-4 my-4 justify-content-between align-items-center text-bg-light">
                     <div className='rounded-4 d-flex flex-row p-2 shadow-focus w-100' >
                         <FormControl 
                             placeholder="Title"

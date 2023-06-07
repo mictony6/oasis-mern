@@ -1,16 +1,14 @@
-import { Collapse, Container,  ListGroup, Spinner, } from 'react-bootstrap';
+import {  Container,  ListGroup, Spinner, } from 'react-bootstrap';
 import ContactItem from "./ContactItem";
 import BlogPreviewCard from "./BlogPreviewCard";
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Notifications from './Notifications';
 
 
 export default function RightSidebar() {
 
     const [contacts, setContacts] = useState([])
-    const [showContacts, setShowContacts] = useState(false)
 
     const [isLoading, setIsLoading] = useState(true)
     
@@ -40,28 +38,22 @@ export default function RightSidebar() {
             <Container fluid className='sticky-top vh-100 overflow-auto'>
                 <div className="mt-4"></div>
                 <Notifications/>
-                <Link
-                    to={''}
-                    onClick={() => {setShowContacts(!showContacts)}}
-                    aria-controls="contact-list"
-                    aria-expanded={showContacts}
-                >
-                <h6 >contacts {showContacts ? <i className="bi bi-caret-up-fill"></i> : <i className="bi bi-caret-right-fill"></i>}</h6>
-                </Link>
 
-                <Collapse in={showContacts} >
+
+
+                    <div className={" fw-bold h6"}><i className="bi bi-person-fill pe-2"></i>contacts</div>
+
                     <div id="contact-list">
-                    {isLoading ?
-                    <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
-                        <Spinner/>
+                        {isLoading ?
+                            <div className={"flex-grow-1 w-100 text-center mt-3 mb-0"}>
+                                <Spinner/>
+                            </div>
+                            :
+                            <ListGroup className='d-flex flex-column contacts overflow-auto' >
+                                {contacts}
+                            </ListGroup>}
                     </div>
-                    :
-                    <ListGroup className='d-flex flex-column contacts overflow-auto' >
-                        {contacts}
-                    </ListGroup>}
-                    </div>
-                </Collapse>
-                <div className="mt-4"></div>
+                <div className="my-4 w-100 border border-1 border-bottom"></div>
                 
                 <ListGroup  >
                     <BlogPreviewCard/>
