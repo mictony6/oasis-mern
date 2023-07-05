@@ -52,7 +52,7 @@ export default function Chat({chatProp}){
             {isUser && <Row className={" d-flex align-items-center   flex-row-reverse justify-content-end "}>
                 <Col md={2} className={"text-center"}>
                 <Image src={user.role === 'User' ? user.gender === 'male' ? placeholder_m : user.gender === 'female' ? placeholder_f : Others :
-                imageMap[imageName] }className={"img-fluid"}></Image></Col>
+                imageMap[imageName] }className={"img-fluid profile-avatar"}></Image></Col>
                 <Col md={8} className={"text-end d-flex flex-column align-items-end justify-content-end"}>
                     <Row className="d-flex">
                         <p className="p-2 border border-1 rounded-5 fit-content m-0"> {content} </p>
@@ -66,8 +66,8 @@ export default function Chat({chatProp}){
 
             </Row>}
             {!isUser && <Row className={" d-flex align-items-center   "}>
-                <Col md={2} className={"text-center"}><Image src={`${sender_role}.${sender_gender === 'male' ? '_m' : sender_gender === 'female' ? '_f' : '_others'}`}
-                className={"img-fluid"}></Image></Col>
+                <Col md={2} className={"text-center"}><Image src={imageMap[imageName]}
+                className={"img-fluid profile-avatar"}></Image></Col>
                 <Col md={8} className={"text-end d-flex flex-column align-items-start justify-content-end"}>
                     <Row className="d-flex">
                         <p className="p-2 border border-1 rounded-5 fit-content m-0"> {content} </p>
